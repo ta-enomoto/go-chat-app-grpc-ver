@@ -1,6 +1,5 @@
-*
-!*/
-!*.*
+goserver
+chat_api
+chat_api-cli
 *.txt
 *node_modules/
-!Dockerfile

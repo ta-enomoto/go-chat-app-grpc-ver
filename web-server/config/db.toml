@@ -1,0 +1,6 @@
+[database1]
+host = "mysql"
+port = 3306
+db-name = "gochatapp"
+charset = "utf8"
+user = "enomoto"

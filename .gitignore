@@ -2,4 +2,4 @@ goserver
 chat_api
 chat_api-cli
 *.txt
-node_modules/
+chat-api/node_modules/

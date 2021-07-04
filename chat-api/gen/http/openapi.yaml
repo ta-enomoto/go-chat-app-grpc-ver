@@ -3,7 +3,7 @@ info:
   title: Chat Service
   description: Service for chat app, a Goa teaser
   version: ""
-host: 172.25.0.2:8000
+host: 172.25.0.4:8000
 consumes:
 - application/json
 - application/xml
@@ -27,6 +27,19 @@ paths:
           $ref: '#/definitions/ChatapiGetchatRequestBody'
           required:
           - id
+      responses:
+        "200":
+          description: OK response.
+          schema:
+            $ref: '#/definitions/ChatapiGoaChatResponseCollection'
+      schemes:
+      - http
+  /ping:
+    get:
+      tags:
+      - chatapi
+      summary: ping chatapi
+      operationId: chatapi#ping
       responses:
         "200":
           description: OK response.

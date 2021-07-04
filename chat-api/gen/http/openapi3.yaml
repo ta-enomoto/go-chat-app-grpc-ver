@@ -4,7 +4,7 @@ info:
   description: Service for chat app, a Goa teaser
   version: "1.0"
 servers:
-- url: http://172.25.0.2:8000
+- url: http://172.25.0.4:8000
 paths:
   /mypage/chatroom{id}:
     get:
@@ -20,6 +20,44 @@ paths:
               $ref: '#/components/schemas/GetchatRequestBody'
             example:
               id: 4241678195779654278
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoaChatCollection'
+              example:
+              - Chat: Voluptas quod qui.
+                Member: Voluptatem rerum rerum neque assumenda.
+                PostDt: "2013-12-17T20:03:48Z"
+                RoomName: Culpa id suscipit rem voluptates.
+                UserId: Omnis molestiae.
+                id: 714744356156329433
+              - Chat: Voluptas quod qui.
+                Member: Voluptatem rerum rerum neque assumenda.
+                PostDt: "2013-12-17T20:03:48Z"
+                RoomName: Culpa id suscipit rem voluptates.
+                UserId: Omnis molestiae.
+                id: 714744356156329433
+              - Chat: Voluptas quod qui.
+                Member: Voluptatem rerum rerum neque assumenda.
+                PostDt: "2013-12-17T20:03:48Z"
+                RoomName: Culpa id suscipit rem voluptates.
+                UserId: Omnis molestiae.
+                id: 714744356156329433
+              - Chat: Voluptas quod qui.
+                Member: Voluptatem rerum rerum neque assumenda.
+                PostDt: "2013-12-17T20:03:48Z"
+                RoomName: Culpa id suscipit rem voluptates.
+                UserId: Omnis molestiae.
+                id: 714744356156329433
+  /ping:
+    get:
+      tags:
+      - chatapi
+      summary: ping chatapi
+      operationId: chatapi#ping
       responses:
         "200":
           description: OK response.

@@ -16,18 +16,21 @@ import (
 // Endpoints wraps the "chatapi" service endpoints.
 type Endpoints struct {
 	Getchat goa.Endpoint
+	Ping    goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "chatapi" service with endpoints.
 func NewEndpoints(s Service) *Endpoints {
 	return &Endpoints{
 		Getchat: NewGetchatEndpoint(s),
+		Ping:    NewPingEndpoint(s),
 	}
 }
 
 // Use applies the given middleware to all the "chatapi" service endpoints.
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.Getchat = m(e.Getchat)
+	e.Ping = m(e.Ping)
 }
 
 // NewGetchatEndpoint returns an endpoint function that calls the method
@@ -36,6 +39,19 @@ func NewGetchatEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
 		p := req.(*GetchatPayload)
 		res, err := s.Getchat(ctx, p)
+		if err != nil {
+			return nil, err
+		}
+		vres := NewViewedGoaChatCollection(res, "default")
+		return vres, nil
+	}
+}
+
+// NewPingEndpoint returns an endpoint function that calls the method "ping" of
+// service "chatapi".
+func NewPingEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req interface{}) (interface{}, error) {
+		res, err := s.Ping(ctx)
 		if err != nil {
 			return nil, err
 		}

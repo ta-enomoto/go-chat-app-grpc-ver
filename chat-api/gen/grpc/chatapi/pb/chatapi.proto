@@ -11,10 +11,12 @@ package chatapi;
 
 option go_package = "/chatapipb";
 
-// The calc service performs get chat.
+// The service performs get chat.
 service Chatapi {
 	// Getchat implements getchat.
 	rpc Getchat (GetchatRequest) returns (GoaChatCollection);
+	// Ping implements ping.
+	rpc Ping (PingRequest) returns (GoaChatCollection);
 }
 
 message GetchatRequest {
@@ -38,4 +40,7 @@ message GoaChat {
 	// chat
 	string chat = 5;
 	string post_dt = 6;
+}
+
+message PingRequest {
 }

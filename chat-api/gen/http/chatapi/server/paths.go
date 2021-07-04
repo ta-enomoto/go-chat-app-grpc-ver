@@ -11,3 +11,8 @@ package server
 func GetchatChatapiPath() string {
 	return "/mypage/chatroom{id}"
 }
+
+// PingChatapiPath returns the URL path to the chatapi service ping HTTP endpoint.
+func PingChatapiPath() string {
+	return "/ping"
+}

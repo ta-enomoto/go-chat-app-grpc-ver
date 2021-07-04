@@ -25,6 +25,10 @@ type GetchatRequestBody struct {
 // HTTP response body.
 type GetchatResponseBody []*GoaChatResponse
 
+// PingResponseBody is the type of the "chatapi" service "ping" endpoint HTTP
+// response body.
+type PingResponseBody []*GoaChatResponse
+
 // GoaChatResponse is used to define fields on response body types.
 type GoaChatResponse struct {
 	// room id
@@ -52,6 +56,16 @@ func NewGetchatRequestBody(p *chatapi.GetchatPayload) *GetchatRequestBody {
 // NewGetchatGoaChatCollectionOK builds a "chatapi" service "getchat" endpoint
 // result from a HTTP "OK" response.
 func NewGetchatGoaChatCollectionOK(body GetchatResponseBody) chatapiviews.GoaChatCollectionView {
+	v := make([]*chatapiviews.GoaChatView, len(body))
+	for i, val := range body {
+		v[i] = unmarshalGoaChatResponseToChatapiviewsGoaChatView(val)
+	}
+	return v
+}
+
+// NewPingGoaChatCollectionOK builds a "chatapi" service "ping" endpoint result
+// from a HTTP "OK" response.
+func NewPingGoaChatCollectionOK(body PingResponseBody) chatapiviews.GoaChatCollectionView {
 	v := make([]*chatapiviews.GoaChatView, len(body))
 	for i, val := range body {
 		v[i] = unmarshalGoaChatResponseToChatapiviewsGoaChatView(val)

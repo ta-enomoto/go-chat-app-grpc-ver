@@ -54,6 +54,18 @@ func DecodeGetchatRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp
 	}
 }
 
+// EncodePingResponse returns an encoder for responses returned by the chatapi
+// ping endpoint.
+func EncodePingResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
+		res := v.(chatapiviews.GoaChatCollection)
+		enc := encoder(ctx, w)
+		body := NewGoaChatResponseCollection(res.Projected)
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
 // marshalChatapiviewsGoaChatViewToGoaChatResponse builds a value of type
 // *GoaChatResponse from a value of type *chatapiviews.GoaChatView.
 func marshalChatapiviewsGoaChatViewToGoaChatResponse(v *chatapiviews.GoaChatView) *GoaChatResponse {

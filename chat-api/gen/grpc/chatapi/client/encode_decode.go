@@ -60,3 +60,37 @@ func DecodeGetchatResponse(ctx context.Context, v interface{}, hdr, trlr metadat
 	}
 	return chatapi.NewGoaChatCollection(vres), nil
 }
+
+// BuildPingFunc builds the remote method to invoke for "chatapi" service
+// "ping" endpoint.
+func BuildPingFunc(grpccli chatapipb.ChatapiClient, cliopts ...grpc.CallOption) goagrpc.RemoteFunc {
+	return func(ctx context.Context, reqpb interface{}, opts ...grpc.CallOption) (interface{}, error) {
+		for _, opt := range cliopts {
+			opts = append(opts, opt)
+		}
+		if reqpb != nil {
+			return grpccli.Ping(ctx, reqpb.(*chatapipb.PingRequest), opts...)
+		}
+		return grpccli.Ping(ctx, &chatapipb.PingRequest{}, opts...)
+	}
+}
+
+// DecodePingResponse decodes responses from the chatapi ping endpoint.
+func DecodePingResponse(ctx context.Context, v interface{}, hdr, trlr metadata.MD) (interface{}, error) {
+	var view string
+	{
+		if vals := hdr.Get("goa-view"); len(vals) > 0 {
+			view = vals[0]
+		}
+	}
+	message, ok := v.(*chatapipb.GoaChatCollection)
+	if !ok {
+		return nil, goagrpc.ErrInvalidType("chatapi", "ping", "*chatapipb.GoaChatCollection", v)
+	}
+	res := NewPingResult(message)
+	vres := chatapiviews.GoaChatCollection{Projected: res, View: view}
+	if err := chatapiviews.ValidateGoaChatCollection(vres); err != nil {
+		return nil, err
+	}
+	return chatapi.NewGoaChatCollection(vres), nil
+}

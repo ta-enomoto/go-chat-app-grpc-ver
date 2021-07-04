@@ -11,9 +11,9 @@ var _ = API("getchat", func() {
 	Description("Service for chat app, a Goa teaser")
 	// サーバ定義
 	Server("chat api", func() {
-		Host("172.25.0.2", func() {
-			URI("http://172.25.0.2:8000") // HTTP REST API
-			URI("grpc://172.25.0.2:8080") // gRPC
+		Host("172.25.0.4", func() {
+			URI("http://172.25.0.4:8000") // HTTP REST API
+			URI("grpc://172.25.0.4:8080") // gRPC
 		})
 	})
 })
@@ -21,7 +21,7 @@ var _ = API("getchat", func() {
 // サービス定義
 var _ = Service("chatapi", func() {
 	// 説明
-	Description("The calc service performs get chat.")
+	Description("The service performs get chat.")
 	// メソッド (HTTPでいうところのエンドポントに相当)
 	Method("getchat", func() {
 		// ペイロード定義
@@ -43,7 +43,21 @@ var _ = Service("chatapi", func() {
 		})
 		// GRPC トランスポート用の定義
 		GRPC(func() {
-			Response(CodeOK) // 手すぽん巣のステータスは CodeOK を返す
+			Response(CodeOK) // レスポンスのステータスは CodeOK を返す
+		})
+	})
+	Method("ping", func() {
+		Result(CollectionOf(Chat)) // メソッドの返値（整数を返す）
+		Error("NotFound")
+		Error("BadRequest")
+		// HTTP トランスポート用の定義
+		HTTP(func() {
+			GET("/ping")       // GET エンドポイント
+			Response(StatusOK) // レスポンスのステータスは Status OK = 200 を返す
+		})
+		// GRPC トランスポート用の定義
+		GRPC(func() {
+			Response(CodeOK) //レスポンスのステータスは CodeOK を返す
 		})
 	})
 })

@@ -42,6 +42,31 @@ func NewGetchatResult(message *chatapipb.GoaChatCollection) chatapiviews.GoaChat
 	return result
 }
 
+// NewPingRequest builds the gRPC request type from the payload of the "ping"
+// endpoint of the "chatapi" service.
+func NewPingRequest() *chatapipb.PingRequest {
+	message := &chatapipb.PingRequest{}
+	return message
+}
+
+// NewPingResult builds the result type of the "ping" endpoint of the "chatapi"
+// service from the gRPC response type.
+func NewPingResult(message *chatapipb.GoaChatCollection) chatapiviews.GoaChatCollectionView {
+	result := make([]*chatapiviews.GoaChatView, len(message.Field))
+	for i, val := range message.Field {
+		result[i] = &chatapiviews.GoaChatView{
+			UserID:   &val.UserId,
+			RoomName: &val.RoomName,
+			Member:   &val.Member,
+			Chat:     &val.Chat,
+			PostDt:   &val.PostDt,
+		}
+		idptr := int(val.Id)
+		result[i].ID = &idptr
+	}
+	return result
+}
+
 // ValidateGoaChatCollection runs the validations defined on GoaChatCollection.
 func ValidateGoaChatCollection(message *chatapipb.GoaChatCollection) (err error) {
 	for _, e := range message.Field {

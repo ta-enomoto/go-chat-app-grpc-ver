@@ -21,6 +21,9 @@ type Client struct {
 	// endpoint.
 	GetchatDoer goahttp.Doer
 
+	// Ping Doer is the HTTP client used to make requests to the ping endpoint.
+	PingDoer goahttp.Doer
+
 	// RestoreResponseBody controls whether the response bodies are reset after
 	// decoding so they can be read again.
 	RestoreResponseBody bool
@@ -42,6 +45,7 @@ func NewClient(
 ) *Client {
 	return &Client{
 		GetchatDoer:         doer,
+		PingDoer:            doer,
 		RestoreResponseBody: restoreBody,
 		scheme:              scheme,
 		host:                host,
@@ -69,6 +73,25 @@ func (c *Client) Getchat() goa.Endpoint {
 		resp, err := c.GetchatDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("chatapi", "getchat", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// Ping returns an endpoint that makes HTTP requests to the chatapi service
+// ping server.
+func (c *Client) Ping() goa.Endpoint {
+	var (
+		decodeResponse = DecodePingResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v interface{}) (interface{}, error) {
+		req, err := c.BuildPingRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.PingDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("chatapi", "ping", err)
 		}
 		return decodeResponse(resp)
 	}

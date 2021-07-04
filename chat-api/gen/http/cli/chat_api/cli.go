@@ -23,7 +23,7 @@ import (
 //    command (subcommand1|subcommand2|...)
 //
 func UsageCommands() string {
-	return `chatapi getchat
+	return `chatapi (getchat|ping)
 `
 }
 
@@ -49,9 +49,12 @@ func ParseEndpoint(
 
 		chatapiGetchatFlags    = flag.NewFlagSet("getchat", flag.ExitOnError)
 		chatapiGetchatBodyFlag = chatapiGetchatFlags.String("body", "REQUIRED", "")
+
+		chatapiPingFlags = flag.NewFlagSet("ping", flag.ExitOnError)
 	)
 	chatapiFlags.Usage = chatapiUsage
 	chatapiGetchatFlags.Usage = chatapiGetchatUsage
+	chatapiPingFlags.Usage = chatapiPingUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -90,6 +93,9 @@ func ParseEndpoint(
 			case "getchat":
 				epf = chatapiGetchatFlags
 
+			case "ping":
+				epf = chatapiPingFlags
+
 			}
 
 		}
@@ -118,6 +124,9 @@ func ParseEndpoint(
 			case "getchat":
 				endpoint = c.Getchat()
 				data, err = chatapic.BuildGetchatPayload(*chatapiGetchatBodyFlag)
+			case "ping":
+				endpoint = c.Ping()
+				data = nil
 			}
 		}
 	}
@@ -130,12 +139,13 @@ func ParseEndpoint(
 
 // chatapiUsage displays the usage of the chatapi command and its subcommands.
 func chatapiUsage() {
-	fmt.Fprintf(os.Stderr, `The calc service performs get chat.
+	fmt.Fprintf(os.Stderr, `The service performs get chat.
 Usage:
     %s [globalflags] chatapi COMMAND [flags]
 
 COMMAND:
     getchat: Getchat implements getchat.
+    ping: Ping implements ping.
 
 Additional help:
     %s chatapi COMMAND --help
@@ -151,5 +161,15 @@ Example:
     `+os.Args[0]+` chatapi getchat --body '{
       "id": 4241678195779654278
    }'
+`, os.Args[0])
+}
+
+func chatapiPingUsage() {
+	fmt.Fprintf(os.Stderr, `%s [flags] chatapi ping
+
+Ping implements ping.
+
+Example:
+    `+os.Args[0]+` chatapi ping
 `, os.Args[0])
 }

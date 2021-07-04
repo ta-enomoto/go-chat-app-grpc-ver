@@ -16,12 +16,14 @@ import (
 // Client is the "chatapi" service client.
 type Client struct {
 	GetchatEndpoint goa.Endpoint
+	PingEndpoint    goa.Endpoint
 }
 
 // NewClient initializes a "chatapi" service client given the endpoints.
-func NewClient(getchat goa.Endpoint) *Client {
+func NewClient(getchat, ping goa.Endpoint) *Client {
 	return &Client{
 		GetchatEndpoint: getchat,
+		PingEndpoint:    ping,
 	}
 }
 
@@ -33,6 +35,20 @@ func NewClient(getchat goa.Endpoint) *Client {
 func (c *Client) Getchat(ctx context.Context, p *GetchatPayload) (res GoaChatCollection, err error) {
 	var ires interface{}
 	ires, err = c.GetchatEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(GoaChatCollection), nil
+}
+
+// Ping calls the "ping" endpoint of the "chatapi" service.
+// Ping may return the following errors:
+//	- "NotFound" (type *goa.ServiceError)
+//	- "BadRequest" (type *goa.ServiceError)
+//	- error: internal error
+func (c *Client) Ping(ctx context.Context) (res GoaChatCollection, err error) {
+	var ires interface{}
+	ires, err = c.PingEndpoint(ctx, nil)
 	if err != nil {
 		return
 	}

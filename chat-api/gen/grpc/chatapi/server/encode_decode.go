@@ -48,3 +48,16 @@ func DecodeGetchatRequest(ctx context.Context, v interface{}, md metadata.MD) (i
 	}
 	return payload, nil
 }
+
+// EncodePingResponse encodes responses from the "chatapi" service "ping"
+// endpoint.
+func EncodePingResponse(ctx context.Context, v interface{}, hdr, trlr *metadata.MD) (interface{}, error) {
+	vres, ok := v.(chatapiviews.GoaChatCollection)
+	if !ok {
+		return nil, goagrpc.ErrInvalidType("chatapi", "ping", "chatapiviews.GoaChatCollection", v)
+	}
+	result := vres.Projected
+	(*hdr).Append("goa-view", vres.View)
+	resp := NewGoaChatCollection(result)
+	return resp, nil
+}

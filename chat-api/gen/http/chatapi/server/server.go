@@ -20,6 +20,7 @@ import (
 type Server struct {
 	Mounts  []*MountPoint
 	Getchat http.Handler
+	Ping    http.Handler
 }
 
 // ErrorNamer is an interface implemented by generated error structs that
@@ -56,8 +57,10 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"Getchat", "GET", "/mypage/chatroom{id}"},
+			{"Ping", "GET", "/ping"},
 		},
 		Getchat: NewGetchatHandler(e.Getchat, mux, decoder, encoder, errhandler, formatter),
+		Ping:    NewPingHandler(e.Ping, mux, decoder, encoder, errhandler, formatter),
 	}
 }
 
@@ -67,11 +70,13 @@ func (s *Server) Service() string { return "chatapi" }
 // Use wraps the server handlers with the given middleware.
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.Getchat = m(s.Getchat)
+	s.Ping = m(s.Ping)
 }
 
 // Mount configures the mux to serve the chatapi endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountGetchatHandler(mux, h.Getchat)
+	MountPingHandler(mux, h.Ping)
 }
 
 // MountGetchatHandler configures the mux to serve the "chatapi" service
@@ -113,6 +118,50 @@ func NewGetchatHandler(
 			return
 		}
 		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountPingHandler configures the mux to serve the "chatapi" service "ping"
+// endpoint.
+func MountPingHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("GET", "/ping", f)
+}
+
+// NewPingHandler creates a HTTP handler which loads the HTTP request and calls
+// the "chatapi" service "ping" endpoint.
+func NewPingHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		encodeResponse = EncodePingResponse(encoder)
+		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "ping")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "chatapi")
+		var err error
+		res, err := endpoint(ctx, nil)
 		if err != nil {
 			if err := encodeError(ctx, w, err); err != nil {
 				errhandler(ctx, w, err)

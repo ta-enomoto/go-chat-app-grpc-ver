@@ -19,6 +19,7 @@ import (
 // Server implements the chatapipb.ChatapiServer interface.
 type Server struct {
 	GetchatH goagrpc.UnaryHandler
+	PingH    goagrpc.UnaryHandler
 	chatapipb.UnimplementedChatapiServer
 }
 
@@ -32,6 +33,7 @@ type ErrorNamer interface {
 func New(e *chatapi.Endpoints, uh goagrpc.UnaryHandler) *Server {
 	return &Server{
 		GetchatH: NewGetchatHandler(e.Getchat, uh),
+		PingH:    NewPingHandler(e.Ping, uh),
 	}
 }
 
@@ -49,6 +51,26 @@ func (s *Server) Getchat(ctx context.Context, message *chatapipb.GetchatRequest)
 	ctx = context.WithValue(ctx, goa.MethodKey, "getchat")
 	ctx = context.WithValue(ctx, goa.ServiceKey, "chatapi")
 	resp, err := s.GetchatH.Handle(ctx, message)
+	if err != nil {
+		return nil, goagrpc.EncodeError(err)
+	}
+	return resp.(*chatapipb.GoaChatCollection), nil
+}
+
+// NewPingHandler creates a gRPC handler which serves the "chatapi" service
+// "ping" endpoint.
+func NewPingHandler(endpoint goa.Endpoint, h goagrpc.UnaryHandler) goagrpc.UnaryHandler {
+	if h == nil {
+		h = goagrpc.NewUnaryHandler(endpoint, nil, EncodePingResponse)
+	}
+	return h
+}
+
+// Ping implements the "Ping" method in chatapipb.ChatapiServer interface.
+func (s *Server) Ping(ctx context.Context, message *chatapipb.PingRequest) (*chatapipb.GoaChatCollection, error) {
+	ctx = context.WithValue(ctx, goa.MethodKey, "ping")
+	ctx = context.WithValue(ctx, goa.ServiceKey, "chatapi")
+	resp, err := s.PingH.Handle(ctx, message)
 	if err != nil {
 		return nil, goagrpc.EncodeError(err)
 	}

@@ -2,6 +2,8 @@ FROM golang:1.15.6-alpine
 
 WORKDIR /go/src/go-chat-app-api-ver/chat-api
 
+ENV PASSWORD1=password
+
 RUN apk update \
     && apk add --no-cache \
         alpine-sdk \

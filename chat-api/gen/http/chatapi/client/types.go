@@ -8,18 +8,10 @@
 package client
 
 import (
-	chatapi "chat-api/gen/chatapi"
 	chatapiviews "chat-api/gen/chatapi/views"
 
 	goa "goa.design/goa/v3/pkg"
 )
-
-// GetchatRequestBody is the type of the "chatapi" service "getchat" endpoint
-// HTTP request body.
-type GetchatRequestBody struct {
-	// room id
-	ID int `form:"id" json:"id" xml:"id"`
-}
 
 // GetchatResponseBody is the type of the "chatapi" service "getchat" endpoint
 // HTTP response body.
@@ -42,15 +34,6 @@ type GoaChatResponse struct {
 	// chat
 	Chat   *string `form:"Chat,omitempty" json:"Chat,omitempty" xml:"Chat,omitempty"`
 	PostDt *string `form:"PostDt,omitempty" json:"PostDt,omitempty" xml:"PostDt,omitempty"`
-}
-
-// NewGetchatRequestBody builds the HTTP request body from the payload of the
-// "getchat" endpoint of the "chatapi" service.
-func NewGetchatRequestBody(p *chatapi.GetchatPayload) *GetchatRequestBody {
-	body := &GetchatRequestBody{
-		ID: p.ID,
-	}
-	return body
 }
 
 // NewGetchatGoaChatCollectionOK builds a "chatapi" service "getchat" endpoint

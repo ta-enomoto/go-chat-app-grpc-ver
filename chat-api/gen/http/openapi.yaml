@@ -13,20 +13,18 @@ produces:
 - application/xml
 - application/gob
 paths:
-  /mypage/chatroom{id}:
+  /chatroom/{id}:
     get:
       tags:
       - chatapi
       summary: getchat chatapi
       operationId: chatapi#getchat
       parameters:
-      - name: GetchatRequestBody
-        in: body
+      - name: id
+        in: path
+        description: room id
         required: true
-        schema:
-          $ref: '#/definitions/ChatapiGetchatRequestBody'
-          required:
-          - id
+        type: integer
       responses:
         "200":
           description: OK response.
@@ -48,19 +46,6 @@ paths:
       schemes:
       - http
 definitions:
-  ChatapiGetchatRequestBody:
-    title: ChatapiGetchatRequestBody
-    type: object
-    properties:
-      id:
-        type: integer
-        description: room id
-        example: 8193195907811429238
-        format: int64
-    example:
-      id: 5186487151406282773
-    required:
-    - id
   ChatapiGoaChatResponseCollection:
     title: 'Mediatype identifier: application/vnd.goa.chat; type=collection; view=default'
     type: array
@@ -69,24 +54,30 @@ definitions:
     description: GetchatResponseBody is the result type for an array of GoaChatResponse
       (default view)
     example:
-    - Chat: Voluptatem corporis quas rerum.
-      Member: Est eius et doloribus ex.
-      PostDt: "1990-10-27T02:52:59Z"
-      RoomName: Minima sit soluta.
-      UserId: Nisi consequuntur et aut neque et quo.
-      id: 4392322957667393603
-    - Chat: Voluptatem corporis quas rerum.
-      Member: Est eius et doloribus ex.
-      PostDt: "1990-10-27T02:52:59Z"
-      RoomName: Minima sit soluta.
-      UserId: Nisi consequuntur et aut neque et quo.
-      id: 4392322957667393603
-    - Chat: Voluptatem corporis quas rerum.
-      Member: Est eius et doloribus ex.
-      PostDt: "1990-10-27T02:52:59Z"
-      RoomName: Minima sit soluta.
-      UserId: Nisi consequuntur et aut neque et quo.
-      id: 4392322957667393603
+    - Chat: Est eius et doloribus ex.
+      Member: Sit soluta.
+      PostDt: "1989-01-28T15:35:39Z"
+      RoomName: Et quo rerum.
+      UserId: Consequuntur et aut.
+      id: 4311757619097375690
+    - Chat: Est eius et doloribus ex.
+      Member: Sit soluta.
+      PostDt: "1989-01-28T15:35:39Z"
+      RoomName: Et quo rerum.
+      UserId: Consequuntur et aut.
+      id: 4311757619097375690
+    - Chat: Est eius et doloribus ex.
+      Member: Sit soluta.
+      PostDt: "1989-01-28T15:35:39Z"
+      RoomName: Et quo rerum.
+      UserId: Consequuntur et aut.
+      id: 4311757619097375690
+    - Chat: Est eius et doloribus ex.
+      Member: Sit soluta.
+      PostDt: "1989-01-28T15:35:39Z"
+      RoomName: Et quo rerum.
+      UserId: Consequuntur et aut.
+      id: 4311757619097375690
   GoaChatResponse:
     title: 'Mediatype identifier: application/vnd.goa.chat; view=default'
     type: object
@@ -94,36 +85,36 @@ definitions:
       Chat:
         type: string
         description: chat
-        example: Temporibus quis.
+        example: Saepe est omnis.
       Member:
         type: string
         description: member
-        example: Est omnis rem dignissimos saepe.
+        example: Ut placeat non.
       PostDt:
         type: string
-        example: "2012-02-03T13:40:17Z"
+        example: "2008-06-29T09:15:30Z"
         format: date-time
       RoomName:
         type: string
         description: room name
-        example: Iste expedita ut placeat non consequuntur.
+        example: Consequatur non iste.
       UserId:
         type: string
         description: user id
-        example: Sunt consequatur.
+        example: Quam qui commodi.
       id:
         type: integer
         description: room id
-        example: 6338855064685832289
+        example: 6367248016073463729
         format: int64
     description: All chat (default view)
     example:
-      Chat: Sunt perspiciatis numquam nostrum voluptas perferendis.
-      Member: Est et voluptas expedita recusandae.
-      PostDt: "1974-06-23T00:44:53Z"
-      RoomName: Blanditiis excepturi non voluptas quisquam.
-      UserId: Est eos explicabo praesentium.
-      id: 3706282394233403550
+      Chat: Est et voluptas expedita recusandae.
+      Member: Blanditiis excepturi non voluptas quisquam.
+      PostDt: "1996-07-21T01:42:47Z"
+      RoomName: Est eos explicabo praesentium.
+      UserId: Aliquam dolor necessitatibus.
+      id: 4000844251158404115
     required:
     - id
     - UserId

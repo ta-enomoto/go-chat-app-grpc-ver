@@ -29,7 +29,7 @@ func UsageCommands() string {
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` chatapi getchat --message '{
-      "id": 1823934577847067172
+      "id": 483739648181357268
    }'` + "\n" +
 		""
 }
@@ -152,7 +152,7 @@ Getchat implements getchat.
 
 Example:
     `+os.Args[0]+` chatapi getchat --message '{
-      "id": 1823934577847067172
+      "id": 483739648181357268
    }'
 `, os.Args[0])
 }

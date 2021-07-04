@@ -58,15 +58,10 @@ func NewClient(
 // getchat server.
 func (c *Client) Getchat() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeGetchatRequest(c.encoder)
 		decodeResponse = DecodeGetchatResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v interface{}) (interface{}, error) {
 		req, err := c.BuildGetchatRequest(ctx, v)
-		if err != nil {
-			return nil, err
-		}
-		err = encodeRequest(req, v)
 		if err != nil {
 			return nil, err
 		}

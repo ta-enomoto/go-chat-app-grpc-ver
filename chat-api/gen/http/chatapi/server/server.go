@@ -56,7 +56,7 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"Getchat", "GET", "/mypage/chatroom{id}"},
+			{"Getchat", "GET", "/chatroom/{id}"},
 			{"Ping", "GET", "/ping"},
 		},
 		Getchat: NewGetchatHandler(e.Getchat, mux, decoder, encoder, errhandler, formatter),
@@ -88,7 +88,7 @@ func MountGetchatHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/mypage/chatroom{id}", f)
+	mux.Handle("GET", "/chatroom/{id}", f)
 }
 
 // NewGetchatHandler creates a HTTP handler which loads the HTTP request and

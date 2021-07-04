@@ -23,7 +23,7 @@ func BuildGetchatPayload(chatapiGetchatMessage string) (*chatapi.GetchatPayload,
 		if chatapiGetchatMessage != "" {
 			err = json.Unmarshal([]byte(chatapiGetchatMessage), &message)
 			if err != nil {
-				return nil, fmt.Errorf("invalid JSON for message, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 1823934577847067172\n   }'")
+				return nil, fmt.Errorf("invalid JSON for message, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 483739648181357268\n   }'")
 			}
 		}
 	}

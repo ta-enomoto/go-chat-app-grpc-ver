@@ -38,8 +38,8 @@ var _ = Service("chatapi", func() {
 		Error("BadRequest")
 		// HTTP トランスポート用の定義
 		HTTP(func() {
-			GET("/mypage/chatroom{id}") // GET エンドポイント
-			Response(StatusOK)          // レスポンスのステータスは Status OK = 200 を返す
+			GET("/chatroom/{id}") // GET エンドポイント
+			Response(StatusOK)    // レスポンスのステータスは Status OK = 200 を返す
 		})
 		// GRPC トランスポート用の定義
 		GRPC(func() {

@@ -7,9 +7,13 @@
 
 package server
 
+import (
+	"fmt"
+)
+
 // GetchatChatapiPath returns the URL path to the chatapi service getchat HTTP endpoint.
-func GetchatChatapiPath() string {
-	return "/mypage/chatroom{id}"
+func GetchatChatapiPath(id int) string {
+	return fmt.Sprintf("/chatroom/%v", id)
 }
 
 // PingChatapiPath returns the URL path to the chatapi service ping HTTP endpoint.

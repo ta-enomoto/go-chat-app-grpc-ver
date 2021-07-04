@@ -10,16 +10,7 @@ package server
 import (
 	chatapi "chat-api/gen/chatapi"
 	chatapiviews "chat-api/gen/chatapi/views"
-
-	goa "goa.design/goa/v3/pkg"
 )
-
-// GetchatRequestBody is the type of the "chatapi" service "getchat" endpoint
-// HTTP request body.
-type GetchatRequestBody struct {
-	// room id
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-}
 
 // GoaChatResponseCollection is the type of the "chatapi" service "getchat"
 // endpoint HTTP response body.
@@ -51,18 +42,9 @@ func NewGoaChatResponseCollection(res chatapiviews.GoaChatCollectionView) GoaCha
 }
 
 // NewGetchatPayload builds a chatapi service getchat endpoint payload.
-func NewGetchatPayload(body *GetchatRequestBody) *chatapi.GetchatPayload {
-	v := &chatapi.GetchatPayload{
-		ID: *body.ID,
-	}
+func NewGetchatPayload(id int) *chatapi.GetchatPayload {
+	v := &chatapi.GetchatPayload{}
+	v.ID = id
 
 	return v
-}
-
-// ValidateGetchatRequestBody runs the validations defined on GetchatRequestBody
-func ValidateGetchatRequestBody(body *GetchatRequestBody) (err error) {
-	if body.ID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
-	}
-	return
 }

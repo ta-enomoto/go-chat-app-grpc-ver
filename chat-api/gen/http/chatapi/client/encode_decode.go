@@ -22,7 +22,17 @@ import (
 // BuildGetchatRequest instantiates a HTTP request object with method and path
 // set to call the "chatapi" service "getchat" endpoint
 func (c *Client) BuildGetchatRequest(ctx context.Context, v interface{}) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetchatChatapiPath()}
+	var (
+		id int
+	)
+	{
+		p, ok := v.(*chatapi.GetchatPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("chatapi", "getchat", "*chatapi.GetchatPayload", v)
+		}
+		id = p.ID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetchatChatapiPath(id)}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("chatapi", "getchat", u.String(), err)
@@ -32,22 +42,6 @@ func (c *Client) BuildGetchatRequest(ctx context.Context, v interface{}) (*http.
 	}
 
 	return req, nil
-}
-
-// EncodeGetchatRequest returns an encoder for requests sent to the chatapi
-// getchat server.
-func EncodeGetchatRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
-	return func(req *http.Request, v interface{}) error {
-		p, ok := v.(*chatapi.GetchatPayload)
-		if !ok {
-			return goahttp.ErrInvalidType("chatapi", "getchat", "*chatapi.GetchatPayload", v)
-		}
-		body := NewGetchatRequestBody(p)
-		if err := encoder(req).Encode(&body); err != nil {
-			return goahttp.ErrEncodingError("chatapi", "getchat", err)
-		}
-		return nil
-	}
 }
 
 // DecodeGetchatResponse returns a decoder for responses returned by the

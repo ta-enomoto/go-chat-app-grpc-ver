@@ -19,7 +19,8 @@ func ChatroomHandler(w http.ResponseWriter, r *http.Request) {
 	/*アクセスあった際、ルームIDが一致するすべての書き込みをスライスで取得し、テンプレに渡す*/
 	case "GET":
 		if ok := session.Manager.SessionIdCheck(w, r); !ok {
-			fmt.Fprintf(w, "セッションの有効期限が切れています")
+			t := template.Must(template.ParseFiles("./templates/sessionexpired.html"))
+			t.ExecuteTemplate(w, "sessionexpired.html", nil)
 			return
 		}
 		//適当にルームIDを変えると、他の人のルームが覗けるので、メンバのルームしかアクセスできないよう処理
@@ -47,14 +48,15 @@ func ChatroomHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		Chats := query.SelectAllChatsById(selectedChatroom.Id, dbChtrm)
+		//Chats := query.SelectAllChatsById(selectedChatroom.Id, dbChtrm)
 
 		t := template.Must(template.ParseFiles("./templates/mypage/chatroom.html"))
-		t.ExecuteTemplate(w, "chatroom.html", Chats)
+		t.ExecuteTemplate(w, "chatroom.html", nil)
 
 	case "POST":
 		if ok := session.Manager.SessionIdCheck(w, r); !ok {
-			fmt.Fprintf(w, "セッションの有効期限が切れています")
+			t := template.Must(template.ParseFiles("./templates/sessionexpired.html"))
+			t.ExecuteTemplate(w, "sessionexpired.html", nil)
 			return
 		}
 

@@ -1,4 +1,4 @@
-// Code generated with goa v3.3.1, DO NOT EDIT.
+// Code generated with goa v3.4.3, DO NOT EDIT.
 //
 // chatapi protocol buffer definition
 //
@@ -15,8 +15,6 @@ option go_package = "/chatapipb";
 service Chatapi {
 	// Getchat implements getchat.
 	rpc Getchat (GetchatRequest) returns (GoaChatCollection);
-	// Ping implements ping.
-	rpc Ping (PingRequest) returns (GoaChatCollection);
 }
 
 message GetchatRequest {
@@ -40,7 +38,4 @@ message GoaChat {
 	// chat
 	string chat = 5;
 	string post_dt = 6;
-}
-
-message PingRequest {
 }

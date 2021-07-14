@@ -2,6 +2,7 @@ package design
 
 import (
 	. "goa.design/goa/v3/dsl"
+	cors "goa.design/plugins/v3/cors/dsl"
 )
 
 // API 定義
@@ -23,6 +24,13 @@ var _ = Service("chatapi", func() {
 	// 説明
 	Description("The service performs get chat.")
 	// メソッド (HTTPでいうところのエンドポントに相当)
+	cors.Origin("http://172.25.0.2/mypage/chatroom.*", func() {
+		cors.Headers("Access-Control-Allow-Origin")
+		cors.Methods("GET")
+		cors.Expose("X-Time", "X-Api-Version")
+		cors.MaxAge(600)
+		cors.Credentials()
+	})
 	Method("getchat", func() {
 		// ペイロード定義
 		Payload(func() {
@@ -46,20 +54,21 @@ var _ = Service("chatapi", func() {
 			Response(CodeOK) // レスポンスのステータスは CodeOK を返す
 		})
 	})
-	Method("ping", func() {
-		Result(CollectionOf(Chat)) // メソッドの返値（整数を返す）
-		Error("NotFound")
-		Error("BadRequest")
-		// HTTP トランスポート用の定義
-		HTTP(func() {
-			GET("/ping")       // GET エンドポイント
-			Response(StatusOK) // レスポンスのステータスは Status OK = 200 を返す
-		})
-		// GRPC トランスポート用の定義
-		GRPC(func() {
-			Response(CodeOK) //レスポンスのステータスは CodeOK を返す
-		})
-	})
+	/*
+		Method("ping", func() {
+			Result(CollectionOf(Chat)) // メソッドの返値（整数を返す）
+			Error("NotFound")
+			Error("BadRequest")
+			// HTTP トランスポート用の定義
+			HTTP(func() {
+				GET("/ping")       // GET エンドポイント
+				Response(StatusOK) // レスポンスのステータスは Status OK = 200 を返す
+			})
+			// GRPC トランスポート用の定義
+			GRPC(func() {
+				Response(CodeOK) //レスポンスのステータスは CodeOK を返す
+			})
+		})*/
 })
 var Chat = ResultType("application/vnd.goa.chat", func() {
 	Description("All chat")

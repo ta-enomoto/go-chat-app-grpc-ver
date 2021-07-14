@@ -55,44 +55,6 @@ paths:
                 RoomName: Culpa id suscipit rem voluptates.
                 UserId: Omnis molestiae.
                 id: 714744356156329433
-  /ping:
-    get:
-      tags:
-      - chatapi
-      summary: ping chatapi
-      operationId: chatapi#ping
-      responses:
-        "200":
-          description: OK response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GoaChatCollection'
-              example:
-              - Chat: Voluptas quod qui.
-                Member: Voluptatem rerum rerum neque assumenda.
-                PostDt: "2013-12-17T20:03:48Z"
-                RoomName: Culpa id suscipit rem voluptates.
-                UserId: Omnis molestiae.
-                id: 714744356156329433
-              - Chat: Voluptas quod qui.
-                Member: Voluptatem rerum rerum neque assumenda.
-                PostDt: "2013-12-17T20:03:48Z"
-                RoomName: Culpa id suscipit rem voluptates.
-                UserId: Omnis molestiae.
-                id: 714744356156329433
-              - Chat: Voluptas quod qui.
-                Member: Voluptatem rerum rerum neque assumenda.
-                PostDt: "2013-12-17T20:03:48Z"
-                RoomName: Culpa id suscipit rem voluptates.
-                UserId: Omnis molestiae.
-                id: 714744356156329433
-              - Chat: Voluptas quod qui.
-                Member: Voluptatem rerum rerum neque assumenda.
-                PostDt: "2013-12-17T20:03:48Z"
-                RoomName: Culpa id suscipit rem voluptates.
-                UserId: Omnis molestiae.
-                id: 714744356156329433
 components:
   schemas:
     GoaChat:
@@ -155,3 +117,6 @@ components:
         RoomName: Culpa id suscipit rem voluptates.
         UserId: Omnis molestiae.
         id: 714744356156329433
+tags:
+- name: chatapi
+  description: The service performs get chat.

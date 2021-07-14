@@ -18,7 +18,8 @@ func MypageHandler(w http.ResponseWriter, r *http.Request) {
 	ルーム一覧のスライスをつくってテンプレに渡す*/
 	case "GET":
 		if ok := session.Manager.SessionIdCheck(w, r); !ok {
-			fmt.Fprintf(w, "セッションの有効期限が切れています")
+			t := template.Must(template.ParseFiles("./templates/sessionexpired.html"))
+			t.ExecuteTemplate(w, "sessionexpired.html", nil)
 			return
 		}
 
@@ -44,7 +45,8 @@ func MypageHandler(w http.ResponseWriter, r *http.Request) {
 		同名のルーム名は、相手メンバー異なる場合のみ有効。*/
 	case "POST":
 		if ok := session.Manager.SessionIdCheck(w, r); !ok {
-			fmt.Fprintf(w, "セッションの有効期限が切れています")
+			t := template.Must(template.ParseFiles("./templates/sessionexpired.html"))
+			t.ExecuteTemplate(w, "sessionexpired.html", nil)
 			return
 		}
 

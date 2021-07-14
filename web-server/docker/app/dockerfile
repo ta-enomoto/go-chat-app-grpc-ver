@@ -10,9 +10,11 @@ RUN apk update \
         git \
     && go get github.com/pilu/fresh
 
-COPY web-server/. .
 COPY web-server/go.mod web-server/go.sum ./
 RUN go mod download
+
+COPY web-server/. .
+
 
 EXPOSE 80
 

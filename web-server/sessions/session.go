@@ -45,7 +45,8 @@ func (Manager *MANAGER) SessionStart(w http.ResponseWriter, r *http.Request, use
 	if err != nil || cookie.Value == "" {
 		sid := Manager.NewSessionId()
 		session := Manager.NewSession(sid, userId)
-		cookie := http.Cookie{Name: Manager.CookieName, Value: url.QueryEscape(sid), Path: "/", HttpOnly: true, MaxAge: int(Manager.maxlifetime)}
+		//https環境では、Secure属性
+		cookie := http.Cookie{Name: Manager.CookieName, Value: url.QueryEscape(sid), Path: "/", HttpOnly: false, MaxAge: int(Manager.maxlifetime)}
 
 		http.SetCookie(w, &cookie)
 		Manager.SessionStore[sid] = session

@@ -20,8 +20,6 @@ const _ = grpc.SupportPackageIsVersion7
 type ChatapiClient interface {
 	// Getchat implements getchat.
 	Getchat(ctx context.Context, in *GetchatRequest, opts ...grpc.CallOption) (*GoaChatCollection, error)
-	// Ping implements ping.
-	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*GoaChatCollection, error)
 }
 
 type chatapiClient struct {
@@ -41,23 +39,12 @@ func (c *chatapiClient) Getchat(ctx context.Context, in *GetchatRequest, opts ..
 	return out, nil
 }
 
-func (c *chatapiClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*GoaChatCollection, error) {
-	out := new(GoaChatCollection)
-	err := c.cc.Invoke(ctx, "/chatapi.Chatapi/Ping", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // ChatapiServer is the server API for Chatapi service.
 // All implementations must embed UnimplementedChatapiServer
 // for forward compatibility
 type ChatapiServer interface {
 	// Getchat implements getchat.
 	Getchat(context.Context, *GetchatRequest) (*GoaChatCollection, error)
-	// Ping implements ping.
-	Ping(context.Context, *PingRequest) (*GoaChatCollection, error)
 	mustEmbedUnimplementedChatapiServer()
 }
 
@@ -67,9 +54,6 @@ type UnimplementedChatapiServer struct {
 
 func (UnimplementedChatapiServer) Getchat(context.Context, *GetchatRequest) (*GoaChatCollection, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Getchat not implemented")
-}
-func (UnimplementedChatapiServer) Ping(context.Context, *PingRequest) (*GoaChatCollection, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
 func (UnimplementedChatapiServer) mustEmbedUnimplementedChatapiServer() {}
 
@@ -102,24 +86,6 @@ func _Chatapi_Getchat_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Chatapi_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PingRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ChatapiServer).Ping(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/chatapi.Chatapi/Ping",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatapiServer).Ping(ctx, req.(*PingRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Chatapi_ServiceDesc is the grpc.ServiceDesc for Chatapi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,10 +96,6 @@ var Chatapi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Getchat",
 			Handler:    _Chatapi_Getchat_Handler,
-		},
-		{
-			MethodName: "Ping",
-			Handler:    _Chatapi_Ping_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

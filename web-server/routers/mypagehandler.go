@@ -9,6 +9,7 @@ import (
 	"html/template"
 	"net/http"
 	"net/url"
+	"regexp"
 	"time"
 )
 
@@ -51,13 +52,16 @@ func MypageHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		newchatroom := new(query.Chatroom)
-		newchatroom.RoomName = r.FormValue("roomName")
+		roomname := r.FormValue("roomName")
 		newchatroom.Member = r.FormValue("memberName")
 
 		//メンバーまたはルーム名が入力されていない
-		if newchatroom.RoomName == "" || newchatroom.Member == "" {
+		if roomname == "" || newchatroom.Member == "" {
 			return
 		}
+
+		newchatroom.RoomName = regexp.QuoteMeta(roomname)
+		fmt.Println(newchatroom.RoomName)
 
 		userCookie, _ := r.Cookie(session.Manager.CookieName)
 		userSid, _ := url.QueryUnescape(userCookie.Value)

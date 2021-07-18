@@ -43,7 +43,7 @@ var (
 	// GoaChatCollection indexed by view name.
 	GoaChatCollectionMap = map[string][]string{
 		"default": []string{
-			"id",
+			"Id",
 			"UserId",
 			"RoomName",
 			"Member",
@@ -55,7 +55,7 @@ var (
 	// view name.
 	GoaChatMap = map[string][]string{
 		"default": []string{
-			"id",
+			"Id",
 			"UserId",
 			"RoomName",
 			"Member",
@@ -92,7 +92,7 @@ func ValidateGoaChatCollectionView(result GoaChatCollectionView) (err error) {
 // "default" view.
 func ValidateGoaChatView(result *GoaChatView) (err error) {
 	if result.ID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("id", "result"))
+		err = goa.MergeErrors(err, goa.MissingFieldError("Id", "result"))
 	}
 	if result.UserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("UserId", "result"))

@@ -30,13 +30,11 @@ func (s *chatapisrvc) Getchat(ctx context.Context, p *chatapi.GetchatPayload) (r
 	defer dbChtrm.Close()
 
 	selectedChatroom := query.SelectChatroomById(p.ID, dbChtrm)
-	fmt.Println(selectedChatroom.Id)
 
 	Chats := query.SelectAllChatsById(selectedChatroom.Id, dbChtrm)
 	fmt.Println(p.ID)
 	fmt.Println("successed")
 	s.logger.Print("chatAPI.get chat")
-	fmt.Println(Chats)
 
 	return Chats, nil
 }

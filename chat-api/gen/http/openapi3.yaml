@@ -32,29 +32,29 @@ paths:
                 $ref: '#/components/schemas/GoaChatCollection'
               example:
               - Chat: Voluptas quod qui.
+                Id: 714744356156329433
                 Member: Voluptatem rerum rerum neque assumenda.
                 PostDt: "2013-12-17T20:03:48Z"
                 RoomName: Culpa id suscipit rem voluptates.
                 UserId: Omnis molestiae.
-                id: 714744356156329433
               - Chat: Voluptas quod qui.
+                Id: 714744356156329433
                 Member: Voluptatem rerum rerum neque assumenda.
                 PostDt: "2013-12-17T20:03:48Z"
                 RoomName: Culpa id suscipit rem voluptates.
                 UserId: Omnis molestiae.
-                id: 714744356156329433
               - Chat: Voluptas quod qui.
+                Id: 714744356156329433
                 Member: Voluptatem rerum rerum neque assumenda.
                 PostDt: "2013-12-17T20:03:48Z"
                 RoomName: Culpa id suscipit rem voluptates.
                 UserId: Omnis molestiae.
-                id: 714744356156329433
               - Chat: Voluptas quod qui.
+                Id: 714744356156329433
                 Member: Voluptatem rerum rerum neque assumenda.
                 PostDt: "2013-12-17T20:03:48Z"
                 RoomName: Culpa id suscipit rem voluptates.
                 UserId: Omnis molestiae.
-                id: 714744356156329433
 components:
   schemas:
     GoaChat:
@@ -64,6 +64,11 @@ components:
           type: string
           description: chat
           example: Adipisci autem est iusto natus.
+        Id:
+          type: integer
+          description: room id
+          example: 561858919428618001
+          format: int64
         Member:
           type: string
           description: member
@@ -80,21 +85,16 @@ components:
           type: string
           description: user id
           example: Est saepe in.
-        id:
-          type: integer
-          description: room id
-          example: 561858919428618001
-          format: int64
       description: All chat
       example:
         Chat: Debitis et.
+        Id: 7405198893839022047
         Member: Temporibus in provident perspiciatis.
         PostDt: "1983-03-15T21:26:55Z"
         RoomName: Atque consequatur repudiandae sunt non excepturi.
         UserId: Consequatur blanditiis at ad in eum.
-        id: 7405198893839022047
       required:
-      - id
+      - Id
       - UserId
       - RoomName
       - Member
@@ -106,17 +106,17 @@ components:
         $ref: '#/components/schemas/GoaChat'
       example:
       - Chat: Voluptas quod qui.
+        Id: 714744356156329433
         Member: Voluptatem rerum rerum neque assumenda.
         PostDt: "2013-12-17T20:03:48Z"
         RoomName: Culpa id suscipit rem voluptates.
         UserId: Omnis molestiae.
-        id: 714744356156329433
       - Chat: Voluptas quod qui.
+        Id: 714744356156329433
         Member: Voluptatem rerum rerum neque assumenda.
         PostDt: "2013-12-17T20:03:48Z"
         RoomName: Culpa id suscipit rem voluptates.
         UserId: Omnis molestiae.
-        id: 714744356156329433
 tags:
 - name: chatapi
   description: The service performs get chat.

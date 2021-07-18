@@ -20,7 +20,7 @@ type GetchatResponseBody []*GoaChatResponse
 // GoaChatResponse is used to define fields on response body types.
 type GoaChatResponse struct {
 	// room id
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	ID *int `form:"Id,omitempty" json:"Id,omitempty" xml:"Id,omitempty"`
 	// user id
 	UserID *string `form:"UserId,omitempty" json:"UserId,omitempty" xml:"UserId,omitempty"`
 	// room name
@@ -46,7 +46,7 @@ func NewGetchatGoaChatCollectionOK(body GetchatResponseBody) chatapiviews.GoaCha
 // ValidateGoaChatResponse runs the validations defined on GoaChatResponse
 func ValidateGoaChatResponse(body *GoaChatResponse) (err error) {
 	if body.ID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+		err = goa.MergeErrors(err, goa.MissingFieldError("Id", "body"))
 	}
 	if body.UserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("UserId", "body"))

@@ -19,7 +19,7 @@ type GoaChatResponseCollection []*GoaChatResponse
 // GoaChatResponse is used to define fields on response body types.
 type GoaChatResponse struct {
 	// room id
-	ID int `form:"id" json:"id" xml:"id"`
+	ID int `form:"Id" json:"Id" xml:"Id"`
 	// user id
 	UserID string `form:"UserId" json:"UserId" xml:"UserId"`
 	// room name

@@ -42,29 +42,29 @@ definitions:
       (default view)
     example:
     - Chat: Est eius et doloribus ex.
+      Id: 4311757619097375690
       Member: Sit soluta.
       PostDt: "1989-01-28T15:35:39Z"
       RoomName: Et quo rerum.
       UserId: Consequuntur et aut.
-      id: 4311757619097375690
     - Chat: Est eius et doloribus ex.
+      Id: 4311757619097375690
       Member: Sit soluta.
       PostDt: "1989-01-28T15:35:39Z"
       RoomName: Et quo rerum.
       UserId: Consequuntur et aut.
-      id: 4311757619097375690
     - Chat: Est eius et doloribus ex.
+      Id: 4311757619097375690
       Member: Sit soluta.
       PostDt: "1989-01-28T15:35:39Z"
       RoomName: Et quo rerum.
       UserId: Consequuntur et aut.
-      id: 4311757619097375690
     - Chat: Est eius et doloribus ex.
+      Id: 4311757619097375690
       Member: Sit soluta.
       PostDt: "1989-01-28T15:35:39Z"
       RoomName: Et quo rerum.
       UserId: Consequuntur et aut.
-      id: 4311757619097375690
   GoaChatResponse:
     title: 'Mediatype identifier: application/vnd.goa.chat; view=default'
     type: object
@@ -73,6 +73,11 @@ definitions:
         type: string
         description: chat
         example: Saepe est omnis.
+      Id:
+        type: integer
+        description: room id
+        example: 6367248016073463729
+        format: int64
       Member:
         type: string
         description: member
@@ -89,21 +94,16 @@ definitions:
         type: string
         description: user id
         example: Quam qui commodi.
-      id:
-        type: integer
-        description: room id
-        example: 6367248016073463729
-        format: int64
     description: All chat (default view)
     example:
       Chat: Est et voluptas expedita recusandae.
+      Id: 4000844251158404115
       Member: Blanditiis excepturi non voluptas quisquam.
       PostDt: "1996-07-21T01:42:47Z"
       RoomName: Est eos explicabo praesentium.
       UserId: Aliquam dolor necessitatibus.
-      id: 4000844251158404115
     required:
-    - id
+    - Id
     - UserId
     - RoomName
     - Member

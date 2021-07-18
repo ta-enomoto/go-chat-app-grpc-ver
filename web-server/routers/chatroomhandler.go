@@ -28,7 +28,6 @@ func ChatroomHandler(w http.ResponseWriter, r *http.Request) {
 		userSid, _ := url.QueryUnescape(userCookie.Value)
 		userSessionVar := session.Manager.SessionStore[userSid].SessionValue["userId"]
 
-		//本番環境で
 		roomUrl := r.URL.Path
 		_roomId := strings.TrimPrefix(roomUrl, "/mypage/chatroom")
 		roomId, _ := strconv.Atoi(_roomId)
@@ -47,8 +46,6 @@ func ChatroomHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "ルームにアクセスする権限がありません")
 			return
 		}
-
-		//Chats := query.SelectAllChatsById(selectedChatroom.Id, dbChtrm)
 
 		t := template.Must(template.ParseFiles("./templates/mypage/chatroom.html"))
 		t.ExecuteTemplate(w, "chatroom.html", nil)

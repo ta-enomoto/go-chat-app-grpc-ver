@@ -8,6 +8,7 @@ import (
 	"goserver/query"
 	"html/template"
 	"net/http"
+	"regexp"
 )
 
 func ResistrationHandler(w http.ResponseWriter, r *http.Request) {
@@ -21,8 +22,20 @@ func ResistrationHandler(w http.ResponseWriter, r *http.Request) {
 		newUser.UserId = r.FormValue("userId")
 		psw_string := r.FormValue("password")
 
-		if newUser.UserId == "" || psw_string == "" {
+		/*if newUser.UserId == "" || psw_string == "" {
 			fmt.Fprintf(w, "IDまたはパスワードが入力されていません")
+			return
+		}*/
+
+		escapeStrings := regexp.MustCompile(`\?|\$|\&|\=|\-|\>|\<|\+|\;|\:|\*|\||\'`)
+
+		if escapeStrings.MatchString(newUser.UserId) {
+			fmt.Fprintf(w, "使用できない文字です。")
+			return
+		}
+
+		if escapeStrings.MatchString(psw_string) {
+			fmt.Fprintf(w, "使用できない文字です。")
 			return
 		}
 

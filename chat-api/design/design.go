@@ -73,12 +73,12 @@ var _ = Service("chatapi", func() {
 var Chat = ResultType("application/vnd.goa.chat", func() {
 	Description("All chat")
 	Attributes(func() {
-		Field(1, "id", Int, "room id")
+		Field(1, "Id", Int, "room id")
 		Field(2, "UserId", String, "user id")
 		Field(3, "RoomName", String, "room name")
 		Field(4, "Member", String, "member")
 		Field(5, "Chat", String, "chat")
 		Field(6, "PostDt", String, func() { Format(FormatDateTime) })
-		Required("id", "UserId", "RoomName", "Member", "Chat", "PostDt")
+		Required("Id", "UserId", "RoomName", "Member", "Chat", "PostDt")
 	})
 })

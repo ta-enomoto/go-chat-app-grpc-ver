@@ -24,7 +24,7 @@ var _ = Service("chatapi", func() {
 	// 説明
 	Description("The service performs get chat.")
 	// メソッド (HTTPでいうところのエンドポントに相当)
-	cors.Origin("http://172.25.0.2/mypage/chatroom.*", func() {
+	cors.Origin("http://172.25.0.2", func() {
 		cors.Headers("Access-Control-Allow-Origin")
 		cors.Methods("GET")
 		cors.Expose("X-Time", "X-Api-Version")

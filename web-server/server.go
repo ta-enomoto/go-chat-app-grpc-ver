@@ -25,6 +25,10 @@ func (mux MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var dirOfChatroom = regexp.MustCompile(`/mypage/.*`)
 	var websocketSever = regexp.MustCompile(`^/wsserver$`)
 	var publicFiles = regexp.MustCompile(`/public/.*`)
+	var adminLogin = regexp.MustCompile(`^/admin/login$`)
+	var adminMain = regexp.MustCompile(`^/admin/main$`)
+	var adminUsers = regexp.MustCompile(`^/admin/users$`)
+	var adminChatrooms = regexp.MustCompile(`^/admin/chatrooms$`)
 	url := r.URL.Path
 
 	switch {
@@ -51,6 +55,18 @@ func (mux MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	case publicFiles.MatchString(url):
 		http.StripPrefix("/public/", http.FileServer(http.Dir("public/"))).ServeHTTP(w, r)
+
+	case adminLogin.MatchString(url):
+		routers.AdminLoginHandler(w, r)
+
+	case adminMain.MatchString(url):
+		routers.AdminMainHandler(w, r)
+
+	case adminUsers.MatchString(url):
+		routers.AdminUsersHandler(w, r)
+
+	case adminChatrooms.MatchString(url):
+		routers.AdminChatroomsHandler(w, r)
 
 	default:
 		http.NotFound(w, r)

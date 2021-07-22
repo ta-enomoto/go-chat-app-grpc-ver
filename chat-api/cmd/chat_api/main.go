@@ -19,7 +19,7 @@ func main() {
 	// Define command line flags, add any other flag required to configure the
 	// service.
 	var (
-		hostF     = flag.String("host", "172.25.0.2", "Server host (valid values: 172.25.0.2)")
+		hostF     = flag.String("host", "172.25.0.4", "Server host (valid values: 172.25.0.4)")
 		domainF   = flag.String("domain", "", "Host domain name (overrides host domain specified in service design)")
 		httpPortF = flag.String("http-port", "", "HTTP port (overrides host HTTP port specified in service design)")
 		grpcPortF = flag.String("grpc-port", "", "gRPC port (overrides host gRPC port specified in service design)")
@@ -70,9 +70,9 @@ func main() {
 
 	// Start the servers and send errors (if any) to the error channel.
 	switch *hostF {
-	case "172.25.0.2":
+	case "172.25.0.4":
 		{
-			addr := "http://172.25.0.2:8000"
+			addr := "http://172.25.0.4:8000"
 			u, err := url.Parse(addr)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "invalid URL %#v: %s\n", addr, err)
@@ -98,7 +98,7 @@ func main() {
 		}
 
 		{
-			addr := "grpc://172.25.0.2:8080"
+			addr := "grpc://172.25.0.4:8080"
 			u, err := url.Parse(addr)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "invalid URL %#v: %s\n", addr, err)
@@ -124,7 +124,7 @@ func main() {
 		}
 
 	default:
-		fmt.Fprintf(os.Stderr, "invalid host argument: %q (valid hosts: 172.25.0.2)\n", *hostF)
+		fmt.Fprintf(os.Stderr, "invalid host argument: %q (valid hosts: 172.25.0.4)\n", *hostF)
 	}
 
 	// Wait for signal.

@@ -1,0 +1,11 @@
+body {background-color:#330033;}
+
+div.sessionexpired{
+  text-align:center;
+  color: #FFFFFF;
+}
+
+div.sessionexpired a{
+  text-align:center;
+  color: #FFFFFF;
+}

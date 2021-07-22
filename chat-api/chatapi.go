@@ -1,8 +1,11 @@
 package getchat
 
 import (
+	"chat-api/db_info/query"
 	chatapi "chat-api/gen/chatapi"
 	"context"
+	"database/sql"
+	"fmt"
 	"log"
 )
 
@@ -19,6 +22,19 @@ func NewChatapi(logger *log.Logger) chatapi.Service {
 
 // Getchat implements getchat.
 func (s *chatapisrvc) Getchat(ctx context.Context, p *chatapi.GetchatPayload) (res chatapi.GoaChatCollection, err error) {
-	s.logger.Print("chatapi.getchat")
-	return
+
+	dbChtrm, err := sql.Open("mysql", query.ConStrChtrm)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	defer dbChtrm.Close()
+
+	selectedChatroom := query.SelectChatroomById(p.ID, dbChtrm)
+
+	Chats := query.SelectAllChatsById(selectedChatroom.Id, dbChtrm)
+	fmt.Println(p.ID)
+	fmt.Println("successed")
+	s.logger.Print("chatAPI.get chat")
+
+	return Chats, nil
 }

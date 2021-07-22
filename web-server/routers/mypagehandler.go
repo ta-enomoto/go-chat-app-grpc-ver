@@ -9,6 +9,7 @@ import (
 	"html/template"
 	"net/http"
 	"net/url"
+	"regexp"
 	"time"
 )
 
@@ -18,7 +19,8 @@ func MypageHandler(w http.ResponseWriter, r *http.Request) {
 	ルーム一覧のスライスをつくってテンプレに渡す*/
 	case "GET":
 		if ok := session.Manager.SessionIdCheck(w, r); !ok {
-			fmt.Fprintf(w, "セッションの有効期限が切れています")
+			t := template.Must(template.ParseFiles("./templates/sessionexpired.html"))
+			t.ExecuteTemplate(w, "sessionexpired.html", nil)
 			return
 		}
 
@@ -37,6 +39,7 @@ func MypageHandler(w http.ResponseWriter, r *http.Request) {
 		chatroomsFromUserId := query.SelectAllChatroomsByUserId(userSessionVar, dbChtrm)
 		chatroomsFromMember := query.SelectAllChatroomsByMember(userSessionVar, dbChtrm)
 		var Links = append(chatroomsFromUserId, chatroomsFromMember...)
+		fmt.Println(Links)
 
 		t.ExecuteTemplate(w, "mypage.html", Links)
 
@@ -44,18 +47,22 @@ func MypageHandler(w http.ResponseWriter, r *http.Request) {
 		同名のルーム名は、相手メンバー異なる場合のみ有効。*/
 	case "POST":
 		if ok := session.Manager.SessionIdCheck(w, r); !ok {
-			fmt.Fprintf(w, "セッションの有効期限が切れています")
+			t := template.Must(template.ParseFiles("./templates/sessionexpired.html"))
+			t.ExecuteTemplate(w, "sessionexpired.html", nil)
 			return
 		}
 
 		newchatroom := new(query.Chatroom)
-		newchatroom.RoomName = r.FormValue("roomName")
+		roomname := r.FormValue("roomName")
 		newchatroom.Member = r.FormValue("memberName")
 
 		//メンバーまたはルーム名が入力されていない
-		if newchatroom.RoomName == "" || newchatroom.Member == "" {
+		if roomname == "" || newchatroom.Member == "" {
 			return
 		}
+
+		newchatroom.RoomName = regexp.QuoteMeta(roomname)
+		fmt.Println(newchatroom.RoomName)
 
 		userCookie, _ := r.Cookie(session.Manager.CookieName)
 		userSid, _ := url.QueryUnescape(userCookie.Value)

@@ -2,6 +2,7 @@ package design
 
 import (
 	. "goa.design/goa/v3/dsl"
+	cors "goa.design/plugins/v3/cors/dsl"
 )
 
 // API 定義
@@ -11,9 +12,9 @@ var _ = API("getchat", func() {
 	Description("Service for chat app, a Goa teaser")
 	// サーバ定義
 	Server("chat api", func() {
-		Host("172.25.0.2", func() {
-			URI("http://172.25.0.2:8000") // HTTP REST API
-			URI("grpc://172.25.0.2:8080") // gRPC
+		Host("172.25.0.4", func() {
+			URI("http://172.25.0.4:8000") // HTTP REST API
+			URI("grpc://172.25.0.4:8080") // gRPC
 		})
 	})
 })
@@ -21,8 +22,15 @@ var _ = API("getchat", func() {
 // サービス定義
 var _ = Service("chatapi", func() {
 	// 説明
-	Description("The calc service performs get chat.")
+	Description("The service performs get chat.")
 	// メソッド (HTTPでいうところのエンドポントに相当)
+	cors.Origin("http://172.25.0.2", func() {
+		cors.Headers("Access-Control-Allow-Origin")
+		cors.Methods("GET")
+		cors.Expose("X-Time")
+		cors.MaxAge(600)
+		cors.Credentials()
+	})
 	Method("getchat", func() {
 		// ペイロード定義
 		Payload(func() {
@@ -38,24 +46,24 @@ var _ = Service("chatapi", func() {
 		Error("BadRequest")
 		// HTTP トランスポート用の定義
 		HTTP(func() {
-			GET("/mypage/chatroom{id}") // GET エンドポイント
-			Response(StatusOK)          // レスポンスのステータスは Status OK = 200 を返す
+			GET("/chatroom/{id}") // GET エンドポイント
+			Response(StatusOK)    // レスポンスのステータスは Status OK = 200 を返す
 		})
 		// GRPC トランスポート用の定義
 		GRPC(func() {
-			Response(CodeOK) // 手すぽん巣のステータスは CodeOK を返す
+			Response(CodeOK) // レスポンスのステータスは CodeOK を返す
 		})
 	})
 })
 var Chat = ResultType("application/vnd.goa.chat", func() {
 	Description("All chat")
 	Attributes(func() {
-		Field(1, "id", Int, "room id")
+		Field(1, "Id", Int, "room id")
 		Field(2, "UserId", String, "user id")
 		Field(3, "RoomName", String, "room name")
 		Field(4, "Member", String, "member")
 		Field(5, "Chat", String, "chat")
 		Field(6, "PostDt", String, func() { Format(FormatDateTime) })
-		Required("id", "UserId", "RoomName", "Member", "Chat", "PostDt")
+		Required("Id", "UserId", "RoomName", "Member", "Chat", "PostDt")
 	})
 })

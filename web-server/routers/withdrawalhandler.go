@@ -32,12 +32,17 @@ func WithdrawalHandler(w http.ResponseWriter, r *http.Request) {
 
 		user := query.SelectUserById(deleteUser.UserId, dbUsr)
 
-		pswMatchOrNot := bcrypt.CompareHashAndPassword(user.Password, deleteUser.Password)
-
-		if deleteUser.UserId == user.UserId && pswMatchOrNot == nil {
-			fmt.Fprintf(w, "IDまたはパスワードが間違っています")
+		if deleteUser.UserId != user.UserId {
+			fmt.Fprintf(w, "IDが間違っています")
 			return
 		}
+
+		err = bcrypt.CompareHashAndPassword(user.Password, deleteUser.Password)
+		if err != nil {
+			fmt.Fprintf(w, "パスワードが間違っています")
+			return
+		}
+
 		userDeletedFromDb := query.DeleteUserById(deleteUser.UserId, dbUsr)
 		if userDeletedFromDb {
 			session.Manager.DeleteSessionFromStore(w, r)

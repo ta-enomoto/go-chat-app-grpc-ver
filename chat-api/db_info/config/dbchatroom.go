@@ -23,7 +23,7 @@ type ConfigChtrm struct {
 func ReadConfDbChtrm() (*ConfigChtrm, error) {
 
 	// 設定ファイル名
-	confpath := "./api/chat-api/db_info/config/db.toml"
+	confpath := "./db_info/config/db.toml"
 
 	// 構造体を初期化
 	conf := new(ConfigChtrm)

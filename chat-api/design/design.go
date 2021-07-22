@@ -27,7 +27,7 @@ var _ = Service("chatapi", func() {
 	cors.Origin("http://172.25.0.2", func() {
 		cors.Headers("Access-Control-Allow-Origin")
 		cors.Methods("GET")
-		cors.Expose("X-Time", "X-Api-Version")
+		cors.Expose("X-Time")
 		cors.MaxAge(600)
 		cors.Credentials()
 	})
@@ -54,21 +54,6 @@ var _ = Service("chatapi", func() {
 			Response(CodeOK) // レスポンスのステータスは CodeOK を返す
 		})
 	})
-	/*
-		Method("ping", func() {
-			Result(CollectionOf(Chat)) // メソッドの返値（整数を返す）
-			Error("NotFound")
-			Error("BadRequest")
-			// HTTP トランスポート用の定義
-			HTTP(func() {
-				GET("/ping")       // GET エンドポイント
-				Response(StatusOK) // レスポンスのステータスは Status OK = 200 を返す
-			})
-			// GRPC トランスポート用の定義
-			GRPC(func() {
-				Response(CodeOK) //レスポンスのステータスは CodeOK を返す
-			})
-		})*/
 })
 var Chat = ResultType("application/vnd.goa.chat", func() {
 	Description("All chat")

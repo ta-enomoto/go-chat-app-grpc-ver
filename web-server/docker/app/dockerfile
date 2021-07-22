@@ -1,6 +1,6 @@
 FROM golang:1.15.6-alpine
 
-WORKDIR /go/src/go-chat-app-api-ver
+WORKDIR /go/src/go-chat-app-api-ver/web-server
 
 ENV PASSWORD1=password
 

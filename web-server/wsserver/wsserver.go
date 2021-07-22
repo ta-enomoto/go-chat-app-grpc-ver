@@ -190,7 +190,7 @@ func (wc *WsClient) Read(ws *websocket.Conn) {
 
 		postedChat.Chat = regexp.QuoteMeta(Chat.Chat)
 		postedChat.PostDt = time.Now().UTC().Round(time.Second)
-
+		fmt.Println(postedChat.Chat)
 		posted := query.InsertChat(postedChat.Chatroom.Id, postedChat.Chatroom.UserId, postedChat.Chatroom.RoomName, postedChat.Chatroom.Member, postedChat.Chat, postedChat.PostDt, dbChtrm)
 		if posted {
 			fmt.Println("投稿成功")

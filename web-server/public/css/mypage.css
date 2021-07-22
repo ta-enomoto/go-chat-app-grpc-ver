@@ -1,9 +1,9 @@
-#logout a{
+div.logout-link{
   text-align: right;
   color: #FFFFFF;
 }
 
-#logout a:visited {
+div.logout-link a:visited {
   text-align: right;
   color: #FFFFFF;
 }
@@ -30,8 +30,6 @@ form.creat-form{
     text-align: center;
 }
 
-
-
 div.all-rooms {
   text-align: center;
   display: block;
@@ -42,8 +40,22 @@ div.all-rooms {
   color:#330033
 }
 
-a {
-  display: block;
+#room-link {
+  color: #FFFFFF;
+}
+
+div.withdrawal-link {
+  text-align: center;
+  color: #FFFFFF;
+}
+
+div.withdrawal-link a:visited {
+  text-align: center;
+  color: #FFFFFF;
+}
+
+#room-link {
+  display:block;
   text-align: center;
   color: #FFFFFF
 }

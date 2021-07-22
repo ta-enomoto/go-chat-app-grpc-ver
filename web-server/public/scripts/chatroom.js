@@ -21,7 +21,7 @@ window.onload = async function() {
         let chatList = document.getElementById("chats")
         chatList.appendChild(newLi);
       }
-      return allchats
+      return allchats;
     } catch(error){
       const {
         status,
@@ -58,11 +58,11 @@ window.onload = async function() {
     }
     socket.onmessage = function(e) {
       console.log("message recieved" + e.data);
-      let chatobj = JSON.parse(e.data)
+      let chatobj = JSON.parse(e.data);
       let text = document.createTextNode(chatobj.chat + '　(投稿者：' + chatobj.userid + '　投稿日：' + chatobj.postdt + ')');
       let newLi = document.createElement("li");
       newLi.appendChild(text);
-      let chatList = document.getElementById("chats")
+      let chatList = document.getElementById("chats");
       chatList.appendChild(newLi);
     }
     socket.onclose = function(e) {
@@ -91,7 +91,8 @@ window.onload = async function() {
         window.alert("チャットが入力されていません");
         return;
       };
-      
+      //chatEncoded = (new TextEncoder('utf-8')).encode(chat);
+
       let roomname = allchats[0].RoomName;
       let userid = allchats[0].UserId;
       let member = allchats[0].Member;

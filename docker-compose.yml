@@ -30,7 +30,7 @@ services:
     environment:
       TZ: 'Asia/Tokyo'
     volumes:
-      - ./web-server:/go/src/go-chat-app-api-ver
+      - ./web-server:/go/src/go-chat-app-api-ver/web-server
     networks:
       app-api-db-net:
         ipv4_address: 172.25.0.2

@@ -39,6 +39,7 @@ func MypageHandler(w http.ResponseWriter, r *http.Request) {
 		chatroomsFromUserId := query.SelectAllChatroomsByUserId(userSessionVar, dbChtrm)
 		chatroomsFromMember := query.SelectAllChatroomsByMember(userSessionVar, dbChtrm)
 		var Links = append(chatroomsFromUserId, chatroomsFromMember...)
+		fmt.Println(Links)
 
 		t.ExecuteTemplate(w, "mypage.html", Links)
 

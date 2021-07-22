@@ -24,8 +24,6 @@ func MypageHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		t := template.Must(template.ParseFiles("./templates/mypage.html"))
-
 		dbChtrm, err := sql.Open("mysql", query.ConStrChtrm)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -41,6 +39,7 @@ func MypageHandler(w http.ResponseWriter, r *http.Request) {
 		var Links = append(chatroomsFromUserId, chatroomsFromMember...)
 		fmt.Println(Links)
 
+		t := template.Must(template.ParseFiles("./templates/mypage.html"))
 		t.ExecuteTemplate(w, "mypage.html", Links)
 
 		/*新しいルーム作成のポストがあった時の処理。ルーム名と相手メンバーを指定する

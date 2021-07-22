@@ -23,7 +23,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		accessingUser := new(query.User)
 		accessingUser.UserId = r.FormValue("userId")
-		fmt.Println(accessingUser.UserId)
 		psw_string := r.FormValue("password")
 
 		if accessingUser.UserId == "" || psw_string == "" {

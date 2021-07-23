@@ -26,6 +26,7 @@ func NewChatapi(logger *log.Logger) chatapi.Service {
 // "api_key" security scheme.
 func (s *chatapisrvc) APIKeyAuth(ctx context.Context, key string, scheme *security.APIKeyScheme) (context.Context, error) {
 
+	//簡易版。本番環境ではDBからの参照やアクセストークンを使用する方法
 	if key != "apikey" {
 		return ctx, fmt.Errorf("not implemented")
 	}

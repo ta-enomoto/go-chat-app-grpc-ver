@@ -62,6 +62,25 @@ func InsertChatroom(userSessionVal string, roomName string, memberName string, d
 	}
 }
 
+//全てのチャットルームを取得する
+func SelectAllChatrooms(db *sql.DB) (chatrooms []Chatroom) {
+
+	rows, err := db.Query("SELECT * FROM ROOM_STRUCTS_OF_CHAT")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	for rows.Next() {
+		chatroom := Chatroom{}
+		err := rows.Scan(&chatroom.Id, &chatroom.UserId, &chatroom.RoomName, &chatroom.Member)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		chatrooms = append(chatrooms, chatroom)
+	}
+	return
+}
+
 //特定のユーザーが作成したチャットルームをすべて取得する
 func SelectAllChatroomsByUserId(userSessionVal string, db *sql.DB) (chatrooms []Chatroom) {
 

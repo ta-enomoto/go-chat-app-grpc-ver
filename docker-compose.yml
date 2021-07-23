@@ -18,17 +18,22 @@ services:
       - ./mysql/my.conf:/etc/mysql/conf.d/my.conf
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d
     networks:
-      - app-api-db-net
+      app-api-db-net:
+        ipv4_address: 172.25.0.3
   web:
     build:
       context: .
       dockerfile: web-server/docker/app/dockerfile
+    container_name: go-chat-app-api-ver_web
     ports:
       - "80:80"
+    environment:
+      TZ: 'Asia/Tokyo'
     volumes:
-     - ./web-server:/go/src/go-chat-app-api-ver
-    networks: 
-      - app-api-db-net
+      - ./web-server:/go/src/go-chat-app-api-ver/web-server
+    networks:
+      app-api-db-net:
+        ipv4_address: 172.25.0.2
   api:
     build:
       context: .
@@ -38,7 +43,8 @@ services:
     volumes:
      - .:/api
     networks: 
-      - app-api-db-net
+      app-api-db-net:
+        ipv4_address: 172.25.0.4
 
 volumes:
   db-data:
@@ -47,3 +53,7 @@ volumes:
 networks:
   app-api-db-net:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.25.0.0/24

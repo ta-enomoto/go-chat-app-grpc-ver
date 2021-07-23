@@ -1,4 +1,4 @@
-// Code generated with goa v3.3.1, DO NOT EDIT.
+// Code generated with goa v3.4.3, DO NOT EDIT.
 //
 // chatapi protocol buffer definition
 //

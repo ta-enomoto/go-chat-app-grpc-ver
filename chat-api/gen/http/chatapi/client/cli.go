@@ -15,7 +15,7 @@ import (
 
 // BuildGetchatPayload builds the payload for the chatapi getchat endpoint from
 // CLI flags.
-func BuildGetchatPayload(chatapiGetchatID string) (*chatapi.GetchatPayload, error) {
+func BuildGetchatPayload(chatapiGetchatID string, chatapiGetchatKey string) (*chatapi.GetchatPayload, error) {
 	var err error
 	var id int
 	{
@@ -26,8 +26,13 @@ func BuildGetchatPayload(chatapiGetchatID string) (*chatapi.GetchatPayload, erro
 			return nil, fmt.Errorf("invalid value for id, must be INT")
 		}
 	}
+	var key string
+	{
+		key = chatapiGetchatKey
+	}
 	v := &chatapi.GetchatPayload{}
 	v.ID = id
+	v.Key = key
 
 	return v, nil
 }

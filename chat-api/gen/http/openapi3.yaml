@@ -20,9 +20,9 @@ paths:
         schema:
           type: integer
           description: room id
-          example: 517066950974973379
+          example: 6695761884599171057
           format: int64
-        example: 5734865064250683693
+        example: 2956765006061687337
       responses:
         "200":
           description: OK response.
@@ -31,30 +31,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/GoaChatCollection'
               example:
-              - Chat: Voluptas quod qui.
-                Id: 714744356156329433
-                Member: Voluptatem rerum rerum neque assumenda.
-                PostDt: "2013-12-17T20:03:48Z"
-                RoomName: Culpa id suscipit rem voluptates.
-                UserId: Omnis molestiae.
-              - Chat: Voluptas quod qui.
-                Id: 714744356156329433
-                Member: Voluptatem rerum rerum neque assumenda.
-                PostDt: "2013-12-17T20:03:48Z"
-                RoomName: Culpa id suscipit rem voluptates.
-                UserId: Omnis molestiae.
-              - Chat: Voluptas quod qui.
-                Id: 714744356156329433
-                Member: Voluptatem rerum rerum neque assumenda.
-                PostDt: "2013-12-17T20:03:48Z"
-                RoomName: Culpa id suscipit rem voluptates.
-                UserId: Omnis molestiae.
-              - Chat: Voluptas quod qui.
-                Id: 714744356156329433
-                Member: Voluptatem rerum rerum neque assumenda.
-                PostDt: "2013-12-17T20:03:48Z"
-                RoomName: Culpa id suscipit rem voluptates.
-                UserId: Omnis molestiae.
+              - Chat: Aut numquam similique.
+                Id: 5625972352155160976
+                Member: Nihil debitis magnam dolorem qui praesentium iure.
+                PostDt: "1985-11-21T12:48:29Z"
+                RoomName: Eveniet voluptas quod qui.
+                UserId: Rem voluptates nam voluptatem rerum rerum neque.
+              - Chat: Aut numquam similique.
+                Id: 5625972352155160976
+                Member: Nihil debitis magnam dolorem qui praesentium iure.
+                PostDt: "1985-11-21T12:48:29Z"
+                RoomName: Eveniet voluptas quod qui.
+                UserId: Rem voluptates nam voluptatem rerum rerum neque.
+              - Chat: Aut numquam similique.
+                Id: 5625972352155160976
+                Member: Nihil debitis magnam dolorem qui praesentium iure.
+                PostDt: "1985-11-21T12:48:29Z"
+                RoomName: Eveniet voluptas quod qui.
+                UserId: Rem voluptates nam voluptatem rerum rerum neque.
+              - Chat: Aut numquam similique.
+                Id: 5625972352155160976
+                Member: Nihil debitis magnam dolorem qui praesentium iure.
+                PostDt: "1985-11-21T12:48:29Z"
+                RoomName: Eveniet voluptas quod qui.
+                UserId: Rem voluptates nam voluptatem rerum rerum neque.
+      security:
+      - api_key_header_Authorization: []
 components:
   schemas:
     GoaChat:
@@ -63,36 +65,36 @@ components:
         Chat:
           type: string
           description: chat
-          example: Adipisci autem est iusto natus.
+          example: Laudantium vero.
         Id:
           type: integer
           description: room id
-          example: 561858919428618001
+          example: 640788961093116736
           format: int64
         Member:
           type: string
           description: member
-          example: Facilis quam ut doloremque repudiandae ipsam.
+          example: Quidem labore.
         PostDt:
           type: string
-          example: "2014-01-26T20:09:51Z"
+          example: "1978-01-10T02:49:41Z"
           format: date-time
         RoomName:
           type: string
           description: room name
-          example: Sint sit ullam quas.
+          example: Voluptas dicta totam.
         UserId:
           type: string
           description: user id
-          example: Est saepe in.
+          example: Reiciendis delectus iusto sit aut accusamus.
       description: All chat
       example:
-        Chat: Debitis et.
-        Id: 7405198893839022047
-        Member: Temporibus in provident perspiciatis.
-        PostDt: "1983-03-15T21:26:55Z"
-        RoomName: Atque consequatur repudiandae sunt non excepturi.
-        UserId: Consequatur blanditiis at ad in eum.
+        Chat: Eveniet quaerat voluptate.
+        Id: 521771140489782364
+        Member: Qui aut veniam eligendi sint at.
+        PostDt: "1995-04-05T10:49:56Z"
+        RoomName: Eius aut quidem dolorum in aspernatur.
+        UserId: Quasi impedit nemo rerum aut iusto necessitatibus.
       required:
       - Id
       - UserId
@@ -105,18 +107,30 @@ components:
       items:
         $ref: '#/components/schemas/GoaChat'
       example:
-      - Chat: Voluptas quod qui.
-        Id: 714744356156329433
-        Member: Voluptatem rerum rerum neque assumenda.
-        PostDt: "2013-12-17T20:03:48Z"
-        RoomName: Culpa id suscipit rem voluptates.
-        UserId: Omnis molestiae.
-      - Chat: Voluptas quod qui.
-        Id: 714744356156329433
-        Member: Voluptatem rerum rerum neque assumenda.
-        PostDt: "2013-12-17T20:03:48Z"
-        RoomName: Culpa id suscipit rem voluptates.
-        UserId: Omnis molestiae.
+      - Chat: Aut numquam similique.
+        Id: 5625972352155160976
+        Member: Nihil debitis magnam dolorem qui praesentium iure.
+        PostDt: "1985-11-21T12:48:29Z"
+        RoomName: Eveniet voluptas quod qui.
+        UserId: Rem voluptates nam voluptatem rerum rerum neque.
+      - Chat: Aut numquam similique.
+        Id: 5625972352155160976
+        Member: Nihil debitis magnam dolorem qui praesentium iure.
+        PostDt: "1985-11-21T12:48:29Z"
+        RoomName: Eveniet voluptas quod qui.
+        UserId: Rem voluptates nam voluptatem rerum rerum neque.
+      - Chat: Aut numquam similique.
+        Id: 5625972352155160976
+        Member: Nihil debitis magnam dolorem qui praesentium iure.
+        PostDt: "1985-11-21T12:48:29Z"
+        RoomName: Eveniet voluptas quod qui.
+        UserId: Rem voluptates nam voluptatem rerum rerum neque.
+  securitySchemes:
+    api_key_header_Authorization:
+      type: apiKey
+      description: Secures endpoint by requiring an API key.
+      name: Authorization
+      in: header
 tags:
 - name: chatapi
   description: The service performs get chat.

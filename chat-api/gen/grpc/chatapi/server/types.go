@@ -15,10 +15,11 @@ import (
 
 // NewGetchatPayload builds the payload of the "getchat" endpoint of the
 // "chatapi" service from the gRPC request type.
-func NewGetchatPayload(message *chatapipb.GetchatRequest) *chatapi.GetchatPayload {
+func NewGetchatPayload(message *chatapipb.GetchatRequest, key string) *chatapi.GetchatPayload {
 	v := &chatapi.GetchatPayload{
 		ID: int(message.Id),
 	}
+	v.Key = key
 	return v
 }
 

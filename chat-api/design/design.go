@@ -5,56 +5,50 @@ import (
 	cors "goa.design/plugins/v3/cors/dsl"
 )
 
-// API 定義
 var _ = API("getchat", func() {
-	// API の説明（タイトルと説明）
 	Title("Chat Service")
 	Description("Service for chat app, a Goa teaser")
-	// サーバ定義
 	Server("chat api", func() {
 		Host("172.25.0.4", func() {
-			URI("http://172.25.0.4:8000") // HTTP REST API
-			URI("grpc://172.25.0.4:8080") // gRPC
+			URI("http://172.25.0.4:8000")
+			URI("grpc://172.25.0.4:8080")
 		})
 	})
 })
 
-// サービス定義
 var _ = Service("chatapi", func() {
-	// 説明
 	Description("The service performs get chat.")
-	// メソッド (HTTPでいうところのエンドポントに相当)
 	cors.Origin("http://172.25.0.2", func() {
-		cors.Headers("Access-Control-Allow-Origin")
+		cors.Headers("Access-Control-Allow-Origin", "Authorization")
 		cors.Methods("GET")
-		cors.Expose("X-Time")
-		cors.MaxAge(600)
+		//cors.Expose("X-Time")
+		//cors.MaxAge(600)
 		cors.Credentials()
 	})
 	Method("getchat", func() {
-		// ペイロード定義
+		Security(APIKeyAuth)
 		Payload(func() {
-			// 整数型の属性 `a` これは左の被演算子
+			APIKey("api_key", "key", String, "API key used to perform authorization")
 			Attribute("id", Int, func() {
-				Description("room id") // 説明
-				Meta("rpc:tag", "1")   // gRPC 用のメタ情報。タグ定義
+				Description("room id")
+				Meta("rpc:tag", "1")
 			})
-			Required("id") // a と b は required な属性であることの指定
+			Required("key", "id")
 		})
-		Result(CollectionOf(Chat)) // メソッドの返値（整数を返す）
+		Result(CollectionOf(Chat))
 		Error("NotFound")
 		Error("BadRequest")
-		// HTTP トランスポート用の定義
 		HTTP(func() {
-			GET("/chatroom/{id}") // GET エンドポイント
-			Response(StatusOK)    // レスポンスのステータスは Status OK = 200 を返す
+			GET("/chatroom/{id}")
+			Header("key:Authorization")
+			Response(StatusOK)
 		})
-		// GRPC トランスポート用の定義
 		GRPC(func() {
-			Response(CodeOK) // レスポンスのステータスは CodeOK を返す
+			Response(CodeOK)
 		})
 	})
 })
+
 var Chat = ResultType("application/vnd.goa.chat", func() {
 	Description("All chat")
 	Attributes(func() {
@@ -66,4 +60,8 @@ var Chat = ResultType("application/vnd.goa.chat", func() {
 		Field(6, "PostDt", String, func() { Format(FormatDateTime) })
 		Required("Id", "UserId", "RoomName", "Member", "Chat", "PostDt")
 	})
+})
+
+var APIKeyAuth = APIKeySecurity("api_key", func() {
+	Description("Secures endpoint by requiring an API key.")
 })

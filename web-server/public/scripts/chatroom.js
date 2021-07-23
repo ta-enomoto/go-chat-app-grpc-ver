@@ -12,7 +12,7 @@ window.onload = async function() {
   //チャット読み込み
   async function getChatFromApi() {
     try {
-       res = await axios.get(urlForApi);
+       res = await axios.get(urlForApi, { headers: { Authorization: "apikey" } });
        allchats = res.data;
       for (const chat of allchats) {
         let text = document.createTextNode(chat.Chat + '　(投稿者：' + chat.UserId + '　投稿日：' + chat.PostDt + ')');

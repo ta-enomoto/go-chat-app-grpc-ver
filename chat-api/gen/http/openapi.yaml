@@ -25,6 +25,11 @@ paths:
         description: room id
         required: true
         type: integer
+      - name: Authorization
+        in: header
+        description: API key used to perform authorization
+        required: true
+        type: string
       responses:
         "200":
           description: OK response.
@@ -32,6 +37,8 @@ paths:
             $ref: '#/definitions/ChatapiGoaChatResponseCollection'
       schemes:
       - http
+      security:
+      - api_key_header_Authorization: []
 definitions:
   ChatapiGoaChatResponseCollection:
     title: 'Mediatype identifier: application/vnd.goa.chat; type=collection; view=default'
@@ -41,30 +48,24 @@ definitions:
     description: GetchatResponseBody is the result type for an array of GoaChatResponse
       (default view)
     example:
-    - Chat: Est eius et doloribus ex.
-      Id: 4311757619097375690
-      Member: Sit soluta.
-      PostDt: "1989-01-28T15:35:39Z"
-      RoomName: Et quo rerum.
-      UserId: Consequuntur et aut.
-    - Chat: Est eius et doloribus ex.
-      Id: 4311757619097375690
-      Member: Sit soluta.
-      PostDt: "1989-01-28T15:35:39Z"
-      RoomName: Et quo rerum.
-      UserId: Consequuntur et aut.
-    - Chat: Est eius et doloribus ex.
-      Id: 4311757619097375690
-      Member: Sit soluta.
-      PostDt: "1989-01-28T15:35:39Z"
-      RoomName: Et quo rerum.
-      UserId: Consequuntur et aut.
-    - Chat: Est eius et doloribus ex.
-      Id: 4311757619097375690
-      Member: Sit soluta.
-      PostDt: "1989-01-28T15:35:39Z"
-      RoomName: Et quo rerum.
-      UserId: Consequuntur et aut.
+    - Chat: Rerum ut praesentium explicabo itaque sit ducimus.
+      Id: 681183766627976715
+      Member: Molestiae sed officiis eum earum esse aliquam.
+      PostDt: "1990-09-09T14:12:10Z"
+      RoomName: Quisquam consequatur culpa et aut ut.
+      UserId: Ex error voluptatem corporis quas.
+    - Chat: Rerum ut praesentium explicabo itaque sit ducimus.
+      Id: 681183766627976715
+      Member: Molestiae sed officiis eum earum esse aliquam.
+      PostDt: "1990-09-09T14:12:10Z"
+      RoomName: Quisquam consequatur culpa et aut ut.
+      UserId: Ex error voluptatem corporis quas.
+    - Chat: Rerum ut praesentium explicabo itaque sit ducimus.
+      Id: 681183766627976715
+      Member: Molestiae sed officiis eum earum esse aliquam.
+      PostDt: "1990-09-09T14:12:10Z"
+      RoomName: Quisquam consequatur culpa et aut ut.
+      UserId: Ex error voluptatem corporis quas.
   GoaChatResponse:
     title: 'Mediatype identifier: application/vnd.goa.chat; view=default'
     type: object
@@ -72,36 +73,36 @@ definitions:
       Chat:
         type: string
         description: chat
-        example: Saepe est omnis.
+        example: Possimus voluptas qui.
       Id:
         type: integer
         description: room id
-        example: 6367248016073463729
+        example: 3337394912939359600
         format: int64
       Member:
         type: string
         description: member
-        example: Ut placeat non.
+        example: Debitis saepe.
       PostDt:
         type: string
-        example: "2008-06-29T09:15:30Z"
+        example: "1970-09-10T03:46:43Z"
         format: date-time
       RoomName:
         type: string
         description: room name
-        example: Consequatur non iste.
+        example: Est non neque.
       UserId:
         type: string
         description: user id
-        example: Quam qui commodi.
+        example: Rerum exercitationem ut.
     description: All chat (default view)
     example:
-      Chat: Est et voluptas expedita recusandae.
-      Id: 4000844251158404115
-      Member: Blanditiis excepturi non voluptas quisquam.
-      PostDt: "1996-07-21T01:42:47Z"
-      RoomName: Est eos explicabo praesentium.
-      UserId: Aliquam dolor necessitatibus.
+      Chat: Est est aut doloremque quo nulla.
+      Id: 286304491940368759
+      Member: Odio recusandae atque ut.
+      PostDt: "1970-05-25T06:32:11Z"
+      RoomName: Neque nostrum et magni eos enim.
+      UserId: Quis repudiandae perferendis ut.
     required:
     - Id
     - UserId
@@ -109,3 +110,9 @@ definitions:
     - Member
     - Chat
     - PostDt
+securityDefinitions:
+  api_key_header_Authorization:
+    type: apiKey
+    description: Secures endpoint by requiring an API key.
+    name: Authorization
+    in: header

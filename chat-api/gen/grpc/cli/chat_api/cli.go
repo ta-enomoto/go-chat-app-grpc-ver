@@ -29,8 +29,8 @@ func UsageCommands() string {
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` chatapi getchat --message '{
-      "id": 483739648181357268
-   }'` + "\n" +
+      "id": 750643732440360422
+   }' --key "Aliquam consequatur accusamus amet aspernatur et nihil."` + "\n" +
 		""
 }
 
@@ -42,6 +42,7 @@ func ParseEndpoint(cc *grpc.ClientConn, opts ...grpc.CallOption) (goa.Endpoint, 
 
 		chatapiGetchatFlags       = flag.NewFlagSet("getchat", flag.ExitOnError)
 		chatapiGetchatMessageFlag = chatapiGetchatFlags.String("message", "", "")
+		chatapiGetchatKeyFlag     = chatapiGetchatFlags.String("key", "REQUIRED", "")
 	)
 	chatapiFlags.Usage = chatapiUsage
 	chatapiGetchatFlags.Usage = chatapiGetchatUsage
@@ -110,7 +111,7 @@ func ParseEndpoint(cc *grpc.ClientConn, opts ...grpc.CallOption) (goa.Endpoint, 
 			switch epn {
 			case "getchat":
 				endpoint = c.Getchat()
-				data, err = chatapic.BuildGetchatPayload(*chatapiGetchatMessageFlag)
+				data, err = chatapic.BuildGetchatPayload(*chatapiGetchatMessageFlag, *chatapiGetchatKeyFlag)
 			}
 		}
 	}
@@ -135,14 +136,15 @@ Additional help:
 `, os.Args[0], os.Args[0])
 }
 func chatapiGetchatUsage() {
-	fmt.Fprintf(os.Stderr, `%s [flags] chatapi getchat -message JSON
+	fmt.Fprintf(os.Stderr, `%s [flags] chatapi getchat -message JSON -key STRING
 
 Getchat implements getchat.
     -message JSON: 
+    -key STRING: 
 
 Example:
     `+os.Args[0]+` chatapi getchat --message '{
-      "id": 483739648181357268
-   }'
+      "id": 750643732440360422
+   }' --key "Aliquam consequatur accusamus amet aspernatur et nihil."
 `, os.Args[0])
 }

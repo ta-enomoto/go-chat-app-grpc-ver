@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## チャットアプリケーション
 
 ### Go言語の標準・準標準ライブラリを中心に実装を目指したウェブアプリケーションです。
@@ -71,7 +70,3 @@
 <div align="center">
 <img src="https://user-images.githubusercontent.com/63547862/126498692-b551b827-a576-4952-9084-a095e246969b.jpg" width="700px">
 </div>
-
-=======
-# go-chat-app-api-ver
->>>>>>> origin/main

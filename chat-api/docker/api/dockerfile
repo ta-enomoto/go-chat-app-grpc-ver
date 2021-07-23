@@ -1,20 +1,25 @@
-FROM golang:1.15.6 as builder
+FROM golang:1.15.6-alpine
 
-WORKDIR /app
+WORKDIR /go/src/go-chat-app-api-ver/chat-api
+
+ENV PASSWORD1=password
+
+RUN apk update \
+    && apk add --no-cache \
+        alpine-sdk \
+        git \
+    && go get github.com/pilu/fresh
+
+RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
 COPY chat-api/go.mod chat-api/go.sum ./
 RUN go mod download
 
 COPY chat-api/. .
-RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/chat_api
 
-FROM alpine:3.10.1
-WORKDIR /app
 
-RUN apk update \
-    && apk add --no-cache libc6-compat
 
 EXPOSE 8000
 EXPOSE 8080
-COPY --from=builder /app/main .
-CMD ["./main"]
+
+CMD ["./chat_api"]

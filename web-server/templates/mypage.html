@@ -2,15 +2,17 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/public/css/cssformypage.css">
+    <link rel="stylesheet" type="text/css" href="/public/css/mypage.css">
     <title>マイページ</title>
 </head>
 <body>
-  <p id="logout"><a href="logout">ログアウトはこちら</a></p>
+  <div class="logout-link">
+  <p><a href="logout">ログアウトはこちら</a></p>
+  </div>
   <div class="create-new-chatroom">
     <p id="midashi-create-new-room"><strong>新規ルームを作成する</strong></p>
     <form class="creat-form" id="new_room">
-      <p><input type="text" id="roomName" name="roomName" placeholder="新規ルーム名"></p>
+      <p><input type="text" id="roomName" name="roomName" placeholder="ルーム名(20字以内)"></p>
       <p><input type="text" id="memberName" name="memberName" placeholder="相手ユーザー名"></p>
       <p><button type="button" id="create_button" name="create_button">作成する</button></p>
     </form>
@@ -18,7 +20,9 @@
   <br></br>
     <div class="all-rooms" id="div1">ルーム一覧</div>
   <br></br>
+  <div class="withdrawal-link">
   <a href="withdrawal">退会はこちら</a>
+  </div>
   <script>
     document.body.onload = addLinks;
 function addLinks(){
@@ -31,7 +35,8 @@ function addLinks(){
   newLink.href = "/mypage/chatroom" + value['id'];
   let br =document.createElement("br");
   newLink.appendChild(br);
-  
+  newLink.id ="room-link"
+
   let currentDiv = document.getElementById("div1");
   document.body.insertBefore(newLink, currentDiv.nextElementSibling);
   }

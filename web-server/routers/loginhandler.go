@@ -23,7 +23,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		accessingUser := new(query.User)
 		accessingUser.UserId = r.FormValue("userId")
-		fmt.Println(accessingUser.UserId)
 		psw_string := r.FormValue("password")
 
 		if accessingUser.UserId == "" || psw_string == "" {
@@ -32,7 +31,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		accessingUser.Password = []byte(psw_string)
-		fmt.Println(accessingUser.Password)
 
 		dbUsr, err := sql.Open("mysql", query.ConStrUsr)
 		if err != nil {
@@ -41,16 +39,17 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		defer dbUsr.Close()
 
 		user := query.SelectUserById(accessingUser.UserId, dbUsr)
-		fmt.Println(user)
 
-		pswMatchOrNot := bcrypt.CompareHashAndPassword(user.Password, accessingUser.Password)
-
-		if accessingUser.UserId == user.UserId && pswMatchOrNot == nil {
-			//if文でsessionstartがうまくいった時というふうに(ブラウザで/に戻った時、sid出し直してる)
-			session.Manager.SessionStart(w, r, accessingUser.UserId)
-			http.Redirect(w, r, "/mypage", 301)
-		} else {
+		if accessingUser.UserId != user.UserId {
 			fmt.Fprintf(w, "IDまたはパスワードが間違っています。")
 		}
+
+		err = bcrypt.CompareHashAndPassword(user.Password, accessingUser.Password)
+		if err != nil {
+			fmt.Fprintf(w, "IDまたはパスワードが間違っています。")
+		}
+
+		session.Manager.SessionStart(w, r, accessingUser.UserId)
+		http.Redirect(w, r, "/mypage", 301)
 	}
 }

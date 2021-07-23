@@ -6,10 +6,12 @@ import (
 	"fmt"
 	"golang.org/x/net/websocket"
 	"goserver/query"
-	//"goserver/sessions"
+	"goserver/sessions"
+	"regexp"
 	"strconv"
-	//"strings"
+	"strings"
 	"time"
+	"unsafe"
 )
 
 type WsChat struct {
@@ -171,27 +173,36 @@ func (wc *WsClient) Read(ws *websocket.Conn) {
 		postedChat.Chatroom.Id = currentChatroom.Id
 		postedChat.Chatroom.RoomName = currentChatroom.RoomName
 
-		//本番環境ではブラウザからcookie取得→sessionからuser特定
-		//cookie := Chat.Cookie
-		//ここに複数cookieがある場合の処理書いておく
-		//cookieValue := strings.TrimPrefix(cookie, "cookieName=")
-		//userSessionVar := session.Manager.SessionStore[cookieValue].SessionValue["userId"]
+		cookie1 := Chat.Cookie
+		cookie := strings.Replace(cookie1, "%3D", "=", 1)
+		fmt.Println(cookie)
+		userSessionVar := session.Manager.SessionStore[cookie].SessionValue["userId"]
 
-		//if userSessionVar == currentChatroom.UserId {
-		//投稿主と部屋作成者が同じ場合
-		postedChat.Chatroom.UserId = currentChatroom.UserId
-		postedChat.Chatroom.Member = currentChatroom.Member
-		//} else {
-		//投稿主と部屋作成者が違う場合
-		//	postedChat.Chatroom.UserId = currentChatroom.Member
-		//	postedChat.Chatroom.Member = currentChatroom.UserId
-		//}
-		postedChat.Chat = Chat.Chat
+		if userSessionVar == currentChatroom.UserId {
+			//投稿主と部屋作成者が同じ場合
+			postedChat.Chatroom.UserId = currentChatroom.UserId
+			postedChat.Chatroom.Member = currentChatroom.Member
+		} else {
+			//投稿主と部屋作成者が違う場合
+			postedChat.Chatroom.UserId = currentChatroom.Member
+			postedChat.Chatroom.Member = currentChatroom.UserId
+		}
+
+		postedChat.Chat = regexp.QuoteMeta(Chat.Chat)
 		postedChat.PostDt = time.Now().UTC().Round(time.Second)
-
+		fmt.Println(postedChat.Chat)
 		posted := query.InsertChat(postedChat.Chatroom.Id, postedChat.Chatroom.UserId, postedChat.Chatroom.RoomName, postedChat.Chatroom.Member, postedChat.Chat, postedChat.PostDt, dbChtrm)
 		if posted {
 			fmt.Println("投稿成功")
+			Chat.UserId = postedChat.Chatroom.UserId
+			Chat.Member = postedChat.Chatroom.Member
+			fmt.Println(Chat)
+			msgjson, err := json.Marshal(Chat)
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+			msg = *(*string)(unsafe.Pointer(&msgjson))
+			fmt.Println(msg)
 			wc.Room.forward <- msg
 			continue
 		}

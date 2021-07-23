@@ -12,6 +12,7 @@ import (
 	"context"
 	"net/http"
 	"strconv"
+	"strings"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
@@ -35,6 +36,7 @@ func DecodeGetchatRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp
 	return func(r *http.Request) (interface{}, error) {
 		var (
 			id  int
+			key string
 			err error
 
 			params = mux.Vars(r)
@@ -47,10 +49,19 @@ func DecodeGetchatRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp
 			}
 			id = int(v)
 		}
+		key = r.Header.Get("Authorization")
+		if key == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
+		}
 		if err != nil {
 			return nil, err
 		}
-		payload := NewGetchatPayload(id)
+		payload := NewGetchatPayload(id, key)
+		if strings.Contains(payload.Key, " ") {
+			// Remove authorization scheme prefix (e.g. "Bearer")
+			cred := strings.SplitN(payload.Key, " ", 2)[1]
+			payload.Key = cred
+		}
 
 		return payload, nil
 	}

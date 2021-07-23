@@ -165,13 +165,11 @@ func HandleChatapiOrigin(h http.Handler) http.Handler {
 		if cors.MatchOrigin(origin, "http://172.25.0.2") {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 			w.Header().Set("Vary", "Origin")
-			w.Header().Set("Access-Control-Expose-Headers", "X-Time")
-			w.Header().Set("Access-Control-Max-Age", "600")
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
 			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
 				// We are handling a preflight request
 				w.Header().Set("Access-Control-Allow-Methods", "GET")
-				w.Header().Set("Access-Control-Allow-Headers", "Access-Control-Allow-Origin")
+				w.Header().Set("Access-Control-Allow-Headers", "Access-Control-Allow-Origin, Authorization")
 			}
 			origHndlr(w, r)
 			return

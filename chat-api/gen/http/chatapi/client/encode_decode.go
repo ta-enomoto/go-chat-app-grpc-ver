@@ -44,6 +44,22 @@ func (c *Client) BuildGetchatRequest(ctx context.Context, v interface{}) (*http.
 	return req, nil
 }
 
+// EncodeGetchatRequest returns an encoder for requests sent to the chatapi
+// getchat server.
+func EncodeGetchatRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+	return func(req *http.Request, v interface{}) error {
+		p, ok := v.(*chatapi.GetchatPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("chatapi", "getchat", "*chatapi.GetchatPayload", v)
+		}
+		{
+			head := p.Key
+			req.Header.Set("Authorization", head)
+		}
+		return nil
+	}
+}
+
 // DecodeGetchatResponse returns a decoder for responses returned by the
 // chatapi getchat endpoint. restoreBody controls whether the response body
 // should be restored after having been read.

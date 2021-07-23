@@ -11,6 +11,7 @@ import (
 	"context"
 
 	goa "goa.design/goa/v3/pkg"
+	"goa.design/goa/v3/security"
 )
 
 // Endpoints wraps the "chatapi" service endpoints.
@@ -20,8 +21,10 @@ type Endpoints struct {
 
 // NewEndpoints wraps the methods of the "chatapi" service with endpoints.
 func NewEndpoints(s Service) *Endpoints {
+	// Casting service to Auther interface
+	a := s.(Auther)
 	return &Endpoints{
-		Getchat: NewGetchatEndpoint(s),
+		Getchat: NewGetchatEndpoint(s, a.APIKeyAuth),
 	}
 }
 
@@ -32,9 +35,19 @@ func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 
 // NewGetchatEndpoint returns an endpoint function that calls the method
 // "getchat" of service "chatapi".
-func NewGetchatEndpoint(s Service) goa.Endpoint {
+func NewGetchatEndpoint(s Service, authAPIKeyFn security.AuthAPIKeyFunc) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
 		p := req.(*GetchatPayload)
+		var err error
+		sc := security.APIKeyScheme{
+			Name:           "api_key",
+			Scopes:         []string{},
+			RequiredScopes: []string{},
+		}
+		ctx, err = authAPIKeyFn(ctx, p.Key, &sc)
+		if err != nil {
+			return nil, err
+		}
 		res, err := s.Getchat(ctx, p)
 		if err != nil {
 			return nil, err

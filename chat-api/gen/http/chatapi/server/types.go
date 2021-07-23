@@ -42,9 +42,10 @@ func NewGoaChatResponseCollection(res chatapiviews.GoaChatCollectionView) GoaCha
 }
 
 // NewGetchatPayload builds a chatapi service getchat endpoint payload.
-func NewGetchatPayload(id int) *chatapi.GetchatPayload {
+func NewGetchatPayload(id int, key string) *chatapi.GetchatPayload {
 	v := &chatapi.GetchatPayload{}
 	v.ID = id
+	v.Key = key
 
 	return v
 }

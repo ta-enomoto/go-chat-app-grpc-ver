@@ -16,20 +16,25 @@ import (
 
 // BuildGetchatPayload builds the payload for the chatapi getchat endpoint from
 // CLI flags.
-func BuildGetchatPayload(chatapiGetchatMessage string) (*chatapi.GetchatPayload, error) {
+func BuildGetchatPayload(chatapiGetchatMessage string, chatapiGetchatKey string) (*chatapi.GetchatPayload, error) {
 	var err error
 	var message chatapipb.GetchatRequest
 	{
 		if chatapiGetchatMessage != "" {
 			err = json.Unmarshal([]byte(chatapiGetchatMessage), &message)
 			if err != nil {
-				return nil, fmt.Errorf("invalid JSON for message, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 483739648181357268\n   }'")
+				return nil, fmt.Errorf("invalid JSON for message, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 750643732440360422\n   }'")
 			}
 		}
+	}
+	var key string
+	{
+		key = chatapiGetchatKey
 	}
 	v := &chatapi.GetchatPayload{
 		ID: int(message.Id),
 	}
+	v.Key = key
 
 	return v, nil
 }

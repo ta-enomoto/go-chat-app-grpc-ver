@@ -3,3 +3,4 @@ chat_api
 chat_api-cli
 *.txt
 chat-api/node_modules/
+web-server/tmp/

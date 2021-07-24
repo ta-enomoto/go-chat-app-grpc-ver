@@ -1,5 +1,6 @@
 goserver
-chat_api
-chat_api-cli
+chat-api/chat_api
+chat-api/chat_api-cli
 *.txt
 chat-api/node_modules/
+web-server/tmp/

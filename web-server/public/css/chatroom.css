@@ -1,42 +1,97 @@
-body {background-color:#330033;}
-
-form.delete {
-    text-align:right
+html, body {
+  height: 90%;
+  margin: 0;
+  background-color:#FFFFFF;
 }
 
-form.new-post {
-    text-align:center
+body {
+  height: 90%;
+  margin: 0;
+  background-color:#FFFFFF;
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+  height: 85px;
+  background-color:#FFFFFF;
+  border: 2px solid;
+  border-left: transparent;
+  border-right: transparent;
+  border-top: transparent;
+  border-color: #757575;
+}
+
+form.delete {
+  margin-top:15px;
+  margin-right:15px;
+  text-align:right;
+}
+
+#roomname-header h2{
+  padding-left: 15px;
+  margin: 0px;
+}
+
+.wrapper {
+  /* padding: 20px; */
+  min-height: 100%;
+  margin: 0 auto -50px;
+  padding-top: 100px;
+}
+
+/* .footer,
+.push {
+  height: 50px;
+} */
+
+.footer {
+  margin-bottom: 20px;
 }
 
 form.new-post input {
-    width:600px;
+    width:80%;
     height:20px;
-}
-
-form.new-post button {
-    text-align:right
+    margin:20px;
 }
 
 p.back-to-mypage {
-      color: #FFFFFF;
+      color: rgb(0, 0, 0);
 }
 
 div.chat-space h2 {
-    text-align:center;
-    color: #FFFFFF;
+  text-align:center;
+  color: rgb(0, 0, 0);
 }
 
 div.chat-space ul {
-    margin-left: 2em;
-    color: #FFFFFF;
+  color: rgb(0, 0, 0);
+  list-style: none;
+}
+
+div.chat-space li{
+  margin-bottom: 1%;
+}
+
+#user {
+  font-weight: 600;
+}
+
+#postdt {
+  margin-left:10px;
+  font-size:80%;
+}
+
+#chatText {
+  font-size:110%;
 }
 
 p.back-to-mypage a{
   text-align: right;
-  color: #FFFFFF;
+  color: rgb(0, 0, 0);
 }
 
 p.back-to-mypage a:visited {
   text-align: right;
-  color: #FFFFFF;
+  color: rgb(0, 0, 0);
 }

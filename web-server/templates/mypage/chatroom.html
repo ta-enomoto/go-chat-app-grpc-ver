@@ -7,22 +7,28 @@
     <title>マイページ</title>
 </head>
 <body>
-  <p class="back-to-mypage"><a href="/mypage">マイページに戻る</a></p>
-  <form class="delete" action="" method="post">
-    <p><input type="submit" value="このルームを削除する" name="delete-room"></p>
-  </form>
-  
+  <header class="header">
+    <form class="delete" action="" method="post">
+      <input type="submit" value="このルームを削除する" name="delete-room">
+    </form>
+    <div id="roomname-header">
+    </div>
+  </header>
+
+  <div class="wrapper">
   <div class="chat-space">
-  <h2>投稿一覧</h2>
-  <form class="new-post" action="" name="chatform" method="POST" target="sendPhoto">
-    <p><input type="text" id="chat" name="chat" placeholder="新規投稿(255文字以内)"></p>
-    <p><button onclick="send();" id="chat">メッセージを送る</button></p>
-  </form>
   <ul id="chats">
   </ul>
   </div>
-  <iframe name="sendPhoto" style="width:0px;height:0px;border:0px;"></iframe>
 
+  <iframe name="sendPhoto" style="width:0px;height:0px;border:0px;"></iframe>
+  <div class="push"></div>
+  </div>
+  <footer class="footer">
+    <form class="new-post" action="" name="chatform" method="POST" target="sendPhoto">
+      <p><input type="text" id="chat" name="chat" placeholder="新規投稿(255文字以内)"><button onclick="send();" id="chat">メッセージを送る</button></p>
+    </form>
+  </footer>
   <script type="text/javascript" src="/public/scripts/chatroom.js">
   </script>
 </body>

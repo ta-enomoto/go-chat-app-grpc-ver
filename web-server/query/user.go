@@ -102,3 +102,40 @@ func ContainsUserName(s []User, e string) bool {
 	}
 	return false
 }
+
+func ChangeUserId(newUserId string, currentUserId string, db *sql.DB) bool {
+
+	stmt, err := db.Prepare("UPDATE USERS SET USER_ID = ? WHERE USER_ID = ?")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(newUserId, currentUserId)
+	if err != nil {
+		return false
+	} else {
+		return true
+	}
+}
+
+func ChangePassword(newPassword []byte, currentPassword []byte, db *sql.DB) bool {
+
+	hashed_pass, err := bcrypt.GenerateFromPassword(newPassword, 10)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	stmt, err := db.Prepare("UPDATE USERS SET PASSWORD = ? WHERE PASSWORD = ?")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(hashed_pass, currentPassword)
+	if err != nil {
+		return false
+	} else {
+		return true
+	}
+}

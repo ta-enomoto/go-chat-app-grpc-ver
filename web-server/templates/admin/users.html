@@ -2,10 +2,29 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/public/css/mypage.css">
+    <!-- <link rel="stylesheet" type="text/css" href="/public/css/mypage.css"> -->
     <title>登録ユーザー一覧</title>
 </head>
 <body>
-  <p>{{.}}</p>
+  <div id="all-users"></div>
+
+  <script>
+    document.body.onload = addLinks;
+function addLinks(){
+  let arrayOfUsers = {{.}};
+  for (let value of arrayOfUsers){
+  let newLink = document.createElement("a");
+  let newLinkText = document.createTextNode(value.UserId);
+  newLink.appendChild(newLinkText);
+  newLink.href = "/admin/users/" + value.UserId;
+  let br =document.createElement("br");
+  newLink.appendChild(br);
+  newLink.id ="user";
+
+  let currentDiv = document.getElementById("all-users");
+  currentDiv.appendChild(newLink)
+  }
+}
+</script>
 </body>
 </html>

@@ -4,7 +4,7 @@ package routers
 import (
 	//"golang.org/x/crypto/bcrypt"
 	//"fmt"
-	"goserver/sessions"
+	//"goserver/sessions"
 	"html/template"
 	"net/http"
 )
@@ -12,11 +12,11 @@ import (
 func AdminMainHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		if ok := session.Manager.SessionIdCheck(w, r); !ok {
-			t := template.Must(template.ParseFiles("./templates/sessionexpired.html"))
-			t.ExecuteTemplate(w, "sessionexpired.html", nil)
-			return
-		}
+		// if ok := session.Manager.SessionIdCheck(w, r); !ok {
+		// 	t := template.Must(template.ParseFiles("./templates/sessionexpired.html"))
+		// 	t.ExecuteTemplate(w, "sessionexpired.html", nil)
+		// 	return
+		// }
 
 		t := template.Must(template.ParseFiles("./templates/admin/main.html"))
 		t.ExecuteTemplate(w, "main.html", nil)

@@ -2,10 +2,45 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/public/css/mypage.css">
+    <!-- <link rel="stylesheet" type="text/css" href="/public/css/mypage.css"> -->
     <title>チャットルーム一覧</title>
 </head>
 <body>
-  <p>{{.}}</p>
+  <div id="all-chatrooms"></div>
+
+  <script>
+    document.body.onload = addLinks;
+function addLinks(){
+  let arrayOfChatrooms = {{.}};
+  for (let value of arrayOfChatrooms){
+  let newDiv = document.createElement("div")
+  
+  let newLink = document.createElement("a");
+  let newLinkText = document.createTextNode(value.roomName + " (ユーザー1：" + value.userId + " ユーザー2：" + value.member + ")");
+  newLink.appendChild(newLinkText);
+  newLink.href = "/admin/chatrooms/chatroom" + value.id;
+  newLink.style = "display: inline-block; _display: inline;";
+  newDiv.appendChild(newLink);
+  
+  let newForm = document.createElement("form");
+  newForm.method = "post";
+  newForm.style = "display: inline-block; _display: inline;";
+  let button = document.createElement("input");
+  button.type = "submit";
+  button.id = "delete-button";
+  button.name = "delete-room," + value.id;
+  button.value = "削除する";
+  newForm.appendChild(button);
+  
+  newDiv.appendChild(newForm);
+  let br =document.createElement("br");
+  newDiv.appendChild(br);
+  newDiv.id ="chatroom";
+
+  let currentDiv = document.getElementById("all-chatrooms");
+  currentDiv.appendChild(newDiv)
+  }
+}
+</script>
 </body>
 </html>

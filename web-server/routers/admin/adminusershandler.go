@@ -2,7 +2,6 @@
 package routers
 
 import (
-	//"golang.org/x/crypto/bcrypt"
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
@@ -10,14 +9,24 @@ import (
 	"goserver/sessions"
 	"html/template"
 	"net/http"
+	"net/url"
 )
 
 func AdminUsersHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		if ok := session.Manager.SessionIdCheck(w, r); !ok {
-			t := template.Must(template.ParseFiles("./templates/sessionexpired.html"))
-			t.ExecuteTemplate(w, "sessionexpired.html", nil)
+			t := template.Must(template.ParseFiles("./templates/admin/adminsessionexpired.html"))
+			t.ExecuteTemplate(w, "adminsessionexpired.html", nil)
+			return
+		}
+
+		userCookie, _ := r.Cookie(session.Manager.CookieName)
+		userSid, _ := url.QueryUnescape(userCookie.Value)
+		userSessionVar := session.Manager.SessionStore[userSid].SessionValue["userId"]
+
+		if userSessionVar != "admin" {
+			fmt.Fprintf(w, "管理者以外はアクセスできません。")
 			return
 		}
 

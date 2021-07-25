@@ -1,11 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/public/css/mypage.css">
-    <title>登録ユーザー一覧</title>
+  <meta charset="UTF-8">
+  <title>登録ユーザー一覧</title>
 </head>
 <body>
-  <p>{{.}}</p>
+  <div style="text-align: right"><a href="http://172.25.0.2/admin/logout">ログアウト</a></div>
+  <a href="http://172.25.0.2/admin/main">メイン管理画面に戻る</a>
+  <h2>登録ユーザー一覧</h2>
+  <div id="all-users"></div>
+
+  <script>
+  document.body.onload = addLinks;
+  function addLinks(){
+  let arrayOfUsers = {{.}};
+  for (let value of arrayOfUsers){
+    let newLink = document.createElement("a");
+    let newLinkText = document.createTextNode(value.UserId);
+    newLink.appendChild(newLinkText);
+    newLink.href = "/admin/users/" + value.UserId;
+    let br =document.createElement("br");
+    newLink.appendChild(br);
+    newLink.id ="user";
+
+    let currentDiv = document.getElementById("all-users");
+    currentDiv.appendChild(newLink)
+    }
+  }
+  </script>
 </body>
 </html>

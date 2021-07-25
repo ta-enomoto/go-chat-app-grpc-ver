@@ -62,80 +62,80 @@ window.onload = async function() {
   var bottom = element.scrollHeight - element.clientHeight;
   window.scroll(0, bottom);
   
-    //WebSocket
-    socket = new WebSocket(wsuri);
+  //WebSocket
+  socket = new WebSocket(wsuri);
 
-    socket.onopen = function() {
-      console.log("connected");
-      class　Newchat {
-        constructor(id, userid, roomname, member, chat, postdt){
-          this.id = id;
-          this.userid = userid;
-          this.roomname = roomname;
-          this.member = member;
-          this.chat = chat;
-          this.postdt = postdt;
-        }
+  socket.onopen = function() {
+    console.log("connected");
+    class　Newchat {
+      constructor(id, userid, roomname, member, chat, postdt){
+        this.id = id;
+        this.userid = userid;
+        this.roomname = roomname;
+        this.member = member;
+        this.chat = chat;
+        this.postdt = postdt;
       }
-    let roomname = allchats[0].RoomName;
-    let userid = allchats[0].UserId;
-    let member = allchats[0].Member;
-    let postdt = Date.now();
-    let chat = "first contact";
-    const newchat = new Newchat(roomid, userid, roomname, member, chat, postdt);
-    socket.send(JSON.stringify(newchat));
-    console.log(JSON.stringify(newchat));
     }
-    socket.onmessage = function(e) {
-      console.log("message recieved" + e.data);
-      let chatobj = JSON.parse(e.data);
-      let text = document.createTextNode(chatobj.chat + '　(投稿者：' + chatobj.userid + '　投稿日：' + chatobj.postdt + ')');
-      let newLi = document.createElement("li");
-      newLi.appendChild(text);
-      let chatList = document.getElementById("chats");
-      chatList.appendChild(newLi);
-      var element = document.documentElement;
-      var bottom = element.scrollHeight - element.clientHeight;
-      window.scroll(0, bottom);
-    }
-    socket.onclose = function(e) {
-      console.log("connection closed");
-    }
+
+  let roomname = allchats[0].RoomName;
+  let userid = allchats[0].UserId;
+  let member = allchats[0].Member;
+  let postdt = Date.now();
+  let chat = "first contact";
+  const newchat = new Newchat(roomid, userid, roomname, member, chat, postdt);
+  socket.send(JSON.stringify(newchat));
+  console.log(JSON.stringify(newchat));
+  }
+
+  socket.onmessage = function(e) {
+    console.log("message recieved" + e.data);
+    let chatobj = JSON.parse(e.data);
+    let text = document.createTextNode(chatobj.chat + '　(投稿者：' + chatobj.userid + '　投稿日：' + chatobj.postdt + ')');
+    let newLi = document.createElement("li");
+    newLi.appendChild(text);
+    let chatList = document.getElementById("chats");
+    chatList.appendChild(newLi);
+    var element = document.documentElement;
+    var bottom = element.scrollHeight - element.clientHeight;
+    window.scroll(0, bottom);
+  }
+  socket.onclose = function(e) {
+    console.log("connection closed");
+  }
 };
-  
-  function send() {
-      class　Newchat {
-        constructor(id, userid, roomname, member, chat, postdt, cookie){
-          this.id = id;
-          this.userid = userid;
-          this.roomname = roomname;
-          this.member = member;
-          this.chat = chat;
-          this.postdt = postdt;
-          this.cookie = cookie;
-        }
-      }
 
-      let url = location.href;
-      let roomid = url.replace("http://172.25.0.2/mypage/chatroom","");
-      
-      let chat = document.getElementById('chat').value;
-      if (chat == "") {
-        window.alert("チャットが入力されていません");
-        return;
-      };
-      //chatEncoded = (new TextEncoder('utf-8')).encode(chat);
+function send() {
+  class　Newchat {
+    constructor(id, userid, roomname, member, chat, postdt, cookie){
+      this.id = id;
+      this.userid = userid;
+      this.roomname = roomname;
+      this.member = member;
+      this.chat = chat;
+      this.postdt = postdt;
+      this.cookie = cookie;
+    }
+  }
+  let url = location.href;
+  let roomid = url.replace("http://172.25.0.2/mypage/chatroom","");
 
-      let roomname = allchats[0].RoomName;
-      let userid = allchats[0].UserId;
-      let member = allchats[0].Member;
-      var date = Date.now();
-      let postdt = new Date(date);
-                
-      let cookieValue = document.cookie;
-      let cookie = cookieValue.replace("cookieName=","");
-      const newchat = new Newchat(roomid, userid, roomname, member, chat, postdt, cookie);
-      socket.send(JSON.stringify(newchat));
-      document.chatform.reset();
-      console.log(JSON.stringify(newchat));
-    };
+  let chat = document.getElementById('chat').value;
+  if (chat == "") {
+    window.alert("チャットが入力されていません");
+    return;
+  };
+
+  let roomname = allchats[0].RoomName;
+  let userid = allchats[0].UserId;
+  let member = allchats[0].Member;
+  let date = Date.now();
+  let postdt = new Date(date);
+
+  let cookieValue = document.cookie;
+  let cookie = cookieValue.replace("cookieName=","");
+  const newchat = new Newchat(roomid, userid, roomname, member, chat, postdt, cookie);
+  socket.send(JSON.stringify(newchat));
+  document.chatform.reset();
+  console.log(JSON.stringify(newchat));
+};

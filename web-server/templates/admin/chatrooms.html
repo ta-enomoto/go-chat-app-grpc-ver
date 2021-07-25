@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/public/css/mypage.css">
-    <title>チャットルーム一覧</title>
+  <meta charset="UTF-8">
+  <title>チャットルーム一覧</title>
 </head>
 <body>
-  <p>{{.}}</p>
+  <div style="text-align: right"><a href="http://172.25.0.2/admin/logout">ログアウト</a></div>
+  <p id="main-link"><a href="http://172.25.0.2/admin/main">メイン管理画面に戻る</a></p>
+  <h2>チャットルーム一覧</h2>
+  <div id="all-chatrooms"></div>
+
+  <script>
+  document.body.onload = addLinks;
+  function addLinks(){
+  let arrayOfChatrooms = {{.}};
+  for (let value of arrayOfChatrooms){
+    let newDiv = document.createElement("div")
+  
+    let newLink = document.createElement("a");
+    let newLinkText = document.createTextNode(value.roomName + " (ユーザー1：" + value.userId + " ユーザー2：" + value.member + ")");
+    newLink.appendChild(newLinkText);
+    newLink.href = "/admin/chatrooms/chatroom" + value.id;
+    newLink.style = "display: inline-block; _display: inline;";
+    newDiv.appendChild(newLink);
+
+    let br =document.createElement("br");
+    newDiv.appendChild(br);
+    newDiv.id ="chatroom";
+
+    let currentDiv = document.getElementById("all-chatrooms");
+    currentDiv.appendChild(newDiv)
+    }
+  }
+  </script>
 </body>
 </html>

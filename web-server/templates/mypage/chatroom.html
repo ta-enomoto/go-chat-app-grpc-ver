@@ -1,36 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/public/css/chatroom.css">
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <title>マイページ</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="/public/css/chatroom.css">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <title>マイページ</title>
 </head>
 <body>
   <header class="header">
     <form class="delete" action="" method="post">
       <input type="submit" value="このルームを削除する" name="delete-room">
     </form>
-    <div id="roomname-header">
-    </div>
+    <div id="roomname-header"></div>
   </header>
-
   <div class="wrapper">
-  <div class="chat-space">
-  <ul id="chats">
-  </ul>
-  </div>
-
-  <iframe name="sendPhoto" style="width:0px;height:0px;border:0px;"></iframe>
-  <div class="push"></div>
+    <div class="chat-space">
+      <ul id="chats">
+      </ul>
+    </div>
+    <iframe name="sendPhoto" style="width:0px;height:0px;border:0px;"></iframe>
   </div>
   <footer class="footer">
     <form class="new-post" action="" name="chatform" method="POST" target="sendPhoto">
       <p><input type="text" id="chat" name="chat" placeholder="新規投稿(255文字以内)"><button onclick="send();" id="chat">メッセージを送る</button></p>
     </form>
   </footer>
-  <script type="text/javascript" src="/public/scripts/chatroom.js">
-  </script>
+  <script type="text/javascript" src="/public/scripts/chatroom.js"></script>
 </body>
 </html>
 

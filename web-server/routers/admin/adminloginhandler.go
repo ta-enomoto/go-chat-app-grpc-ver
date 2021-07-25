@@ -12,8 +12,8 @@ import (
 func AdminLoginHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		t := template.Must(template.ParseFiles("./templates/admin/login.html"))
-		t.ExecuteTemplate(w, "login.html", nil)
+		t := template.Must(template.ParseFiles("./templates/admin/adminlogin.html"))
+		t.ExecuteTemplate(w, "adminlogin.html", nil)
 		return
 
 	//管理者ID・パスワードがポストされた時

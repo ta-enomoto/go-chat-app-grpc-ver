@@ -39,6 +39,10 @@ func ResistrationHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		if newUser.UserId == "admin" {
+			fmt.Fprintf(w, "使用できないユーザー名です。")
+			return
+		}
 		newUser.Password = []byte(psw_string)
 
 		dbUsr, err := sql.Open("mysql", query.ConStrUsr)

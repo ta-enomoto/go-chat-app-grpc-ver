@@ -1,11 +1,11 @@
 html, body {
-  background-color:#EEFFFF;
+  background-color:#FFFFFF;
   height: 90%;
   margin: 0;
 }
 
 body {
-  background-color:#EEFFFF;
+  background-color:#FFFFFF;
   height: 90%;
   margin: 0;
 }
@@ -17,7 +17,7 @@ body {
   border-right: transparent;
   border-left: transparent;
   border-color: #757575;
-  height: 85px;
+  height: 160px;
   position: fixed;
   width: 100%;
 }
@@ -35,22 +35,11 @@ form.delete {
 
 .wrapper {
   min-height: 100%;
-  margin: 0 auto -50px;
-  padding-top: 100px;
+  padding-top: 20%;
 }
 
-.footer {
-  margin-bottom: 20px;
-}
-
-form.new-post input {
-  height:20px;
-  margin:20px;
-  width:80%;
-}
-
-p.back-to-mypage {
-  color: rgb(0, 0, 0);
+div.chat-space  {
+  padding-top: 30px;
 }
 
 div.chat-space h2 {
@@ -76,4 +65,8 @@ div.chat-space li{
 
 #chatText {
   font-size:110%;
+}
+
+#logout {
+  text-align: right;
 }

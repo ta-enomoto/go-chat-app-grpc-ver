@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/public/css/mypage.css">
-    <title>マイページ</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="/public/css/mypage.css">
+  <title>マイページ</title>
 </head>
 <body>
   <div id="left-tab">
     <div class="logout-link">
-    <p></p><a href="logout">ログアウトはこちら</a></p>
+      <p></p><a href="logout">ログアウトはこちら</a></p>
     </div>
     <div class="withdrawal-link">
       <a href="withdrawal">退会はこちら</a>
     </div>
     <div class="create-new-chatroom">
-      <p id="midashi-create-new-room"><strong>新規ルームを作成する</strong></p>
+      <p id="title-create-new-room"><strong>新規ルームを作成する</strong></p>
       <form class="creat-form" id="new_room">
         <p><input type="text" id="roomName" name="roomName" placeholder="ルーム名(20字以内)"></p>
         <p><input type="text" id="memberName" name="memberName" placeholder="相手ユーザー名"></p>
@@ -29,28 +29,28 @@
     </div>
   </div>
   <script>
-    document.body.onload = addLinks;
-function addLinks(){
+  document.body.onload = addLinks;
+  function addLinks(){
   let arrayOfRooms = {{.}};
   arrayOfRooms.reverse();
-  for (let value of arrayOfRooms){
-  let newLink = document.createElement("a");
-  let newLinkText = document.createTextNode("・" + value['roomName'] + "（お相手：" + value['member'] + "）");
-  newLink.appendChild(newLinkText);
-  newLink.href = "/mypage/chatroom" + value['id'];
-  let br =document.createElement("br");
-  newLink.appendChild(br);
-  newLink.id ="room-link";
-  newLink.target ="chatspace";
+    for (let value of arrayOfRooms){
+    let newLink = document.createElement("a");
+    let newLinkText = document.createTextNode("・" + value['roomName'] + "（お相手：" + value['member'] + "）");
+    newLink.appendChild(newLinkText);
+    newLink.href = "/mypage/chatroom" + value['id'];
+    let br =document.createElement("br");
+    newLink.appendChild(br);
+    newLink.id ="room-link";
+    newLink.target ="chatspace";
 
-  let currentDiv = document.getElementById("all-rooms");
-  currentDiv.appendChild(newLink)
+    let currentDiv = document.getElementById("all-rooms");
+    currentDiv.appendChild(newLink)
+    }
   }
-}
 
-window.addEventListener("load", function(){
-  document.getElementById("create_button").addEventListener("click", function(){
-    let roomName = document.getElementById("roomName").value;
+  window.addEventListener("load", function(){
+    document.getElementById("create_button").addEventListener("click", function(){
+      let roomName = document.getElementById("roomName").value;
       if (roomName == "") {
         window.alert("ルーム名が入力されていません");
         return;
@@ -62,20 +62,20 @@ window.addEventListener("load", function(){
         return;
       };
       
-    let formDatas = document.getElementById("new_room");
-    let postDatas = new FormData(formDatas);
+      let formDatas = document.getElementById("new_room");
+      let postDatas = new FormData(formDatas);
     
-    let XHR = new XMLHttpRequest();
-    XHR.open("POST", "/mypage", true);
-    XHR.send(postDatas);
+      let XHR = new XMLHttpRequest();
+      XHR.open("POST", "/mypage", true);
+      XHR.send(postDatas);
 
-    XHR.onreadystatechange = function(){
-      if(XHR.readyState == 4 && XHR.status == 200){
-        location.reload();
+      XHR.onreadystatechange = function(){
+        if(XHR.readyState == 4 && XHR.status == 200){
+          location.reload();
+        }
       }
-    }
+    }, false);
   }, false);
-}, false);
   </script>
 </body>
 </html>

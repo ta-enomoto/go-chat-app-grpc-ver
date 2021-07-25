@@ -1,32 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/public/css/resistration.css">
-    <title>ユーザー管理</title>
+  <meta charset="UTF-8">
+  <title>ユーザー管理</title>
 </head>
 <body>
+  <div style="text-align: right"><a href="http://172.25.0.2/logout">ログアウト</a></div><a href="http://172.25.0.2/admin/main">メイン管理画面に戻る</a><br><a href="http://172.25.0.2/admin/users">ユーザー一覧に戻る</a>
   <div class="container">
-    <p>選択中のユーザー：{{.}}</p>
+    <h2>選択中のユーザー：{{.}}</h2>
     <form name="change-userId" action="" method="post">
-    <p>新規ユーザーID<br>(10文字以内)</p>
-    <p><input type="text" id="userId" name="userId">
+      <p>新規ユーザーID<br>(10文字以内)</p>
+      <p><input type="text" id="userId" name="userId">
       <nobr><input type="submit" id="userId" name="change-userId" value="変更"></nobr></p>
-    <p></p>
+      <p></p>
     </form>
     
     <form class="change-password" action="" method="post">
-    <p>新規パスワード<br>(英数字、10文字以内)</p>
-    <p><input type="password" id="password" name="password">
+      <p>新規パスワード<br>(英数字、10文字以内)</p>
+      <p><input type="password" id="password" name="password">
       <nobr><input type="submit" id="password" name="change-password" value="変更"></nobr></p>
-    <p></p>
-    <p>※次の記号は使用不可<br>（&#x3F、&#x24、&amp;、&#x3D、&#x2D、&gt;、&lt;、&#x2B、&#x3B、&#x3A、&#x2A、&#x7C、&#x27）</p>
+      <p></p>
+      <p>※次の記号は使用不可<br>（&#x3F、&#x24、&amp;、&#x3D、&#x2D、&gt;、&lt;、&#x2B、&#x3B、&#x3A、&#x2A、&#x7C、&#x27）</p>
     </form>
     <p></p>
     <form class="delete" action="" method="post">
       <input type="submit" value="このユーザーを削除する" name="delete-user">
     </form>
-  <p id="login-link"><a href="http://172.25.0.2/admin/main">メイン管理画面に戻る</a></p>
   </div>
 </body>
 </html>

@@ -31,6 +31,7 @@ func (mux MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var adminChatrooms = regexp.MustCompile(`^/admin/chatrooms$`)
 	var adminUser = regexp.MustCompile(`^/admin/users/.*`)
 	var adminChatroom = regexp.MustCompile(`^/admin/chatrooms/.*`)
+	var adminLogout = regexp.MustCompile(`^/admin/logout$`)
 	url := r.URL.Path
 
 	switch {
@@ -75,6 +76,9 @@ func (mux MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	case adminChatroom.MatchString(url):
 		routers.AdminChatroomHandler(w, r)
+
+	case adminLogout.MatchString(url):
+		routers.AdminLogoutHandler(w, r)
 
 	default:
 		http.NotFound(w, r)

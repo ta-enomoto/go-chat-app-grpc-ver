@@ -1,15 +1,15 @@
-body {background-color:#330033;}
+body {background-color:#000033;}
 
 div.container{
   background-color:#FFFFFF;
-  position: relative;
-  width: 250px;
   margin-top: 15%;
   margin-bottom: 25%;
   margin-left: auto;
   margin-right: auto;
   padding-top: 1em;
   padding-bottom: 0.5em;
+  position: relative;
+  width: 250px;
 }
 
 form.login-form {

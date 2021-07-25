@@ -12,6 +12,6 @@ loginFunc.addEventListener("click", function(){
     window.alert("パスワードが入力されていません");
     return;
   } else {
-    this.form.submit()
+    this.form.submit();
   };
 });

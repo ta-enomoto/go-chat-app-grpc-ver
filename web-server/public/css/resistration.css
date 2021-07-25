@@ -1,20 +1,20 @@
-body {background-color:#330033;}
+body {background-color:#000033;}
   
 div.container{
   background-color:#FFFFFF;
-  position: relative;
-  width: 350px;
   margin-top: 15%;
   margin-bottom: 25%;
   margin-left: auto;
   margin-right: auto;
   padding-top: 1em;
   padding-bottom: 0.5em;
+  position: relative;
+  width: 350px;
 }
 
 form.resister-form {
-  text-align: center;
   line-height:0.5;
+  text-align: center;
 }
 
 #login-link{

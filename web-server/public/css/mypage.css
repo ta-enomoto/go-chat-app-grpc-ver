@@ -1,33 +1,52 @@
-div.logout-link{
-  text-align: right;
-  color: #FFFFFF;
-}
-
-div.logout-link a:visited {
-  text-align: right;
-  color: #FFFFFF;
-}
-
 body {
-  background-color:#330033;
+  background-color:#000033;
   margin: 0;
   height: 100%;
 }
 
-#midashi-create-new-room{
-  font-size: 130%;
-  text-align: center;
-  line-height:0.5;
+#left-tab {
+  float:left;
+  height: 100vh;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  resize:horizontal;
+  width:30%;
+}
+
+div.logout-link{
   color: #FFFFFF;
+  text-align: right;
+}
+
+div.logout-link a:visited {
+  color: #FFFFFF;
+  text-align: right;
+}
+
+div.withdrawal-link {
+  color: #FFFFFF;
+  text-align: right;
+}
+
+div.withdrawal-link a:visited {
+  color: #FFFFFF;
+  text-align: center;
+}
+
+#title-create-new-room{
+  color: #FFFFFF;
+  font-size: 130%;
+  line-height:0.5;
+  text-align: center;
 }
 
 div.create-new-chatroom{
-  position: relative;
-  width: 250px;
   margin-left: auto;
   margin-right: auto;
   padding-top: 0;
   padding-bottom: 0.1em;
+  position: relative;
+  width: 250px;
 }
 
 form.creat-form{
@@ -35,37 +54,19 @@ form.creat-form{
 }
 
 div.all-rooms {
-  margin: 0 auto;
-  font-weight: bold;
   color:#FFFFFF;
+  font-weight: bold;
+  margin: 0 auto;
 }
 
 #top-header {
-  text-align: center;
   margin-bottom: 0px;
-}
-
-div.withdrawal-link {
-  text-align: right;
-  color: #FFFFFF;
-}
-
-div.withdrawal-link a:visited {
   text-align: center;
-  color: #FFFFFF;
 }
+
 
 #room-link {
   color: #FFFFFF;
-}
-
-#left-tab {
-  float:left;
-  overflow-x: scroll;
-  overflow-y: scroll;
-  height: 100vh;
-  width:30%;
-  resize:horizontal;
 }
 
 #iframeBlock {
@@ -75,6 +76,7 @@ div.withdrawal-link a:visited {
 }
 
 div.chatspace{
-  width: 100%;
+  background-color: #EEFFFF;
   float:right;
+  width: 100%;
 }

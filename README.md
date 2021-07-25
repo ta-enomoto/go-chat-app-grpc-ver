@@ -31,7 +31,7 @@
 
 ### 【使用方法】
 **ユーザー登録**
-①コンテナを立ち上げ後、ログインページ(`http://172.25.0.2/login`)へアクセスします。「新規登録はこちら」から`/resistration`ページへ移動し、フォームにユーザー名・パスワード(10文字以内、ユーザー名"admin"は不可、パスワードは英数字)を入力し登録ボタンをクリックしてください。チャット機能の試行には最低2名の登録が必要なため、2人分のユーザーを登録してください。
+①コンテナを立ち上げ後、ログインページ([http://172.25.0.2/login](http://172.25.0.2/login))へアクセスします。「新規登録はこちら」から`/resistration`ページへ移動し、フォームにユーザー名・パスワード(10文字以内、ユーザー名"admin"は不可、パスワードは英数字)を入力し登録ボタンをクリックしてください。チャット機能の試行には最低2名の登録が必要なため、2人分のユーザーを登録してください。
 <div align="center">
 <img src="https://user-images.githubusercontent.com/63547862/126903125-5e54e460-2a72-45bc-a6ba-e08d068d62e9.png" width="700px">
 </div>
@@ -93,34 +93,34 @@
 
 ### 【管理ページの方法】
 **ログイン**
-①管理ページログインページ(`http://172.25.0.2/admin/login`)へアクセスします。(管理者ID：`admin`、パスワード：`pass`)
+①管理ページログインページ([http://172.25.0.2/admin/login](http://172.25.0.2/admin/login))へアクセスします。(管理者ID：`admin`、パスワード：`pass`)
 <div align="center">
 <img src="https://user-images.githubusercontent.com/63547862/126904058-59a331cc-adee-478b-96ff-b1841b26ba02.png" width="700px">
 </div>
 
 ②ログイン後、以下の管理ページへ遷移します。ログアウトは、右上のリンクから行えます。
 <div align="center">
-<img src="https://user-images.githubusercontent.com/63547862/126904134-75242cf4-7ced-45d4-9429-a39afa6f206a.png" width="700px">
+<kbd><img src="https://user-images.githubusercontent.com/63547862/126904134-75242cf4-7ced-45d4-9429-a39afa6f206a.png" width="700px"></kbd>
 </div>
 
 **ユーザーの管理**
 ①「登録ユーザー一覧」をクリックすると、以下のページに遷移します。このページでは、登録中のユーザーが全員表示されます。
 <div align="center">
-<img src="https://user-images.githubusercontent.com/63547862/126904211-0ce2cb6e-7848-4665-a857-8ce54ce24318.png" width="700px">
+<kbd><img src="https://user-images.githubusercontent.com/63547862/126904211-0ce2cb6e-7848-4665-a857-8ce54ce24318.png" width="700px"></kbd>
 </div>
 
 ②管理を行いたいユーザーをクリックすると、以下の個別ユーザー管理ページに遷移します。このページでは、(a)ユーザーIDの変更、(b)パスワードの変更、(c)ユーザーの削除が行えます。
 <div align="center">
-<img src="https://user-images.githubusercontent.com/63547862/126904324-4d4da3f3-b358-4a7e-8039-a8ac1217e281.png" width="700px">
+<kbd><img src="https://user-images.githubusercontent.com/63547862/126904324-4d4da3f3-b358-4a7e-8039-a8ac1217e281.png" width="700px"></kbd>
 </div>
 
 **チャットルームの管理**
 ①「チャットルーム一覧」をクリックすると、以下のページに遷移します。このページでは、全てのチャットルームが表示されます。
 <div align="center">
-<img src="https://user-images.githubusercontent.com/63547862/126904607-51b8645b-7cad-4b83-a2f9-ca623a3369a1.png" width="700px">
+<kbd><img src="https://user-images.githubusercontent.com/63547862/126904607-51b8645b-7cad-4b83-a2f9-ca623a3369a1.png" width="700px"></kbd>
 </div>
 
 ②管理を行いたいユーザーをクリックすると、以下の個別チャットルーム管理ページに遷移します。このページではチャット内容が表示され、右上のボタンからチャットルームの削除が行えます。
 <div align="center">
-<img src="https://user-images.githubusercontent.com/63547862/126904775-2e0ee16f-3b53-49af-a2d5-fb23cdd61d44.png" width="700px">
+<kbd><img src="https://user-images.githubusercontent.com/63547862/126904775-2e0ee16f-3b53-49af-a2d5-fb23cdd61d44.png" width="700px"></kbd>
 </div>

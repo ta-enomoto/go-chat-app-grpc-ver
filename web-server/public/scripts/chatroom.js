@@ -91,11 +91,31 @@ window.onload = async function() {
   socket.onmessage = function(e) {
     console.log("message recieved" + e.data);
     let chatobj = JSON.parse(e.data);
-    let text = document.createTextNode(chatobj.chat + '　(投稿者：' + chatobj.userid + '　投稿日：' + chatobj.postdt + ')');
+    let textUser = document.createTextNode(chatobj.userid);
+    let textPostDt = document.createTextNode(chatobj.postdt);
+    let textChat = document.createTextNode(chatobj.chat);
+
+    let elUser = document.createElement("div");
+    elUser.appendChild(textUser);
+    elUser.id ="user";
+    elUser.style = "display: inline-block; _display: inline;";
+    
+    let elPostDt = document.createElement("div");
+    elPostDt.appendChild(textPostDt);
+    elPostDt.id ="postdt";
+    elPostDt.style = "display: inline-block; _display: inline;";
+    
+    let elChat = document.createElement("div");
+    elChat.appendChild(textChat);
+    elChat.id ="chatText";
+
     let newLi = document.createElement("li");
-    newLi.appendChild(text);
+    newLi.appendChild(elUser);
+    newLi.appendChild(elPostDt);
+    newLi.appendChild(elChat);
     let chatList = document.getElementById("chats");
     chatList.appendChild(newLi);
+    
     var element = document.documentElement;
     var bottom = element.scrollHeight - element.clientHeight;
     window.scroll(0, bottom);

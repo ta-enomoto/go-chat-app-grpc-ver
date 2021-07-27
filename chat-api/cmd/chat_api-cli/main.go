@@ -14,7 +14,7 @@ import (
 
 func main() {
 	var (
-		hostF = flag.String("host", "172.25.0.4", "Server host (valid values: 172.25.0.4)")
+		hostF = flag.String("host", "172.25.0.3", "Server host (valid values: 172.25.0.3)")
 		addrF = flag.String("url", "", "URL to service host")
 
 		verboseF = flag.Bool("verbose", false, "Print request and response details")
@@ -32,10 +32,10 @@ func main() {
 		addr = *addrF
 		if addr == "" {
 			switch *hostF {
-			case "172.25.0.4":
-				addr = "http://172.25.0.4:8000"
+			case "172.25.0.3":
+				addr = "http://172.25.0.3:8000"
 			default:
-				fmt.Fprintf(os.Stderr, "invalid host argument: %q (valid hosts: 172.25.0.4)\n", *hostF)
+				fmt.Fprintf(os.Stderr, "invalid host argument: %q (valid hosts: 172.25.0.3)\n", *hostF)
 				os.Exit(1)
 			}
 		}
@@ -65,10 +65,8 @@ func main() {
 		switch scheme {
 		case "http", "https":
 			endpoint, payload, err = doHTTP(scheme, host, timeout, debug)
-		case "grpc", "grpcs":
-			endpoint, payload, err = doGRPC(scheme, host, timeout, debug)
 		default:
-			fmt.Fprintf(os.Stderr, "invalid scheme: %q (valid schemes: grpc|http)\n", scheme)
+			fmt.Fprintf(os.Stderr, "invalid scheme: %q (valid schemes: http)\n", scheme)
 			os.Exit(1)
 		}
 	}
@@ -99,7 +97,7 @@ func usage() {
 Usage:
     %s [-host HOST][-url URL][-timeout SECONDS][-verbose|-v] SERVICE ENDPOINT [flags]
 
-    -host HOST:  server host (172.25.0.4). valid values: 172.25.0.4
+    -host HOST:  server host (172.25.0.3). valid values: 172.25.0.3
     -url URL:    specify service URL overriding host URL (http://localhost:8080)
     -timeout:    maximum number of seconds to wait for response (30)
     -verbose|-v: print request and response details (false)

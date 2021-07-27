@@ -4,7 +4,7 @@ info:
   description: Service for chat app, a Goa teaser
   version: "1.0"
 servers:
-- url: http://172.25.0.4:8000
+- url: http://172.25.0.3:8000
 paths:
   /chatroom/{id}:
     get:
@@ -20,9 +20,9 @@ paths:
         schema:
           type: integer
           description: room id
-          example: 6695761884599171057
+          example: 7331539213984418867
           format: int64
-        example: 2956765006061687337
+        example: 2589955657104534163
       responses:
         "200":
           description: OK response.
@@ -65,36 +65,36 @@ components:
         Chat:
           type: string
           description: chat
-          example: Laudantium vero.
+          example: Voluptas dicta totam.
         Id:
           type: integer
           description: room id
-          example: 640788961093116736
+          example: 3084490717507266567
           format: int64
         Member:
           type: string
           description: member
-          example: Quidem labore.
+          example: Reiciendis delectus iusto sit aut accusamus.
         PostDt:
           type: string
-          example: "1978-01-10T02:49:41Z"
+          example: "1989-04-17T01:01:42Z"
           format: date-time
         RoomName:
           type: string
           description: room name
-          example: Voluptas dicta totam.
+          example: Molestias dolorem soluta quo itaque.
         UserId:
           type: string
           description: user id
-          example: Reiciendis delectus iusto sit aut accusamus.
+          example: Natus fuga laboriosam error inventore.
       description: All chat
       example:
-        Chat: Eveniet quaerat voluptate.
-        Id: 521771140489782364
-        Member: Qui aut veniam eligendi sint at.
-        PostDt: "1995-04-05T10:49:56Z"
-        RoomName: Eius aut quidem dolorum in aspernatur.
-        UserId: Quasi impedit nemo rerum aut iusto necessitatibus.
+        Chat: Soluta eius aut quidem dolorum in aspernatur.
+        Id: 6638991917400390848
+        Member: Rerum aut iusto.
+        PostDt: "1998-04-05T09:47:38Z"
+        RoomName: Aperiam numquam quibusdam dolor quasi impedit.
+        UserId: Debitis et.
       required:
       - Id
       - UserId

@@ -3,7 +3,7 @@ info:
   title: Chat Service
   description: Service for chat app, a Goa teaser
   version: ""
-host: 172.25.0.4:8000
+host: 172.25.0.3:8000
 consumes:
 - application/json
 - application/xml
@@ -73,36 +73,36 @@ definitions:
       Chat:
         type: string
         description: chat
-        example: Possimus voluptas qui.
+        example: Est non neque.
       Id:
         type: integer
         description: room id
-        example: 3337394912939359600
+        example: 6560887464849577627
         format: int64
       Member:
         type: string
         description: member
-        example: Debitis saepe.
+        example: Exercitationem ut.
       PostDt:
         type: string
-        example: "1970-09-10T03:46:43Z"
+        example: "1984-02-15T19:55:47Z"
         format: date-time
       RoomName:
         type: string
         description: room name
-        example: Est non neque.
+        example: Aspernatur et nihil ab sint voluptas.
       UserId:
         type: string
         description: user id
-        example: Rerum exercitationem ut.
+        example: Consequatur accusamus.
     description: All chat (default view)
     example:
-      Chat: Est est aut doloremque quo nulla.
-      Id: 286304491940368759
-      Member: Odio recusandae atque ut.
-      PostDt: "1970-05-25T06:32:11Z"
-      RoomName: Neque nostrum et magni eos enim.
-      UserId: Quis repudiandae perferendis ut.
+      Chat: Neque nostrum et magni eos enim.
+      Id: 4335096105350829226
+      Member: Quis repudiandae perferendis ut.
+      PostDt: "1992-12-18T10:41:25Z"
+      RoomName: Veritatis est.
+      UserId: Voluptas perferendis.
     required:
     - Id
     - UserId

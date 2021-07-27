@@ -9,9 +9,9 @@ var _ = API("getchat", func() {
 	Title("Chat Service")
 	Description("Service for chat app, a Goa teaser")
 	Server("chat api", func() {
-		Host("172.25.0.4", func() {
-			URI("http://172.25.0.4:8000")
-			URI("grpc://172.25.0.4:8080")
+		Host("172.25.0.3", func() {
+			URI("http://172.25.0.3:8000")
+			//URI("grpc://172.25.0.2:8080")
 		})
 	})
 })
@@ -31,7 +31,7 @@ var _ = Service("chatapi", func() {
 			APIKey("api_key", "key", String, "API key used to perform authorization")
 			Attribute("id", Int, func() {
 				Description("room id")
-				Meta("rpc:tag", "1")
+				//Meta("rpc:tag", "1")
 			})
 			Required("key", "id")
 		})
@@ -43,9 +43,9 @@ var _ = Service("chatapi", func() {
 			Header("key:Authorization")
 			Response(StatusOK)
 		})
-		GRPC(func() {
-			Response(CodeOK)
-		})
+		//GRPC(func() {
+		//	Response(CodeOK)
+		//})
 	})
 })
 

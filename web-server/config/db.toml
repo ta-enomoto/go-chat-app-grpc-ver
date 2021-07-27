@@ -1,6 +1,13 @@
 [database1]
-host = "mysql"
+host = "db-users"
 port = 3306
-db-name = "gochatapp"
+db-name = "db_users"
 charset = "utf8"
-user = "enomoto"
+user = "user"
+
+[database2]
+host = "db-chats"
+port = 3306
+db-name = "db_chats"
+charset = "utf8"
+user = "user"

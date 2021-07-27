@@ -1,0 +1,6 @@
+use db_users;
+
+CREATE TABLE USERS (
+    USER_ID VARCHAR(10) NOT NULL,
+    PASSWORD BLOB NOT NULL
+);

@@ -16,7 +16,7 @@ type ConfDbChtrm struct {
 }
 
 type ConfigChtrm struct {
-	ConfDbChtrm `toml:"database1"`
+	ConfDbChtrm `toml:"database2"`
 }
 
 // URL設定の構造体

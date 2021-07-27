@@ -17,7 +17,7 @@ RUN go mod download
 
 COPY chat-api/. .
 
-
+RUN GOOS=linux CGO_ENABLED=0 go build ./cmd/chat_api
 
 EXPOSE 8000
 EXPOSE 8080

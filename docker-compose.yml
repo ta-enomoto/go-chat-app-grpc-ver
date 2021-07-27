@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: mysql/dockerfile
+    container_name: go-chat-app-api-ver_mysql
     ports:
       - "3306:3306"
     environment:
@@ -38,6 +39,7 @@ services:
     build:
       context: .
       dockerfile: chat-api/docker/api/dockerfile
+    container_name: go-chat-app-api-ver_api
     ports:
       - "8080:80"
     volumes:

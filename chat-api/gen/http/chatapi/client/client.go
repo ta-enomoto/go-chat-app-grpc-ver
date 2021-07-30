@@ -21,6 +21,10 @@ type Client struct {
 	// endpoint.
 	GetchatDoer goahttp.Doer
 
+	// Postchat Doer is the HTTP client used to make requests to the postchat
+	// endpoint.
+	PostchatDoer goahttp.Doer
+
 	// CORS Doer is the HTTP client used to make requests to the  endpoint.
 	CORSDoer goahttp.Doer
 
@@ -45,6 +49,7 @@ func NewClient(
 ) *Client {
 	return &Client{
 		GetchatDoer:         doer,
+		PostchatDoer:        doer,
 		CORSDoer:            doer,
 		RestoreResponseBody: restoreBody,
 		scheme:              scheme,
@@ -73,6 +78,30 @@ func (c *Client) Getchat() goa.Endpoint {
 		resp, err := c.GetchatDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("chatapi", "getchat", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// Postchat returns an endpoint that makes HTTP requests to the chatapi service
+// postchat server.
+func (c *Client) Postchat() goa.Endpoint {
+	var (
+		encodeRequest  = EncodePostchatRequest(c.encoder)
+		decodeResponse = DecodePostchatResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v interface{}) (interface{}, error) {
+		req, err := c.BuildPostchatRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.PostchatDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("chatapi", "postchat", err)
 		}
 		return decodeResponse(resp)
 	}

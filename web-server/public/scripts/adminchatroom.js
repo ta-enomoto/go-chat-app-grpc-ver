@@ -4,7 +4,7 @@ window.onload = async function() {
   let url = location.href;
   let roomid = url.replace("http://172.25.0.2/admin/chatrooms/chatroom","");
 
-  const urlForApi = "http://172.25.0.4:8000/chatroom/" + roomid
+  const urlForApi = "http://172.25.0.3:8000/chatroom/" + roomid
   
   //チャット読み込み
   async function getChatFromApi() {

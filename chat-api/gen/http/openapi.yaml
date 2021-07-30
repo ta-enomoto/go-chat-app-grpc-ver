@@ -39,6 +39,40 @@ paths:
       - http
       security:
       - api_key_header_Authorization: []
+  /chatroom/chat:
+    post:
+      tags:
+      - chatapi
+      summary: postchat chatapi
+      operationId: chatapi#postchat
+      parameters:
+      - name: Authorization
+        in: header
+        description: API key used to perform authorization
+        required: true
+        type: string
+      - name: PostchatRequestBody
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/ChatapiPostchatRequestBody'
+          required:
+          - Id
+          - UserId
+          - RoomName
+          - Member
+          - Chat
+          - PostDt
+          - Cookie
+      responses:
+        "200":
+          description: OK response.
+          schema:
+            type: boolean
+      schemes:
+      - http
+      security:
+      - api_key_header_Authorization: []
 definitions:
   ChatapiGoaChatResponseCollection:
     title: 'Mediatype identifier: application/vnd.goa.chat; type=collection; view=default'
@@ -48,24 +82,78 @@ definitions:
     description: GetchatResponseBody is the result type for an array of GoaChatResponse
       (default view)
     example:
-    - Chat: Rerum ut praesentium explicabo itaque sit ducimus.
-      Id: 681183766627976715
-      Member: Molestiae sed officiis eum earum esse aliquam.
-      PostDt: "1990-09-09T14:12:10Z"
-      RoomName: Quisquam consequatur culpa et aut ut.
-      UserId: Ex error voluptatem corporis quas.
-    - Chat: Rerum ut praesentium explicabo itaque sit ducimus.
-      Id: 681183766627976715
-      Member: Molestiae sed officiis eum earum esse aliquam.
-      PostDt: "1990-09-09T14:12:10Z"
-      RoomName: Quisquam consequatur culpa et aut ut.
-      UserId: Ex error voluptatem corporis quas.
-    - Chat: Rerum ut praesentium explicabo itaque sit ducimus.
-      Id: 681183766627976715
-      Member: Molestiae sed officiis eum earum esse aliquam.
-      PostDt: "1990-09-09T14:12:10Z"
-      RoomName: Quisquam consequatur culpa et aut ut.
-      UserId: Ex error voluptatem corporis quas.
+    - Chat: Possimus voluptas qui.
+      Id: 3337394912939359600
+      Member: Debitis saepe.
+      PostDt: "1970-09-10T03:46:43Z"
+      RoomName: Est non neque.
+      UserId: Rerum exercitationem ut.
+    - Chat: Possimus voluptas qui.
+      Id: 3337394912939359600
+      Member: Debitis saepe.
+      PostDt: "1970-09-10T03:46:43Z"
+      RoomName: Est non neque.
+      UserId: Rerum exercitationem ut.
+    - Chat: Possimus voluptas qui.
+      Id: 3337394912939359600
+      Member: Debitis saepe.
+      PostDt: "1970-09-10T03:46:43Z"
+      RoomName: Est non neque.
+      UserId: Rerum exercitationem ut.
+    - Chat: Possimus voluptas qui.
+      Id: 3337394912939359600
+      Member: Debitis saepe.
+      PostDt: "1970-09-10T03:46:43Z"
+      RoomName: Est non neque.
+      UserId: Rerum exercitationem ut.
+  ChatapiPostchatRequestBody:
+    title: ChatapiPostchatRequestBody
+    type: object
+    properties:
+      Chat:
+        type: string
+        description: chat
+        example: Non ea accusamus culpa impedit.
+      Cookie:
+        type: string
+        description: cookie
+        example: Et saepe vero.
+      Id:
+        type: string
+        description: room id
+        example: Laboriosam culpa totam modi.
+      Member:
+        type: string
+        description: member
+        example: Voluptatem fugiat repellat.
+      PostDt:
+        type: string
+        example: "2003-07-19T03:06:57Z"
+        format: date-time
+      RoomName:
+        type: string
+        description: room name
+        example: Blanditiis aut dolorum assumenda.
+      UserId:
+        type: string
+        description: user id
+        example: Et magnam molestiae laboriosam libero ut.
+    example:
+      Chat: Repellendus ducimus aspernatur ex soluta temporibus.
+      Cookie: Cum doloremque vel.
+      Id: Et labore voluptatem at id.
+      Member: Est corporis commodi eligendi autem.
+      PostDt: "1991-01-04T11:57:29Z"
+      RoomName: Minus eveniet ullam.
+      UserId: Recusandae possimus est illum quaerat doloremque.
+    required:
+    - Id
+    - UserId
+    - RoomName
+    - Member
+    - Chat
+    - PostDt
+    - Cookie
   GoaChatResponse:
     title: 'Mediatype identifier: application/vnd.goa.chat; view=default'
     type: object
@@ -73,36 +161,36 @@ definitions:
       Chat:
         type: string
         description: chat
-        example: Est non neque.
+        example: Pariatur consequatur blanditiis at.
       Id:
         type: integer
         description: room id
-        example: 6560887464849577627
+        example: 912857226314754593
         format: int64
       Member:
         type: string
         description: member
-        example: Exercitationem ut.
+        example: Et ut ullam eius natus.
       PostDt:
         type: string
-        example: "1984-02-15T19:55:47Z"
+        example: "1984-05-30T16:35:36Z"
         format: date-time
       RoomName:
         type: string
         description: room name
-        example: Aspernatur et nihil ab sint voluptas.
+        example: Officia sit voluptatem.
       UserId:
         type: string
         description: user id
-        example: Consequatur accusamus.
+        example: Sit iusto vero suscipit voluptatibus rerum qui.
     description: All chat (default view)
     example:
-      Chat: Neque nostrum et magni eos enim.
-      Id: 4335096105350829226
-      Member: Quis repudiandae perferendis ut.
-      PostDt: "1992-12-18T10:41:25Z"
-      RoomName: Veritatis est.
-      UserId: Voluptas perferendis.
+      Chat: Doloremque vero consequuntur dicta.
+      Id: 5077379530080508980
+      Member: Sed ullam id ut id assumenda totam.
+      PostDt: "1976-08-01T21:54:36Z"
+      RoomName: Cupiditate aut.
+      UserId: Eveniet quaerat voluptate.
     required:
     - Id
     - UserId

@@ -7,9 +7,8 @@ import (
 	"golang.org/x/net/websocket"
 	"goserver/query"
 	"goserver/sessions"
-	"regexp"
+	"net/url"
 	"strconv"
-	"strings"
 	"time"
 	"unsafe"
 )
@@ -151,9 +150,9 @@ func (wc *WsClient) Read(ws *websocket.Conn) {
 
 	for {
 		var msg string
-		var Chat WsChat
+		var receivedChat WsChat
 		if err := websocket.Message.Receive(ws, &msg); err == nil {
-			json.Unmarshal([]byte(msg), &Chat)
+			json.Unmarshal([]byte(msg), &receivedChat)
 		} else {
 			fmt.Println("json受信失敗")
 			return
@@ -165,47 +164,40 @@ func (wc *WsClient) Read(ws *websocket.Conn) {
 		}
 		defer dbChtrm.Close()
 
-		postedChat := new(query.Chat)
-		roomId, _ := strconv.Atoi(Chat.Id)
-		postedChat.Chatroom.Id = roomId
+		sendingChat := new(query.Chat)
+		roomId, _ := strconv.Atoi(receivedChat.Id)
 		currentChatroom := query.SelectChatroomById(roomId, dbChtrm)
 
-		postedChat.Chatroom.Id = currentChatroom.Id
-		postedChat.Chatroom.RoomName = currentChatroom.RoomName
+		sendingChat.Chatroom.Id = currentChatroom.Id
+		sendingChat.Chatroom.RoomName = currentChatroom.RoomName
 
-		cookie1 := Chat.Cookie
-		cookie := strings.Replace(cookie1, "%3D", "=", 1)
-		fmt.Println(cookie)
+		cookie, _ := url.QueryUnescape(receivedChat.Cookie)
 		userSessionVar := session.Manager.SessionStore[cookie].SessionValue["userId"]
 
 		if userSessionVar == currentChatroom.UserId {
 			//投稿主と部屋作成者が同じ場合
-			postedChat.Chatroom.UserId = currentChatroom.UserId
-			postedChat.Chatroom.Member = currentChatroom.Member
+			sendingChat.Chatroom.UserId = currentChatroom.UserId
+			sendingChat.Chatroom.Member = currentChatroom.Member
 		} else {
 			//投稿主と部屋作成者が違う場合
-			postedChat.Chatroom.UserId = currentChatroom.Member
-			postedChat.Chatroom.Member = currentChatroom.UserId
+			sendingChat.Chatroom.UserId = currentChatroom.Member
+			sendingChat.Chatroom.Member = currentChatroom.UserId
 		}
 
-		postedChat.Chat = regexp.QuoteMeta(Chat.Chat)
-		postedChat.PostDt = time.Now().UTC().Round(time.Second)
-		fmt.Println(postedChat.Chat)
-		posted := query.InsertChat(postedChat.Chatroom.Id, postedChat.Chatroom.UserId, postedChat.Chatroom.RoomName, postedChat.Chatroom.Member, postedChat.Chat, postedChat.PostDt, dbChtrm)
-		if posted {
-			fmt.Println("投稿成功")
-			Chat.UserId = postedChat.Chatroom.UserId
-			Chat.Member = postedChat.Chatroom.Member
-			fmt.Println(Chat)
-			msgjson, err := json.Marshal(Chat)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
-			msg = *(*string)(unsafe.Pointer(&msgjson))
-			fmt.Println(msg)
-			wc.Room.forward <- msg
-			continue
+		sendingChat.Chat = receivedChat.Chat
+		sendingChat.PostDt = time.Now().UTC().Round(time.Second)
+
+		//receivedChat.UserId = postedChat.Chatroom.UserId
+		//receivedChat.Member = postedChat.Chatroom.Member
+
+		msgjson, err := json.Marshal(sendingChat)
+		if err != nil {
+			fmt.Println(err.Error())
 		}
+		msg = *(*string)(unsafe.Pointer(&msgjson))
+		fmt.Println(msg)
+		wc.Room.forward <- msg
+		continue
 	}
 }
 

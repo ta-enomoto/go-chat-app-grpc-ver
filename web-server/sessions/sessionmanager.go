@@ -2,8 +2,11 @@ package session
 
 import (
 	"crypto/rand"
+	"database/sql"
 	"encoding/base64"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
+	"goserver/query"
 	"io"
 	"net/http"
 	"net/url"
@@ -47,6 +50,14 @@ func (Manager *MANAGER) SessionStart(w http.ResponseWriter, r *http.Request, use
 		session := Manager.NewSession(sid, userId)
 		//https環境では、Secure属性
 		cookie := http.Cookie{Name: Manager.CookieName, Value: url.QueryEscape(sid), Path: "/", HttpOnly: false, MaxAge: int(Manager.maxlifetime)}
+
+		dbSession, err := sql.Open("mysql", query.ConStrSession)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		defer dbSession.Close()
+
+		query.InsertSession(sid, userId, dbSession)
 
 		http.SetCookie(w, &cookie)
 		Manager.SessionStore[sid] = session
@@ -100,6 +111,13 @@ func (Manager *MANAGER) DeleteSessionFromStore(w http.ResponseWriter, r *http.Re
 	}
 	clientSid, _ := url.QueryUnescape(clientCookie.Value)
 	delete(Manager.SessionStore, clientSid)
+
+	dbSession, err := sql.Open("mysql", query.ConStrSession)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	defer dbSession.Close()
+	query.DeleteSessionBySessionId(clientSid, dbSession)
 
 	clientCookie.MaxAge = -1
 	http.SetCookie(w, clientCookie)

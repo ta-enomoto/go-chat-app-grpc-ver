@@ -15,3 +15,8 @@ import (
 func GetchatChatapiPath(id int) string {
 	return fmt.Sprintf("/chatroom/%v", id)
 }
+
+// PostchatChatapiPath returns the URL path to the chatapi service postchat HTTP endpoint.
+func PostchatChatapiPath() string {
+	return "/chatroom/chat"
+}

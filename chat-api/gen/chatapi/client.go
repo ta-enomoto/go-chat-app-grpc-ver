@@ -15,13 +15,15 @@ import (
 
 // Client is the "chatapi" service client.
 type Client struct {
-	GetchatEndpoint goa.Endpoint
+	GetchatEndpoint  goa.Endpoint
+	PostchatEndpoint goa.Endpoint
 }
 
 // NewClient initializes a "chatapi" service client given the endpoints.
-func NewClient(getchat goa.Endpoint) *Client {
+func NewClient(getchat, postchat goa.Endpoint) *Client {
 	return &Client{
-		GetchatEndpoint: getchat,
+		GetchatEndpoint:  getchat,
+		PostchatEndpoint: postchat,
 	}
 }
 
@@ -37,4 +39,18 @@ func (c *Client) Getchat(ctx context.Context, p *GetchatPayload) (res GoaChatCol
 		return
 	}
 	return ires.(GoaChatCollection), nil
+}
+
+// Postchat calls the "postchat" endpoint of the "chatapi" service.
+// Postchat may return the following errors:
+//	- "NotFound" (type *goa.ServiceError)
+//	- "BadRequest" (type *goa.ServiceError)
+//	- error: internal error
+func (c *Client) Postchat(ctx context.Context, p *PostchatPayload) (res bool, err error) {
+	var ires interface{}
+	ires, err = c.PostchatEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(bool), nil
 }

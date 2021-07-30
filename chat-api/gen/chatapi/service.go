@@ -19,6 +19,8 @@ import (
 type Service interface {
 	// Getchat implements getchat.
 	Getchat(context.Context, *GetchatPayload) (res GoaChatCollection, err error)
+	// Postchat implements postchat.
+	Postchat(context.Context, *PostchatPayload) (res bool, err error)
 }
 
 // Auther defines the authorization functions to be implemented by the service.
@@ -35,7 +37,7 @@ const ServiceName = "chatapi"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [1]string{"getchat"}
+var MethodNames = [2]string{"getchat", "postchat"}
 
 // GetchatPayload is the payload type of the chatapi service getchat method.
 type GetchatPayload struct {
@@ -47,6 +49,25 @@ type GetchatPayload struct {
 
 // GoaChatCollection is the result type of the chatapi service getchat method.
 type GoaChatCollection []*GoaChat
+
+// PostchatPayload is the payload type of the chatapi service postchat method.
+type PostchatPayload struct {
+	// API key used to perform authorization
+	Key string
+	// room id
+	ID string
+	// user id
+	UserID string
+	// room name
+	RoomName string
+	// member
+	Member string
+	// chat
+	Chat   string
+	PostDt string
+	// cookie
+	Cookie string
+}
 
 // All chat
 type GoaChat struct {

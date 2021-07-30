@@ -1,4 +1,11 @@
 [database1]
+host = "db-users"
+port = 3306
+db-name = "db_users"
+charset = "utf8"
+user = "user"
+
+[database2]
 host = "db-chats"
 port = 3306
 db-name = "db_chats"

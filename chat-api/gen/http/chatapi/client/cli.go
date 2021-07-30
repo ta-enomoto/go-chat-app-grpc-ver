@@ -9,8 +9,11 @@ package client
 
 import (
 	chatapi "chat-api/gen/chatapi"
+	"encoding/json"
 	"fmt"
 	"strconv"
+
+	goa "goa.design/goa/v3/pkg"
 )
 
 // BuildGetchatPayload builds the payload for the chatapi getchat endpoint from
@@ -32,6 +35,40 @@ func BuildGetchatPayload(chatapiGetchatID string, chatapiGetchatKey string) (*ch
 	}
 	v := &chatapi.GetchatPayload{}
 	v.ID = id
+	v.Key = key
+
+	return v, nil
+}
+
+// BuildPostchatPayload builds the payload for the chatapi postchat endpoint
+// from CLI flags.
+func BuildPostchatPayload(chatapiPostchatBody string, chatapiPostchatKey string) (*chatapi.PostchatPayload, error) {
+	var err error
+	var body PostchatRequestBody
+	{
+		err = json.Unmarshal([]byte(chatapiPostchatBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"Chat\": \"Quia omnis aut doloribus reiciendis.\",\n      \"Cookie\": \"Aut accusamus aut voluptas dicta totam.\",\n      \"Id\": \"Quis repudiandae perferendis ut.\",\n      \"Member\": \"Est est aut doloremque quo nulla.\",\n      \"PostDt\": \"1974-10-21T19:40:05Z\",\n      \"RoomName\": \"Odio recusandae atque ut.\",\n      \"UserId\": \"Neque nostrum et magni eos enim.\"\n   }'")
+		}
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.PostDt", body.PostDt, goa.FormatDateTime))
+
+		if err != nil {
+			return nil, err
+		}
+	}
+	var key string
+	{
+		key = chatapiPostchatKey
+	}
+	v := &chatapi.PostchatPayload{
+		ID:       body.ID,
+		UserID:   body.UserID,
+		RoomName: body.RoomName,
+		Member:   body.Member,
+		Chat:     body.Chat,
+		PostDt:   body.PostDt,
+		Cookie:   body.Cookie,
+	}
 	v.Key = key
 
 	return v, nil

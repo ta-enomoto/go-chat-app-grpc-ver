@@ -7,6 +7,10 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/url"
+	"regexp"
+	"strconv"
+	"time"
 
 	"goa.design/goa/v3/security"
 )
@@ -50,4 +54,46 @@ func (s *chatapisrvc) Getchat(ctx context.Context, p *chatapi.GetchatPayload) (r
 	s.logger.Print("chatAPI.get chat")
 
 	return Chats, nil
+}
+
+// Postchat implements postchat.
+func (s *chatapisrvc) Postchat(ctx context.Context, p *chatapi.PostchatPayload) (res bool, err error) {
+	s.logger.Print("chatapi.postchat")
+
+	dbChtrm, err := sql.Open("mysql", query.ConStrChtrm)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	defer dbChtrm.Close()
+
+	roomId, _ := strconv.Atoi(p.ID)
+	currentChatroom := query.SelectChatroomById(roomId, dbChtrm)
+
+	dbSession, err := sql.Open("mysql", query.ConStrSession)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	defer dbSession.Close()
+
+	cookie, _ := url.QueryUnescape(p.Cookie)
+	postedUser := query.SelectSessionBySessionId(cookie, dbSession)
+
+	postedChat := regexp.QuoteMeta(p.Chat)
+
+	postDt := time.Now().UTC().Round(time.Second)
+
+	if postedUser == currentChatroom.UserId {
+		//投稿主と部屋作成者が同じ場合
+		posted := query.InsertChat(roomId, currentChatroom.UserId, currentChatroom.RoomName, currentChatroom.Member, postedChat, postDt, dbChtrm)
+		if posted {
+			return true, nil
+		}
+	} else {
+		//投稿主と部屋作成者が違う場合
+		posted := query.InsertChat(roomId, currentChatroom.Member, currentChatroom.RoomName, currentChatroom.UserId, postedChat, postDt, dbChtrm)
+		if posted {
+			return true, nil
+		}
+	}
+	return false, err
 }

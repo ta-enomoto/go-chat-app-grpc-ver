@@ -10,6 +10,7 @@ package server
 import (
 	chatapiviews "chat-api/gen/chatapi/views"
 	"context"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -57,6 +58,59 @@ func DecodeGetchatRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp
 			return nil, err
 		}
 		payload := NewGetchatPayload(id, key)
+		if strings.Contains(payload.Key, " ") {
+			// Remove authorization scheme prefix (e.g. "Bearer")
+			cred := strings.SplitN(payload.Key, " ", 2)[1]
+			payload.Key = cred
+		}
+
+		return payload, nil
+	}
+}
+
+// EncodePostchatResponse returns an encoder for responses returned by the
+// chatapi postchat endpoint.
+func EncodePostchatResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
+		res, _ := v.(bool)
+		enc := encoder(ctx, w)
+		body := res
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// DecodePostchatRequest returns a decoder for requests sent to the chatapi
+// postchat endpoint.
+func DecodePostchatRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+	return func(r *http.Request) (interface{}, error) {
+		var (
+			body PostchatRequestBody
+			err  error
+		)
+		err = decoder(r).Decode(&body)
+		if err != nil {
+			if err == io.EOF {
+				return nil, goa.MissingPayloadError()
+			}
+			return nil, goa.DecodePayloadError(err.Error())
+		}
+		err = ValidatePostchatRequestBody(&body)
+		if err != nil {
+			return nil, err
+		}
+
+		var (
+			key string
+		)
+		key = r.Header.Get("Authorization")
+		if key == "" {
+			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
+		}
+		if err != nil {
+			return nil, err
+		}
+		payload := NewPostchatPayload(&body, key)
 		if strings.Contains(payload.Key, " ") {
 			// Remove authorization scheme prefix (e.g. "Bearer")
 			cred := strings.SplitN(payload.Key, " ", 2)[1]

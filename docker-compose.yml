@@ -1,47 +1,5 @@
 version: '3'
 services:
-  db-users:
-    build:
-      context: .
-      dockerfile: db-users/dockerfile
-    container_name: go-chat-app-api-ver_db-users
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_DATABASE: db_users
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: rootpass
-      TZ: 'Asia/Tokyo'
-    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
-    volumes:
-      - "db-data-users:/var/lib/mysql"
-      - ./db-users/my.conf:/etc/mysql/conf.d/my.conf
-      - ./db-users/initdb.d:/docker-entrypoint-initdb.d
-    networks:
-      app-api-db-net:
-        ipv4_address: 172.25.0.3
-  db-chats:
-    build:
-      context: .
-      dockerfile: db-chats/dockerfile
-    container_name: go-chat-app-api-ver_db-chats
-    ports:
-      - "3307:3306"
-    environment:
-      MYSQL_DATABASE: db_chats
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: rootpass
-      TZ: 'Asia/Tokyo'
-    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
-    volumes:
-      - "db-data-chats:/var/lib/mysql"
-      - ./db-chats/my.conf:/etc/mysql/conf.d/my.conf
-      - ./db-chats/initdb.d:/docker-entrypoint-initdb.d
-    networks:
-      app-api-db-net:
-        ipv4_address: 172.25.0.5
   web:
     build:
       context: .
@@ -67,7 +25,49 @@ services:
      - .:/api
     networks: 
       app-api-db-net:
+        ipv4_address: 172.25.0.3
+  db-users:
+    build:
+      context: .
+      dockerfile: db-users/dockerfile
+    container_name: go-chat-app-api-ver_db-users
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: db_users
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpass
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    volumes:
+      - "db-data-users:/var/lib/mysql"
+      - ./db-users/my.conf:/etc/mysql/conf.d/my.conf
+      - ./db-users/initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      app-api-db-net:
         ipv4_address: 172.25.0.4
+  db-chats:
+    build:
+      context: .
+      dockerfile: db-chats/dockerfile
+    container_name: go-chat-app-api-ver_db-chats
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: db_chats
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpass
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    volumes:
+      - "db-data-chats:/var/lib/mysql"
+      - ./db-chats/my.conf:/etc/mysql/conf.d/my.conf
+      - ./db-chats/initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      app-api-db-net:
+        ipv4_address: 172.25.0.5
 
 volumes:
   db-data-users:

@@ -8,10 +8,29 @@
 package client
 
 import (
+	chatapi "chat-api/gen/chatapi"
 	chatapiviews "chat-api/gen/chatapi/views"
 
 	goa "goa.design/goa/v3/pkg"
 )
+
+// PostchatRequestBody is the type of the "chatapi" service "postchat" endpoint
+// HTTP request body.
+type PostchatRequestBody struct {
+	// room id
+	ID string `form:"Id" json:"Id" xml:"Id"`
+	// user id
+	UserID string `form:"UserId" json:"UserId" xml:"UserId"`
+	// room name
+	RoomName string `form:"RoomName" json:"RoomName" xml:"RoomName"`
+	// member
+	Member string `form:"Member" json:"Member" xml:"Member"`
+	// chat
+	Chat   string `form:"Chat" json:"Chat" xml:"Chat"`
+	PostDt string `form:"PostDt" json:"PostDt" xml:"PostDt"`
+	// cookie
+	Cookie string `form:"Cookie" json:"Cookie" xml:"Cookie"`
+}
 
 // GetchatResponseBody is the type of the "chatapi" service "getchat" endpoint
 // HTTP response body.
@@ -30,6 +49,21 @@ type GoaChatResponse struct {
 	// chat
 	Chat   *string `form:"Chat,omitempty" json:"Chat,omitempty" xml:"Chat,omitempty"`
 	PostDt *string `form:"PostDt,omitempty" json:"PostDt,omitempty" xml:"PostDt,omitempty"`
+}
+
+// NewPostchatRequestBody builds the HTTP request body from the payload of the
+// "postchat" endpoint of the "chatapi" service.
+func NewPostchatRequestBody(p *chatapi.PostchatPayload) *PostchatRequestBody {
+	body := &PostchatRequestBody{
+		ID:       p.ID,
+		UserID:   p.UserID,
+		RoomName: p.RoomName,
+		Member:   p.Member,
+		Chat:     p.Chat,
+		PostDt:   p.PostDt,
+		Cookie:   p.Cookie,
+	}
+	return body
 }
 
 // NewGetchatGoaChatCollectionOK builds a "chatapi" service "getchat" endpoint

@@ -7,12 +7,12 @@ window.onload = async function() {
   let url = location.href;
   let roomid = url.replace("http://172.25.0.2/mypage/chatroom","");
 
-  const urlForApi = "http://172.25.0.4:8000/chatroom/" + roomid
+  const urlForApiGet = "http://172.25.0.3:8000/chatroom/" + roomid
   
   //チャット読み込み
   async function getChatFromApi() {
     try {
-       res = await axios.get(urlForApi, { headers: { Authorization: "apikey" } });
+       res = await axios.get(urlForApiGet, { headers: { "Authorization": "apikey" } });
        allchats = res.data;
       for (const chat of allchats) {
         let textUser = document.createTextNode(chat.UserId);
@@ -91,9 +91,9 @@ window.onload = async function() {
   socket.onmessage = function(e) {
     console.log("message recieved" + e.data);
     let chatobj = JSON.parse(e.data);
-    let textUser = document.createTextNode(chatobj.userid);
-    let textPostDt = document.createTextNode(chatobj.postdt);
-    let textChat = document.createTextNode(chatobj.chat);
+    let textUser = document.createTextNode(chatobj.Chatroom.userId);
+    let textPostDt = document.createTextNode(chatobj.PostDt);
+    let textChat = document.createTextNode(chatobj.Chat);
 
     let elUser = document.createElement("div");
     elUser.appendChild(textUser);
@@ -155,7 +155,20 @@ function send() {
   let cookieValue = document.cookie;
   let cookie = cookieValue.replace("cookieName=","");
   const newchat = new Newchat(roomid, userid, roomname, member, chat, postdt, cookie);
-  socket.send(JSON.stringify(newchat));
+  const newchatJSON = JSON.stringify(newchat);
+  socket.send(newchatJSON);
+
+  const urlForApiPost = "http://172.25.0.3:8000/chatroom/chat";
+  const axiosConfig = {
+    headers: {
+      "Authorization": "apikey",
+    }
+  };
+
+  axios.post(urlForApiPost, newchatJSON, axiosConfig).then(response => {
+    console.log('body:', response.data); 
+});
+  
   document.chatform.reset();
   console.log(JSON.stringify(newchat));
 };

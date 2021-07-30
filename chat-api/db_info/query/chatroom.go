@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"time"
 )
 
 type Chatroom struct {
@@ -53,4 +54,21 @@ func SelectAllChatsById(id int, db *sql.DB) (chats []*chatapi.GoaChat) {
 		chats = append(chats, chat)
 	}
 	return
+}
+
+//POSTされたチャットをDBに登録する
+func InsertChat(id int, userId string, roomName string, member string, chat string, postDt time.Time, db *sql.DB) bool {
+
+	stmt, err := db.Prepare("INSERT INTO ALL_STRUCTS_OF_CHAT(ID, USER_ID, ROOM_NAME, MEMBER, Chat, POST_DT) VALUES(?,?,?,?,?,?)")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(id, userId, roomName, member, chat, postDt)
+	if err != nil {
+		return false
+	} else {
+		return true
+	}
 }

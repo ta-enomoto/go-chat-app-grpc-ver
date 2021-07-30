@@ -29,10 +29,10 @@
     </div>
   </div>
   <script>
-  document.body.onload = addLinks;
-  function addLinks(){
-  let arrayOfRooms = {{.}};
-  arrayOfRooms.reverse();
+    document.body.onload = addLinks;
+    function addLinks(){
+    let arrayOfRooms = {{.}};
+    //arrayOfRooms.reverse();
     for (let value of arrayOfRooms){
     let newLink = document.createElement("a");
     let newLinkText = document.createTextNode("・" + value['roomName'] + "（お相手：" + value['member'] + "）");

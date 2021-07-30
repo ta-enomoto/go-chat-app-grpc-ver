@@ -10,7 +10,27 @@ package server
 import (
 	chatapi "chat-api/gen/chatapi"
 	chatapiviews "chat-api/gen/chatapi/views"
+
+	goa "goa.design/goa/v3/pkg"
 )
+
+// PostchatRequestBody is the type of the "chatapi" service "postchat" endpoint
+// HTTP request body.
+type PostchatRequestBody struct {
+	// room id
+	ID *string `form:"Id,omitempty" json:"Id,omitempty" xml:"Id,omitempty"`
+	// user id
+	UserID *string `form:"UserId,omitempty" json:"UserId,omitempty" xml:"UserId,omitempty"`
+	// room name
+	RoomName *string `form:"RoomName,omitempty" json:"RoomName,omitempty" xml:"RoomName,omitempty"`
+	// member
+	Member *string `form:"Member,omitempty" json:"Member,omitempty" xml:"Member,omitempty"`
+	// chat
+	Chat   *string `form:"Chat,omitempty" json:"Chat,omitempty" xml:"Chat,omitempty"`
+	PostDt *string `form:"PostDt,omitempty" json:"PostDt,omitempty" xml:"PostDt,omitempty"`
+	// cookie
+	Cookie *string `form:"Cookie,omitempty" json:"Cookie,omitempty" xml:"Cookie,omitempty"`
+}
 
 // GoaChatResponseCollection is the type of the "chatapi" service "getchat"
 // endpoint HTTP response body.
@@ -48,4 +68,50 @@ func NewGetchatPayload(id int, key string) *chatapi.GetchatPayload {
 	v.Key = key
 
 	return v
+}
+
+// NewPostchatPayload builds a chatapi service postchat endpoint payload.
+func NewPostchatPayload(body *PostchatRequestBody, key string) *chatapi.PostchatPayload {
+	v := &chatapi.PostchatPayload{
+		ID:       *body.ID,
+		UserID:   *body.UserID,
+		RoomName: *body.RoomName,
+		Member:   *body.Member,
+		Chat:     *body.Chat,
+		PostDt:   *body.PostDt,
+		Cookie:   *body.Cookie,
+	}
+	v.Key = key
+
+	return v
+}
+
+// ValidatePostchatRequestBody runs the validations defined on
+// PostchatRequestBody
+func ValidatePostchatRequestBody(body *PostchatRequestBody) (err error) {
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("Id", "body"))
+	}
+	if body.UserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("UserId", "body"))
+	}
+	if body.RoomName == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("RoomName", "body"))
+	}
+	if body.Member == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("Member", "body"))
+	}
+	if body.Chat == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("Chat", "body"))
+	}
+	if body.PostDt == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("PostDt", "body"))
+	}
+	if body.Cookie == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("Cookie", "body"))
+	}
+	if body.PostDt != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.PostDt", *body.PostDt, goa.FormatDateTime))
+	}
+	return
 }

@@ -5,7 +5,7 @@
 
 ### -アーキテクチャ図
 <div  align="center">
-<img  src="https://user-images.githubusercontent.com/63547862/127731206-94fad971-1510-4f1e-aed7-9152b30cc692.png"  width="700px">
+<img  src="https://user-images.githubusercontent.com/63547862/127731206-94fad971-1510-4f1e-aed7-9152b30cc692.png"  width="1000px">
 </div>
 
 ### - 技術的特徴

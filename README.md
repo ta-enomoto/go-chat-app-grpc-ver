@@ -3,6 +3,10 @@
 ### Go言語の標準・準標準ライブラリを中心に実装を目指したウェブアプリケーションです。
 ウェブ関連技術について基礎から学ぶため、CRUDなど基礎的な機能から、双方向通信やAPIなど様々な技術が用いられている会員制のチャットアプリケーションを選択しました。またGo言語はフレームワークを用いずに実装する部分も多いと耳にし、ウェブアプリケーション構築を基礎から学ぶため、できる限りGo言語の標準・準標準ライブラリのみを使用しての実装を目指して作成しました。
 
+<div align="center">
+<img src="https://user-images.githubusercontent.com/63547862/126903232-d31598c8-0f62-46f2-a1e7-6177ecb9625a.gif" width="700px">
+</div>
+
 ### -アーキテクチャ図
 <div  align="center">
 <img  src="https://user-images.githubusercontent.com/63547862/127731206-94fad971-1510-4f1e-aed7-9152b30cc692.png"  width="800px">

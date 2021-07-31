@@ -6,10 +6,10 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
-	"goserver/query"
-	"goserver/sessions"
 	"html/template"
 	"net/http"
+	"web-server/query"
+	"web-server/sessions"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {

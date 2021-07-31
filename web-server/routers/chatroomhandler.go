@@ -4,13 +4,13 @@ package routers
 import (
 	"database/sql"
 	"fmt"
-	"goserver/query"
-	"goserver/sessions"
 	"html/template"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+	"web-server/query"
+	"web-server/sessions"
 	//"time"
 )
 

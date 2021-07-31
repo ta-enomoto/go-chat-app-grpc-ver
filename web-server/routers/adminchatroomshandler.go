@@ -6,11 +6,11 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"goserver/query"
-	"goserver/sessions"
 	"html/template"
 	"net/http"
 	"net/url"
+	"web-server/query"
+	"web-server/sessions"
 )
 
 func AdminChatroomsHandler(w http.ResponseWriter, r *http.Request) {
@@ -39,8 +39,8 @@ func AdminChatroomsHandler(w http.ResponseWriter, r *http.Request) {
 
 		AllChatrooms := query.SelectAllChatrooms(dbChtrm)
 
-		t := template.Must(template.ParseFiles("./templates/admin/chatrooms.html"))
-		t.ExecuteTemplate(w, "chatrooms.html", AllChatrooms)
+		t := template.Must(template.ParseFiles("./templates/admin/adminchatrooms.html"))
+		t.ExecuteTemplate(w, "adminchatrooms.html", AllChatrooms)
 		return
 	}
 }

@@ -3,12 +3,12 @@ package routers
 import (
 	"database/sql"
 	"fmt"
-	"goserver/query"
-	"goserver/sessions"
 	"html/template"
 	"net/http"
 	"net/url"
 	"strings"
+	"web-server/query"
+	"web-server/sessions"
 )
 
 func AdminUserHandler(w http.ResponseWriter, r *http.Request) {
@@ -42,8 +42,8 @@ func AdminUserHandler(w http.ResponseWriter, r *http.Request) {
 		user := query.SelectUserById(requestedUserId, dbUsr)
 		ResponseUserId := user.UserId
 
-		t := template.Must(template.ParseFiles("./templates/admin/users/user.html"))
-		t.ExecuteTemplate(w, "user.html", ResponseUserId)
+		t := template.Must(template.ParseFiles("./templates/admin/adminuser/adminuser.html"))
+		t.ExecuteTemplate(w, "adminuser.html", ResponseUserId)
 
 	case "POST":
 		if ok := session.Manager.SessionIdCheck(w, r); !ok {
@@ -80,12 +80,11 @@ func AdminUserHandler(w http.ResponseWriter, r *http.Request) {
 
 			userIdChangedOrNot := query.ChangeUserId(newUserId, currentUserId, dbUsr)
 			if userIdChangedOrNot {
-				fmt.Println("成功")
+				t := template.Must(template.ParseFiles("./templates/admin/adminuser/adminuseridchanged.html"))
+				t.ExecuteTemplate(w, "adminuseridchanged.html", nil)
 				return
 			}
 			return
-			//t := template.Must(template.ParseFiles("./templates/admin/users/useridchanged.html"))
-			//t.ExecuteTemplate(w, "useridchanged.html", nil)
 		} else if r.FormValue("change-password") == "変更" {
 
 			newPsw_string := r.FormValue("password")
@@ -110,13 +109,11 @@ func AdminUserHandler(w http.ResponseWriter, r *http.Request) {
 
 			passwordChangedOrNot := query.ChangePassword(newPsw_byte, currentPassword, dbUsr)
 			if passwordChangedOrNot {
-				fmt.Println("成功")
+				t := template.Must(template.ParseFiles("./templates/admin/adminuser/adminpasswordchanged.html"))
+				t.ExecuteTemplate(w, "adminpasswordchanged.html", nil)
 				return
 			}
 			return
-
-			//t := template.Must(template.ParseFiles("./templates/admin/users/passwordchanged.html"))
-			//t.ExecuteTemplate(w, "passwordchanged.html", nil)
 		} else if r.FormValue("delete-user") == "このユーザーを削除する" {
 			url := r.URL.Path
 			requestedUserId := strings.TrimPrefix(url, "/admin/users/")
@@ -129,7 +126,8 @@ func AdminUserHandler(w http.ResponseWriter, r *http.Request) {
 
 			userDeletedFromDb := query.DeleteUserById(requestedUserId, dbUsr)
 			if userDeletedFromDb {
-				fmt.Println("削除成功")
+				t := template.Must(template.ParseFiles("./templates/admin/adminuser/adminuserdeleted.html"))
+				t.ExecuteTemplate(w, "adminuserdeleted.html", nil)
 				return
 			}
 			return

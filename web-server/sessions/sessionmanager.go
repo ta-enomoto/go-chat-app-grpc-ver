@@ -6,11 +6,11 @@ import (
 	"encoding/base64"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"goserver/query"
 	"io"
 	"net/http"
 	"net/url"
 	"time"
+	"web-server/query"
 )
 
 //セッション構造体

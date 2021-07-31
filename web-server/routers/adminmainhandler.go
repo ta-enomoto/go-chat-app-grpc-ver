@@ -3,10 +3,10 @@ package routers
 
 import (
 	"fmt"
-	"goserver/sessions"
 	"html/template"
 	"net/http"
 	"net/url"
+	"web-server/sessions"
 )
 
 func AdminMainHandler(w http.ResponseWriter, r *http.Request) {
@@ -27,8 +27,8 @@ func AdminMainHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		t := template.Must(template.ParseFiles("./templates/admin/main.html"))
-		t.ExecuteTemplate(w, "main.html", nil)
+		t := template.Must(template.ParseFiles("./templates/admin/adminmain.html"))
+		t.ExecuteTemplate(w, "adminmain.html", nil)
 		return
 	}
 }

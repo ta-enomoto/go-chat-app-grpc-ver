@@ -4,9 +4,9 @@ package routers
 import (
 	//"golang.org/x/crypto/bcrypt"
 	"fmt"
-	"goserver/sessions"
 	"html/template"
 	"net/http"
+	"web-server/sessions"
 )
 
 func AdminLoginHandler(w http.ResponseWriter, r *http.Request) {

@@ -1,9 +1,9 @@
 package routers
 
 import (
-	"goserver/sessions"
 	"html/template"
 	"net/http"
+	"web-server/sessions"
 )
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {

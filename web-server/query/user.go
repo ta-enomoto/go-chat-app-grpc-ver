@@ -6,7 +6,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
-	"goserver/config"
+	"web-server/config"
 )
 
 // マスタからSELECTしたデータをマッピングする構造体

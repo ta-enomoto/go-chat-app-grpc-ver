@@ -5,10 +5,10 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"goserver/query"
 	"html/template"
 	"net/http"
 	"regexp"
+	"web-server/query"
 )
 
 func ResistrationHandler(w http.ResponseWriter, r *http.Request) {

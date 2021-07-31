@@ -5,10 +5,10 @@ import (
 	//"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/net/websocket"
-	"goserver/routers"
-	"goserver/wsserver"
 	"net/http"
 	"regexp"
+	"web-server/routers"
+	"web-server/wsserver"
 )
 
 type MyMux struct{}

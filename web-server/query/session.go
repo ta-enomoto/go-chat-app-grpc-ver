@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"goserver/config"
+	"web-server/config"
 )
 
 var ConStrSession string

@@ -4,13 +4,13 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"goserver/query"
-	"goserver/sessions"
 	"html/template"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+	"web-server/query"
+	"web-server/sessions"
 )
 
 func AdminChatroomHandler(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +31,7 @@ func AdminChatroomHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		t := template.Must(template.ParseFiles("./templates/admin/chatrooms/adminchatroom.html"))
+		t := template.Must(template.ParseFiles("./templates/admin/adminchatroom/adminchatroom.html"))
 		t.ExecuteTemplate(w, "adminchatroom.html", nil)
 		return
 
@@ -64,8 +64,8 @@ func AdminChatroomHandler(w http.ResponseWriter, r *http.Request) {
 
 			query.DeleteChatroomById(roomId, dbChtrm)
 
-			t := template.Must(template.ParseFiles("./templates/mypage/chatroomdeleted.html"))
-			t.ExecuteTemplate(w, "chatroomdeleted.html", nil)
+			t := template.Must(template.ParseFiles("./templates/admin/adminchatroom/adminchatroomdeleted.html"))
+			t.ExecuteTemplate(w, "adminchatroomdeleted.html", nil)
 		}
 	}
 }

@@ -5,11 +5,11 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"goserver/query"
-	"goserver/sessions"
 	"html/template"
 	"net/http"
 	"net/url"
+	"web-server/query"
+	"web-server/sessions"
 )
 
 func AdminUsersHandler(w http.ResponseWriter, r *http.Request) {
@@ -38,8 +38,8 @@ func AdminUsersHandler(w http.ResponseWriter, r *http.Request) {
 
 		AllUsers := query.SelectAllUser(dbUsr)
 
-		t := template.Must(template.ParseFiles("./templates/admin/users.html"))
-		t.ExecuteTemplate(w, "users.html", AllUsers)
+		t := template.Must(template.ParseFiles("./templates/admin/adminusers.html"))
+		t.ExecuteTemplate(w, "adminusers.html", AllUsers)
 		return
 	}
 }

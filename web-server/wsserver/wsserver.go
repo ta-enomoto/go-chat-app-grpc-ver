@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"golang.org/x/net/websocket"
-	"goserver/query"
-	"goserver/sessions"
 	"net/url"
 	"strconv"
 	"time"
 	"unsafe"
+	"web-server/query"
+	"web-server/sessions"
 )
 
 type WsChat struct {

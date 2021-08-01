@@ -1,17 +1,33 @@
-let allchats =""
+let allchats ="";
+
+//ウィンドウ表示時に、APIからのチャットの取得する
 window.onload = async function() {
   
+  //APIで使用するURLからのルームID取得処理
   let url = location.href;
   let roomid = url.replace("http://172.25.0.2/admin/chatrooms/chatroom","");
 
-  const urlForApi = "http://172.25.0.3:8000/chatroom/" + roomid
-  
-  //チャット読み込み
+  //APIリクエスト(GET)先のURL
+  const urlForApiGet = "http://172.25.0.3:8000/chatroom/" + roomid;
+
+  //headersにAPIキー認証用のAuthorizationヘッダーを設定
+  const axiosConfig = {
+    headers: {
+      "Authorization": "apikey",
+    }
+  };
+
+  //APIを叩く関数(GET)
   async function getChatFromApi() {
     try {
-       res = await axios.get(urlForApi, { headers: { Authorization: "apikey" } });
+       res = await axios.get(urlForApiGet, axiosConfig);
+
+       //取得した全チャットは変数allchatsに格納
        allchats = res.data;
+
       for (const chat of allchats) {
+
+        //各チャット毎にHTML要素を生成・順に追加していく
         let textUser = document.createTextNode(chat.UserId);
         let textPostDt = document.createTextNode(chat.PostDt);
         let textChat = document.createTextNode(chat.Chat);
@@ -37,24 +53,29 @@ window.onload = async function() {
         let chatList = document.getElementById("chats");
         chatList.appendChild(newLi);
       }
-      
+
+      //ルーム名を一番目のルーム作成時投稿チャットから取得しHTML要素を生成・追加する
       let roomnameText = document.createTextNode(allchats[0].RoomName);
       let newH2 = document.createElement("h2");
       newH2.appendChild(roomnameText);
       let roomname = document.getElementById("roomname-header");
       roomname.appendChild(newH2);
-      
-      return allchats;
+
+      return;
+
     } catch(error){
       const {
         status,
         statusText
       } = error.response;
       console.log(`Error! HTTP Status: ${status} ${statusText}`);
-    }
-  }
-  await getChatFromApi()
-  
+    };
+  };
+
+  //APIのチャット取得処理が完了するまで、以降の処理を待つ
+  await getChatFromApi();
+
+  //全チャット表示後、ページ最下部にスクロールする
   let element = document.documentElement;
   let bottom = element.scrollHeight - element.clientHeight;
   window.scroll(0, bottom);

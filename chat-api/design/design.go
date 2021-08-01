@@ -21,7 +21,7 @@ var _ = Service("chatapi", func() {
 	cors.Origin("http://172.25.0.2", func() {
 		cors.Headers("Access-Control-Allow-Origin", "Authorization", "application/x-www-form-urlencoded")
 		cors.Methods("GET")
-		//cors.Expose("X-Time")
+		//cors.Expose("X-Time") APIのキャッシュ時使用
 		//cors.MaxAge(600)
 		cors.Credentials()
 	})

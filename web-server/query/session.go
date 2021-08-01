@@ -18,7 +18,7 @@ func init() {
 	ConStrSession = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s", confDbSession.User, confDbSession.Pass, confDbSession.Host, confDbSession.Port, confDbSession.DbName, confDbSession.Charset)
 }
 
-// セッションをdbに登録する関数
+// セッション情報をDBに登録する関数
 func InsertSession(sessionId string, sessionValue string, db *sql.DB) bool {
 
 	stmt, err := db.Prepare("INSERT INTO SESSIONS(SESSION_ID,SESSION_VALUE) VALUES(?,?)")
@@ -35,7 +35,7 @@ func InsertSession(sessionId string, sessionValue string, db *sql.DB) bool {
 	}
 }
 
-//ユーザーIDと一致するユーザー情報をdbから取得する関数
+//ユーザーIDと一致するユーザー情報をDBから取得する関数
 func SelectSessionBySessionId(sessionId string, db *sql.DB) (sessionValue string) {
 
 	err := db.QueryRow("SELECT SESSION_VALUE FROM SESSION_ID WHERE SESSION_ID = ?", sessionId).Scan(&sessionValue)
@@ -45,7 +45,7 @@ func SelectSessionBySessionId(sessionId string, db *sql.DB) (sessionValue string
 	return
 }
 
-//ユーザーIDに一致するユーザーをdbから削除する関数。ハンドラでチェックはしてるが関数内でもパスも一致させたほうがいいかも
+//ユーザーIDに一致するユーザーをDBから削除する関数
 func DeleteSessionBySessionId(sessionId string, db *sql.DB) bool {
 
 	stmt, err := db.Prepare("DELETE FROM SESSIONS WHERE SESSION_ID = ?")

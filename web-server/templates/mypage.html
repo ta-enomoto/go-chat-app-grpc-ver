@@ -29,39 +29,49 @@
     </div>
   </div>
   <script>
+    //ロード時にaddLinks関数を実行する
     document.body.onload = addLinks;
+
+    //ルームリンクを生成する関数
     function addLinks(){
-    let arrayOfRooms = {{.}};
-    //arrayOfRooms.reverse();
-    for (let value of arrayOfRooms){
-    let newLink = document.createElement("a");
-    let newLinkText = document.createTextNode("・" + value['roomName'] + "（お相手：" + value['member'] + "）");
-    newLink.appendChild(newLinkText);
-    newLink.href = "/mypage/chatroom" + value['id'];
-    let br =document.createElement("br");
-    newLink.appendChild(br);
-    newLink.id ="room-link";
-    newLink.target ="chatspace";
+      
+      //ExecuteTemplateで渡されたルーム情報を配列に格納する
+      let arrayOfRooms = {{.}};
+      
+      //各ルームについて、ルームリンクのHTML要素を生成・追加する
+      for (let value of arrayOfRooms){
+        let newLink = document.createElement("a");
+        let newLinkText = document.createTextNode("・" + value['roomName'] + "（お相手：" + value['member'] + "）");
+        newLink.appendChild(newLinkText);
+        newLink.href = "/mypage/chatroom" + value['id'];
+        let br =document.createElement("br");
+        newLink.appendChild(br);
+        newLink.id ="room-link";
+        newLink.target ="chatspace";
 
-    let currentDiv = document.getElementById("all-rooms");
-    currentDiv.appendChild(newLink)
+        let currentDiv = document.getElementById("all-rooms");
+        currentDiv.appendChild(newLink)
+      }
     }
-  }
 
+  //ルーム作成ボタンが押された時の処理
   window.addEventListener("load", function(){
     document.getElementById("create_button").addEventListener("click", function(){
+
+      //ルーム名・お相手欄が空欄の時は処理を中断し、alertで通知する
       let roomName = document.getElementById("roomName").value;
       if (roomName == "") {
         window.alert("ルーム名が入力されていません");
         return;
       };
-      
+
       let memberName = document.getElementById("memberName").value;
       if (memberName == "") {
         window.alert("お相手が入力されていません");
         return;
       };
-      
+
+      //フォーム情報をPOSTし、成功した場合は画面をリロードし、ルームリンクを更新する
       let formDatas = document.getElementById("new_room");
       let postDatas = new FormData(formDatas);
     

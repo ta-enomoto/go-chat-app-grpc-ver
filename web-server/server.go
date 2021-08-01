@@ -2,7 +2,6 @@
 package main
 
 import (
-	//"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/net/websocket"
 	"net/http"

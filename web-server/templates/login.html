@@ -7,10 +7,10 @@
 </head>
 <body>
   <div class="container">
-    <form class="login-form" action="" method="POST" id="loginform">
+    <form class="login-form" action="" method="POST" id="loginform" onsubmit="return loginFunc()">
       <p id="userId"><input type="text" id="inputedUserId" name="userId" placeholder="ユーザーID"></p>
       <p id="password"><input type="password" id="inputedPassword" name="password" placeholder="パスワード"></p>
-      <p><input type="button" value="ログイン" id="login" name="login"></p>
+      <p><input type="submit" value="ログイン" id="login" name="login"></p>
     </form>
     <p id="resistration"><a href="resistration">新規登録はこちら</a></p>
   </div>

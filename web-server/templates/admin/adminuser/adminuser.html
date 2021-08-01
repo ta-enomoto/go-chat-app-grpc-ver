@@ -5,27 +5,80 @@
   <title>ユーザー管理</title>
 </head>
 <body>
-  <div style="text-align: right"><a href="http://172.25.0.2/logout">ログアウト</a></div><a href="http://172.25.0.2/admin/main">メイン管理画面に戻る</a><br><a href="http://172.25.0.2/admin/users">ユーザー一覧に戻る</a>
+  <div style="text-align: right"><a href="http://172.25.0.2/admin/logout">ログアウト</a></div><a href="http://172.25.0.2/admin/main">メイン管理画面に戻る</a><br><a href="http://172.25.0.2/admin/users">ユーザー一覧に戻る</a>
   <div class="container">
     <h2>選択中のユーザー：{{.}}</h2>
-    <form name="change-userId" action="" method="post">
+    <form name="change-userId" action="" method="POST" onsubmit="return changeUserIdFunc()">
       <p>新規ユーザーID<br>(10文字以内)</p>
       <p><input type="text" id="userId" name="userId">
-      <nobr><input type="submit" id="userId" name="change-userId" value="変更"></nobr></p>
+      <nobr><input type="submit" id="change-userId" name="change-userId" value="変更"></nobr></p>
       <p></p>
     </form>
     
-    <form class="change-password" action="" method="post">
+    <form class="change-password" action="" method="post" onsubmit="return changePasswordFunc()">
       <p>新規パスワード<br>(英数字、10文字以内)</p>
       <p><input type="password" id="password" name="password">
-      <nobr><input type="submit" id="password" name="change-password" value="変更"></nobr></p>
+      <nobr><input type="submit" id="change-password" name="change-password" value="変更"></nobr></p>
       <p></p>
       <p>※次の記号は使用不可<br>（&#x3F、&#x24、&amp;、&#x3D、&#x2D、&gt;、&lt;、&#x2B、&#x3B、&#x3A、&#x2A、&#x7C、&#x27）</p>
     </form>
     <p></p>
-    <form class="delete" action="" method="post">
-      <input type="submit" value="このユーザーを削除する" name="delete-user">
+    <form class="delete" action="" method="post" onsubmit="return deleteUserFunc()">
+      <input type="submit" value="このユーザーを削除する" id="delete-user" name="delete-user">
     </form>
   </div>
+  <script>
+    //ユーザーID変更ボタンがクリックされた時の処理
+    //変更実行前に、確認ウィンドウを表示する
+    function changeUserIdFunc(){
+      //フォームの値を取得する
+      let userId = document.getElementById("userId").value;
+      
+      //フォームが空欄の場合はsubmitせず、alertで通知
+      if (userId == "") {
+      window.alert("ユーザーIDが入力されていません");
+      return false;
+      }
+
+      if(window.confirm("本当にユーザーIDを変更しますか？")){
+        this.form.submit();
+      } else {
+          window.alert("ユーザーIDの変更をキャンセルしました");
+          return false
+      };
+    };
+
+    //パスワード変更ボタンがクリックされた時の処理
+    //変更実行前に、確認ウィンドウを表示する
+    function changePasswordFunc(){
+      //フォームの値を取得する
+      let password = document.getElementById("password").value;
+      
+      //フォームが空欄の場合はsubmitせず、alertで通知
+      if (password == "") {
+        window.alert("パスワードが入力されていません");
+        return false;
+      }
+      
+      if(window.confirm("本当にこのユーザーのパスワードを変更しますか？")){
+        this.form.submit();
+      } else {
+          window.alert("パスワードの変更をキャンセルしました");
+          return false
+      };
+    };
+
+
+    //ユーザー削除ボタンがクリックされた時の処理
+    //削除実行前に、確認ウィンドウを表示する
+    function deleteUserFunc(){
+	    if(window.confirm("本当にこのユーザーを削除しますか？")){
+        this.form.submit();
+	    } else {
+          window.alert("ユーザー削除をキャンセルしました");
+          return false
+      };
+    };
+  </script>
 </body>
 </html>

@@ -7,11 +7,40 @@
 </head>
 <body>
   <div class="container">
-    <form class="withdrawal-form" action="" method="post">
+    <form class="withdrawal-form" action="" method="POST" onsubmit="return withdrawalFunc()">
       <p><input type="text" id="userId" name="userId" placeholder="ユーザーID"></p>
       <p><input type="text" id="password" name="password" placeholder="パスワード"></p>
       <p><input type="submit" id="withdrawal" name="withdrawal" value="退会"></p>
     </form>
   </div>
+  <script>
+    //退会ボタンがクリックされた時の処理
+    //削除実行前に、確認ウィンドウを表示する
+    function withdrawalFunc(){
+
+      //フォームの値を取得する
+      let userId = document.getElementById("userId").value;
+      let password = document.getElementById("password").value;
+
+      //フォームが空欄の場合はsubmitせず、alertで通知
+      if (userId == "" && password == "") {
+        window.alert("ユーザーID・パスワードが入力されていません");
+        return false;
+      } else if (userId == "") {
+        window.alert("ユーザーIDが入力されていません");
+        return false;
+      } else if (password == "") {
+        window.alert("パスワードが入力されていません");
+        return false;
+      }
+
+      if(window.confirm("本当に退会処理を実行してよろしいですか？")){
+        this.form.submit();
+      } else {
+        window.alert("退会をキャンセルしました");
+        return false;
+      };
+    };
+  </script>
 </body>
 </html>

@@ -9,8 +9,8 @@
 <body>
   <header class="header">
     <div id="logout"><a href="http://172.25.0.2/admin/logout">ログアウト</a></div><a href="http://172.25.0.2/admin/main">メイン管理画面に戻る</a><br><a href="http://172.25.0.2/admin/chatrooms">ルーム一覧に戻る</a>
-      <form class="delete" action="" method="post">
-      <input type="submit" value="このルームを削除する" name="delete-room">
+      <form class="delete" action="" method="post" onsubmit="return deleteChtrmFunc()">
+      <input type="submit" value="このルームを削除する" id="delete-room" name="delete-room">
       </form>
       <div id="roomname-header"></div>
     </div>

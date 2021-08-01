@@ -80,3 +80,15 @@ window.onload = async function() {
   let bottom = element.scrollHeight - element.clientHeight;
   window.scroll(0, bottom);
 };
+
+//チャットルーム削除ボタンがクリックされた時の処理
+//削除実行前に、確認ウィンドウを表示する
+function deleteChtrmFunc(){
+
+	if(window.confirm("本当にこのルームを削除しますか？")){
+    this.form.submit();
+	} else {
+    window.alert("ルーム削除をキャンセルしました");
+    return false
+  };
+};

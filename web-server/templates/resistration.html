@@ -7,7 +7,7 @@
 </head>
 <body>
   <div class="container">
-  <form class="resister-form" action="" method="post">
+  <form class="resister-form" action="" method="post" onsubmit="return resistrationFunc()">
     <p></p>
     <p>新規ユーザーID</p>
     <p>(10文字以内)</p>
@@ -17,9 +17,30 @@
     <p><input type="text" id="password" name="password"></p>
     <p>※次の記号は使用できません。</p>
     <p>（&#x3F、&#x24、&amp;、&#x3D、&#x2D、&gt;、&lt;、&#x2B、&#x3B、&#x3A、&#x2A、&#x7C、&#x27）</p>
-    <p><input type="submit" id="login" name="login" value="登録"></p>
+    <p><input type="submit" id="resistration" name="resistration" value="登録"></p>
   </form>
   <p id="login-link"><a href="/login">ログイン画面に戻る</a></p>
   </div>
+  <script>
+    //登録ボタンクリック時の処理
+  function resistrationFunc (){
+    let userId = document.getElementById("userId").value;
+    let password = document.getElementById("password").value;
+
+    //フォームが空欄の場合はsubmitせず、alertで通知
+    if (userId == "" && password == "") {
+      window.alert("ユーザーID・パスワードが入力されていません");
+      return false;
+    } else if (userId == "") {
+      window.alert("ユーザーIDが入力されていません");
+      return false;
+    } else if (password == "") {
+      window.alert("パスワードが入力されていません");
+      return false;
+    } else {
+      this.form.submit();
+    };
+  };
+  </script>
 </body>
 </html>

@@ -8,8 +8,8 @@
 </head>
 <body>
   <header class="header">
-    <form class="delete" action="" method="post">
-      <input type="submit" value="このルームを削除する" name="delete-room">
+    <form class="delete" action="" method="post" onsubmit="return deleteChtrmFunc()">
+      <input type="submit" value="このルームを削除する" id="delete-room" name="delete-room">
     </form>
     <div id="roomname-header"></div>
   </header>

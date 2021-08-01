@@ -1,3 +1,4 @@
+//マイページからログアウトした時のハンドラ
 package routers
 
 import (

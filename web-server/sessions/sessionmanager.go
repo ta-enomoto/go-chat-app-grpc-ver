@@ -46,26 +46,36 @@ func NewManager(cookieName string, maxlifetime int64) *MANAGER {
 func (Manager *MANAGER) SessionStart(w http.ResponseWriter, r *http.Request, userId string) (session *Session) {
 	cookie, err := r.Cookie(Manager.CookieName)
 	if err != nil || cookie.Value == "" {
+
+		//セッションID発行
 		sid := Manager.NewSessionId()
+
+		//発行したセッションIDを元にセッション生成
 		session := Manager.NewSession(sid, userId)
-		//https環境では、Secure属性
+
+		//cookieを取得するため、HttpOnlyをfalseに設定中。https環境では、Secure属性
 		cookie := http.Cookie{Name: Manager.CookieName, Value: url.QueryEscape(sid), Path: "/", HttpOnly: false, MaxAge: int(Manager.maxlifetime)}
 
+		//セッションDBに接続する
 		dbSession, err := sql.Open("mysql", query.ConStrSession)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 		defer dbSession.Close()
 
+		//セッションDBにセッションID・ユーザーIDをのペアを保存する
 		query.InsertSession(sid, userId, dbSession)
 
+		//クライアントのブラウザにcookieをセットする
 		http.SetCookie(w, &cookie)
+
+		//セッションマネージャのストアにセッションIDをキーにセッションを保持
 		Manager.SessionStore[sid] = session
 	}
 	return
 }
 
-//新規セッション”id”を発行する関数(SessionStart関数で使用)
+//新規セッションIDを発行する関数(SessionStart関数で使用)
 func (Manager *MANAGER) NewSessionId() string {
 	b := make([]byte, 32)
 	if _, err := io.ReadFull(rand.Reader, b); err != nil {
@@ -84,16 +94,21 @@ func (Manager *MANAGER) NewSession(sid string, userId string) (session *Session)
 
 //クライアントのクッキーid(セッションid)が、マネージャのDatabaseマップに登録されてるかチェックする関数
 func (Manager *MANAGER) SessionIdCheck(w http.ResponseWriter, r *http.Request) bool {
+	//クライアントのcookieを取得する
 	clientCookie, err := r.Cookie(Manager.CookieName)
 	if err != nil {
 		return false
 	} else {
+		//クライアントのcookieからセッションIDを取得する
 		clientSid, _ := url.QueryUnescape(clientCookie.Value)
 		if _, ok := Manager.SessionStore[clientSid]; ok {
+			//クライアントのセッションの生成時間＋セッション寿命と現在の時刻を比較する
 			if (Manager.SessionStore[clientSid].timeAccessed.Unix() + Manager.maxlifetime) > time.Now().Unix() {
+				//セッションの生成時間＋セッション寿命＞現在の時刻のときは、生成時間を現在の時刻に更新
 				Manager.SessionStore[clientSid].timeAccessed = time.Now()
 				return true
 			} else {
+				//セッションの生成時間＋セッション寿命＜現在の時刻のときはfalseを返す
 				return false
 			}
 		} else {
@@ -105,20 +120,28 @@ func (Manager *MANAGER) SessionIdCheck(w http.ResponseWriter, r *http.Request) b
 
 //ログアウト時、セッションを削除マネージャのDatabaseマップから削除する関数
 func (Manager *MANAGER) DeleteSessionFromStore(w http.ResponseWriter, r *http.Request) error {
+	//クライアントのcookieを取得する
 	clientCookie, err := r.Cookie(Manager.CookieName)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	//クライアントのcookieからセッションIDを取得する
 	clientSid, _ := url.QueryUnescape(clientCookie.Value)
+
+	//セッションマネージャのストアからセッションIDに一致するセッションを削除する
 	delete(Manager.SessionStore, clientSid)
 
+	//セッションDBに接続する
 	dbSession, err := sql.Open("mysql", query.ConStrSession)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 	defer dbSession.Close()
+
+	//セッションDBからセッションIDに一致するセッションを削除する
 	query.DeleteSessionBySessionId(clientSid, dbSession)
 
+	//クライアントのcookieにMaxAge=-1を設定し、クライアントcookieを削除
 	clientCookie.MaxAge = -1
 	http.SetCookie(w, clientCookie)
 	return nil

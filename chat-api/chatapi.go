@@ -30,24 +30,27 @@ func NewChatapi(logger *log.Logger) chatapi.Service {
 // "api_key" security scheme.
 func (s *chatapisrvc) APIKeyAuth(ctx context.Context, key string, scheme *security.APIKeyScheme) (context.Context, error) {
 
-	//簡易版。本番環境ではDBからの参照やアクセストークンを使用する方法
+	//簡易版、本番環境ではDBからの参照やアクセストークンを使用する方法
 	if key != "apikey" {
 		return ctx, fmt.Errorf("not implemented")
 	}
 	return ctx, nil
 }
 
-// Getchat implements getchat.
+//チャット取得用関数(GET)
 func (s *chatapisrvc) Getchat(ctx context.Context, p *chatapi.GetchatPayload) (res chatapi.GoaChatCollection, err error) {
 
+	//チャットルームDBに接続する
 	dbChtrm, err := sql.Open("mysql", query.ConStrChtrm)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 	defer dbChtrm.Close()
 
+	//リクエストされたルームIDのチャットルームがあるかの確認も兼ねて、ルーム情報をDBから取得する
 	selectedChatroom := query.SelectChatroomById(p.ID, dbChtrm)
 
+	//リクエストされたルームの全チャットを取得する
 	Chats := query.SelectAllChatsById(selectedChatroom.Id, dbChtrm)
 	fmt.Println(p.ID)
 	fmt.Println("successed")
@@ -56,32 +59,38 @@ func (s *chatapisrvc) Getchat(ctx context.Context, p *chatapi.GetchatPayload) (r
 	return Chats, nil
 }
 
-// Postchat implements postchat.
+//チャット投稿用関数(POST)
 func (s *chatapisrvc) Postchat(ctx context.Context, p *chatapi.PostchatPayload) (res bool, err error) {
 	s.logger.Print("chatapi.postchat")
 
+	//チャットルームDBに接続する
 	dbChtrm, err := sql.Open("mysql", query.ConStrChtrm)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 	defer dbChtrm.Close()
 
+	//POSTされたチャットのルームIDのチャットルームがあるかの確認も兼ねて、ルーム情報をDBから取得する
 	roomId, _ := strconv.Atoi(p.ID)
 	currentChatroom := query.SelectChatroomById(roomId, dbChtrm)
 
+	//セッションDBに接続する
 	dbSession, err := sql.Open("mysql", query.ConStrSession)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 	defer dbSession.Close()
 
+	//POSTされたチャットのcookieから、投稿者のユーザーIDを特定する
 	cookie, _ := url.QueryUnescape(p.Cookie)
 	postedUser := query.SelectSessionBySessionId(cookie, dbSession)
 
+	//投稿されたチャットのメタキャラチェック
 	postedChat := regexp.QuoteMeta(p.Chat)
 
 	postDt := time.Now().UTC().Round(time.Second)
 
+	//投稿者がルーム作成者と同じかどうかで、投稿者を変える
 	if postedUser == currentChatroom.UserId {
 		//投稿主と部屋作成者が同じ場合
 		posted := query.InsertChat(roomId, currentChatroom.UserId, currentChatroom.RoomName, currentChatroom.Member, postedChat, postDt, dbChtrm)
@@ -89,7 +98,7 @@ func (s *chatapisrvc) Postchat(ctx context.Context, p *chatapi.PostchatPayload) 
 			return true, nil
 		}
 	} else {
-		//投稿主と部屋作成者が違う場合
+		//投稿主と部屋作成者が違う場合(=メンバーが投稿主の場合)
 		posted := query.InsertChat(roomId, currentChatroom.Member, currentChatroom.RoomName, currentChatroom.UserId, postedChat, postDt, dbChtrm)
 		if posted {
 			return true, nil

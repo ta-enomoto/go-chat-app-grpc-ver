@@ -1,7 +1,11 @@
 const loginFunc = document.getElementById("login");
-loginFunc.addEventListener("click", function(){  
+
+//ログインボタンクリック時の処理
+loginFunc.addEventListener("click", function(){
   let userId = document.getElementById("inputedUserId").value;
   let password = document.getElementById("inputedPassword").value;
+
+  //フォームが空欄の場合はsubmitせず、alertで通知
   if (userId == "" && password == "") {
     window.alert("ユーザーID・パスワードが入力されていません");
     return;

@@ -1,4 +1,4 @@
-/*個別のチャットルームにアクセスがあったときのハンドラ*/
+//個別のチャットルームにアクセスがあったときのハンドラ
 package routers
 
 import (
@@ -16,8 +16,10 @@ import (
 
 func ChatroomHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
-	/*アクセスあった際、ルームIDが一致するすべての書き込みをスライスで取得し、テンプレに渡す*/
 	case "GET":
+		//アクセスあった時、ルームIDが一致するすべての書き込みをスライスで取得し、テンプレに渡す
+
+		//ユーザーのcookieを元に有効なセッションが存在しているかチェックする
 		if ok := session.Manager.SessionIdCheck(w, r); !ok {
 			t := template.Must(template.ParseFiles("./templates/sessionexpired.html"))
 			t.ExecuteTemplate(w, "sessionexpired.html", nil)
@@ -28,21 +30,23 @@ func ChatroomHandler(w http.ResponseWriter, r *http.Request) {
 		userSid, _ := url.QueryUnescape(userCookie.Value)
 		userSessionVar := session.Manager.SessionStore[userSid].SessionValue["userId"]
 
+		//リクエスト元のURL文字列からルームIDを取得、数値に変換する
 		roomUrl := r.URL.Path
 		_roomId := strings.TrimPrefix(roomUrl, "/mypage/chatroom")
 		roomId, _ := strconv.Atoi(_roomId)
 
+		//チャットルームDBに接続する
 		dbChtrm, err := sql.Open("mysql", query.ConStrChtrm)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 		defer dbChtrm.Close()
 
+		//ルームIDに一致するチャットルームを取得する
 		selectedChatroom := query.SelectChatroomById(roomId, dbChtrm)
-		userId := selectedChatroom.UserId
-		member := selectedChatroom.Member
 
-		if userId != userSessionVar && member != userSessionVar {
+		//アクセスしてきたユーザーが、チャットルームのメンバーでなかった場合、アクセスを拒否する
+		if selectedChatroom.UserId != userSessionVar && selectedChatroom.Member != userSessionVar {
 			fmt.Fprintf(w, "ルームにアクセスする権限がありません")
 			return
 		}
@@ -51,23 +55,31 @@ func ChatroomHandler(w http.ResponseWriter, r *http.Request) {
 		t.ExecuteTemplate(w, "chatroom.html", nil)
 
 	case "POST":
+		//チャットルーム削除ボタンが押された時の処理
+
+		//ユーザーのcookieを元に有効なセッションが存在しているかチェックする
 		if ok := session.Manager.SessionIdCheck(w, r); !ok {
 			t := template.Must(template.ParseFiles("./templates/sessionexpired.html"))
 			t.ExecuteTemplate(w, "sessionexpired.html", nil)
 			return
 		}
 
+		//ルーム削除ボタンが押されPOSTがあった時、当該ルームを削除する
 		if r.FormValue("delete-room") == "このルームを削除する" {
+
+			//リクエスト元のURL文字列からルームIDを取得、数値に変換する
 			roomUrl := r.URL.Path
 			_roomId := strings.TrimPrefix(roomUrl, "/mypage/chatroom")
 			roomId, _ := strconv.Atoi(_roomId)
 
+			//チャットルームDBに接続する
 			dbChtrm, err := sql.Open("mysql", query.ConStrChtrm)
 			if err != nil {
 				fmt.Println(err.Error())
 			}
 			defer dbChtrm.Close()
 
+			//ルームIDと一致するチャットルームを削除する
 			query.DeleteChatroomById(roomId, dbChtrm)
 
 			t := template.Must(template.ParseFiles("./templates/mypage/chatroomdeleted.html"))

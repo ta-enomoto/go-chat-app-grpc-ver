@@ -9,9 +9,9 @@ import (
 	"web-server/config"
 )
 
-// マスタからSELECTしたデータをマッピングする構造体
+//ユーザー構造体
 type User struct {
-	UserId   string `db:"USER_ID"`  // ID
+	UserId   string `db:"USER_ID"`  // ユーザーID
 	Password []byte `db:"PASSWORD"` // パスワード
 }
 
@@ -103,6 +103,7 @@ func ContainsUserName(s []User, e string) bool {
 	return false
 }
 
+//ユーザーIDを変更する関数
 func ChangeUserId(newUserId string, currentUserId string, db *sql.DB) bool {
 
 	stmt, err := db.Prepare("UPDATE USERS SET USER_ID = ? WHERE USER_ID = ?")
@@ -119,6 +120,7 @@ func ChangeUserId(newUserId string, currentUserId string, db *sql.DB) bool {
 	}
 }
 
+//パスワードを変更する関数
 func ChangePassword(newPassword []byte, currentPassword []byte, db *sql.DB) bool {
 
 	hashed_pass, err := bcrypt.GenerateFromPassword(newPassword, 10)

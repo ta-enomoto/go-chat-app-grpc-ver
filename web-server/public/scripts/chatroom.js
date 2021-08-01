@@ -230,3 +230,15 @@ function send() {
   document.chatform.reset();
   console.log(JSON.stringify(newchat));
 };
+
+//チャットルーム削除ボタンがクリックされた時の処理
+//削除実行前に、確認ウィンドウを表示する
+function deleteChtrmFunc(){
+
+	if(window.confirm("本当にこのルームを削除しますか？")){
+    this.form.submit();
+	} else {
+    window.alert("ルーム削除をキャンセルしました");
+    return false
+  };
+};

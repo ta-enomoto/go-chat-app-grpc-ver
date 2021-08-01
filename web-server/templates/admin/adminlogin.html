@@ -8,10 +8,10 @@
 <body>
   <div class="container">
     <p id="disctription">管理ページ</p>
-    <form class="login-form" action="" method="POST" id="loginform">
+    <form class="login-form" action="" method="POST" id="loginform" onsubmit="return loginFunc()">
       <p id="userId"><input type="text" id="inputedUserId" name="userId" placeholder="管理者ID"></p>
       <p id="password"><input type="password" id="inputedPassword" name="password" placeholder="管理者パスワード"></p>
-      <p><input type="button" value="ログイン" id="login" name="login"></p>
+      <p><input type="submit" value="ログイン" id="login" name="login"></p>
     </form>
   </div>
   <script type="text/javascript" src="/public/scripts/adminlogin.js"></script>

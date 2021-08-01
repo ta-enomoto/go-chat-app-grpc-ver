@@ -42,7 +42,7 @@ func AdminLoginHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//セッションを生成
-		session.Manager.SessionStart(w, r, adminUserId)
+		session.Manager.SessionStart(w, r, userid)
 
 		//管理メインページにリダイレクト
 		http.Redirect(w, r, "/admin/main", 301)

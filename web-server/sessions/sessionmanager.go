@@ -53,8 +53,17 @@ func (Manager *MANAGER) SessionStart(w http.ResponseWriter, r *http.Request, use
 		//発行したセッションIDを元にセッション生成
 		session := Manager.NewSession(sid, userId)
 
-		//cookieを取得するため、HttpOnlyをfalseに設定中。https環境では、Secure属性
-		cookie := http.Cookie{Name: Manager.CookieName, Value: url.QueryEscape(sid), Path: "/", HttpOnly: false, MaxAge: int(Manager.maxlifetime)}
+		//管理ページからのアクセスの際は、Path属性を/adminに設定する
+		if userId == "admin" {
+			//cookieを取得するため、HttpOnlyをfalseに設定中。https環境では、Secure属性
+			cookie := http.Cookie{Name: Manager.CookieName, Value: url.QueryEscape(sid), Path: "/admin", HttpOnly: false, MaxAge: int(Manager.maxlifetime)}
+			//クライアントのブラウザにcookieをセットする
+			http.SetCookie(w, &cookie)
+		} else {
+			cookie := http.Cookie{Name: Manager.CookieName, Value: url.QueryEscape(sid), Path: "/", HttpOnly: false, MaxAge: int(Manager.maxlifetime)}
+			//クライアントのブラウザにcookieをセットする
+			http.SetCookie(w, &cookie)
+		}
 
 		//セッションDBに接続する
 		dbSession, err := sql.Open("mysql", query.ConStrSession)
@@ -66,11 +75,9 @@ func (Manager *MANAGER) SessionStart(w http.ResponseWriter, r *http.Request, use
 		//セッションDBにセッションID・ユーザーIDをのペアを保存する
 		query.InsertSession(sid, userId, dbSession)
 
-		//クライアントのブラウザにcookieをセットする
-		http.SetCookie(w, &cookie)
-
 		//セッションマネージャのストアにセッションIDをキーにセッションを保持
 		Manager.SessionStore[sid] = session
+		fmt.Println(Manager.SessionStore[sid])
 	}
 	return
 }
@@ -125,6 +132,7 @@ func (Manager *MANAGER) DeleteSessionFromStore(w http.ResponseWriter, r *http.Re
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+
 	//クライアントのcookieからセッションIDを取得する
 	clientSid, _ := url.QueryUnescape(clientCookie.Value)
 

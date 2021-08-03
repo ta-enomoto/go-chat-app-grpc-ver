@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strings"
 	"web-server/query"
 	"web-server/sessions"
@@ -86,6 +87,13 @@ func AdminUserHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			//使用不可の特殊記号のチェックを行う
+			escapeStrings := regexp.MustCompile(`\?|\$|\&|\=|\-|\>|\<|\+|\;|\:|\*|\||\'`)
+			if escapeStrings.MatchString(newUserId) {
+				fmt.Fprintf(w, "使用できない文字が含まれています。")
+				return
+			}
+
 			//リクエスト元のURLの文字列から、ユーザーIDの文字列を取得する
 			url := r.URL.Path
 			currentUserId := strings.TrimPrefix(url, "/admin/users/")
@@ -112,6 +120,13 @@ func AdminUserHandler(w http.ResponseWriter, r *http.Request) {
 			newPsw_string := r.FormValue("password")
 			if newPsw_string == "" {
 				fmt.Fprintf(w, "パスワードが入力されていません")
+				return
+			}
+
+			//使用不可の特殊記号のチェックを行う
+			escapeStrings := regexp.MustCompile(`\?|\$|\&|\=|\-|\>|\<|\+|\;|\:|\*|\||\'`)
+			if escapeStrings.MatchString(newPsw_string) {
+				fmt.Fprintf(w, "使用できない文字が含まれています。")
 				return
 			}
 

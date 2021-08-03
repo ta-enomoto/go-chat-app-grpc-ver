@@ -37,6 +37,12 @@
     } else if (password == "") {
       window.alert("パスワードが入力されていません");
       return false;
+    } else if (userId.length > 10) {
+      window.alert("ユーザーIDが10字を超えています");
+      return false;
+    } else if (password.length > 10) {
+      window.alert("パスワードが10字を超えています");
+      return false;
     } else {
       this.form.submit();
     };

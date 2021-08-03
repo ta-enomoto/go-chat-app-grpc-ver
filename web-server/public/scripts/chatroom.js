@@ -31,22 +31,23 @@ window.onload = async function() {
 
       for (const chat of allchats) {
         //各チャット毎にHTML要素を生成・順に追加していく
-        let textUser = document.createTextNode(chat.UserId);
-        let textPostDt = document.createTextNode(chat.PostDt);
-        let textChat = document.createTextNode(chat.Chat);
+        let textUserNode = document.createTextNode(chat.UserId);
+        let textPostDtNode = document.createTextNode(chat.PostDt);
+        let textChatUnescaped = unescape(chat.Chat).replace(/\\/g, "");
+        let textChatNode = document.createTextNode(textChatUnescaped);
 
         let elUser = document.createElement("div");
-        elUser.appendChild(textUser);
+        elUser.appendChild(textUserNode);
         elUser.id ="user";
         elUser.style = "display: inline-block; _display: inline;";
 
         let elPostDt = document.createElement("div");
-        elPostDt.appendChild(textPostDt);
+        elPostDt.appendChild(textPostDtNode);
         elPostDt.id ="postdt";
         elPostDt.style = "display: inline-block; _display: inline;";
 
         let elChat = document.createElement("div");
-        elChat.appendChild(textChat);
+        elChat.appendChild(textChatNode);
         elChat.id ="chatText";
 
         let newLi = document.createElement("li");
@@ -58,7 +59,8 @@ window.onload = async function() {
       }
 
       //ルーム名を一番目のルーム作成時投稿チャットから取得しHTML要素を生成・追加する
-      let roomnameText = document.createTextNode(allchats[0].RoomName);
+      let roomNameUnescaped = allchats[0].RoomName.replace(/\\/g, "");
+      let roomnameText = document.createTextNode(roomNameUnescaped);
       let newH2 = document.createElement("h2");
       newH2.appendChild(roomnameText);
       let roomname = document.getElementById("roomname-header");
@@ -117,22 +119,23 @@ window.onload = async function() {
     console.log("message recieved" + e.data);
     //受信したメッセージを元にHTML要素を生成・追加する
     let chatobj = JSON.parse(e.data);
-    let textUser = document.createTextNode(chatobj.Chatroom.userId);
-    let textPostDt = document.createTextNode(chatobj.PostDt);
-    let textChat = document.createTextNode(chatobj.Chat);
+    let textUserNode = document.createTextNode(chatobj.Chatroom.userId);
+    let textPostDtNode = document.createTextNode(chatobj.PostDt);
+    let textChatUnescaped = unescape(chatobj.Chat).replace(/\\/g, "");
+    let textChatNode = document.createTextNode(textChatUnescaped);
 
     let elUser = document.createElement("div");
-    elUser.appendChild(textUser);
+    elUser.appendChild(textUserNode);
     elUser.id ="user";
     elUser.style = "display: inline-block; _display: inline;";
 
     let elPostDt = document.createElement("div");
-    elPostDt.appendChild(textPostDt);
+    elPostDt.appendChild(textPostDtNode);
     elPostDt.id ="postdt";
     elPostDt.style = "display: inline-block; _display: inline;";
 
     let elChat = document.createElement("div");
-    elChat.appendChild(textChat);
+    elChat.appendChild(textChatNode);
     elChat.id ="chatText";
 
     let newLi = document.createElement("li");
@@ -177,6 +180,7 @@ function send() {
     window.alert("チャットが入力されていません");
     return;
   };
+  let chatEscaped = escape(chat);
 
   //チャット・cookie外の値を代入する(ルーム名・ユーザーID・メンバーはルーム作成時投稿チャットから取得)
   let roomname = allchats[0].RoomName;
@@ -190,7 +194,7 @@ function send() {
   let cookie = cookieValue.replace("cookieName=","");
 
   //新規チャットインスタンスを生成する
-  const newchat = new Newchat(roomid, userid, roomname, member, chat, postdt, cookie);
+  const newchat = new Newchat(roomid, userid, roomname, member, chatEscaped, postdt, cookie);
   
   //JSONにエンコードして投稿
   const newchatJSON = JSON.stringify(newchat);

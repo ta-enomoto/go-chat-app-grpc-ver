@@ -18,7 +18,8 @@
     let newDiv = document.createElement("div")
   
     let newLink = document.createElement("a");
-    let newLinkText = document.createTextNode(value.roomName + " (ユーザー1：" + value.userId + " ユーザー2：" + value.member + ")");
+    let roomNameUnescaped = value.roomName.replace(/\\/g, "");
+    let newLinkText = document.createTextNode(roomNameUnescaped + " (ユーザー1：" + value.userId + " ユーザー2：" + value.member + ")");
     newLink.appendChild(newLinkText);
     newLink.href = "/admin/chatrooms/chatroom" + value.id;
     newLink.style = "display: inline-block; _display: inline;";

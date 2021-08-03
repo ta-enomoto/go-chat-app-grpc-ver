@@ -36,11 +36,11 @@ func ResistrationHandler(w http.ResponseWriter, r *http.Request) {
 		//使用不可の特殊記号のチェックを行う
 		escapeStrings := regexp.MustCompile(`\?|\$|\&|\=|\-|\>|\<|\+|\;|\:|\*|\||\'`)
 		if escapeStrings.MatchString(newUser.UserId) {
-			fmt.Fprintf(w, "使用できない文字です。")
+			fmt.Fprintf(w, "使用できない文字が含まれています。")
 			return
 		}
 		if escapeStrings.MatchString(psw_string) {
-			fmt.Fprintf(w, "使用できない文字です。")
+			fmt.Fprintf(w, "使用できない文字が含まれています。")
 			return
 		}
 

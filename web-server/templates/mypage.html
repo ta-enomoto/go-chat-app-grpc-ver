@@ -41,7 +41,8 @@
       //各ルームについて、ルームリンクのHTML要素を生成・追加する
       for (let value of arrayOfRooms){
         let newLink = document.createElement("a");
-        let newLinkText = document.createTextNode("・" + value['roomName'] + "（お相手：" + value['member'] + "）");
+        let roomNameUnescaped = value['roomName'].replace(/\\/g, "");
+        let newLinkText = document.createTextNode("・" + roomNameUnescaped + "（お相手：" + value['member'] + "）");
         newLink.appendChild(newLinkText);
         newLink.href = "/mypage/chatroom" + value['id'];
         let br =document.createElement("br");

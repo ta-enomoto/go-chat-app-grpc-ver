@@ -12,6 +12,7 @@ import (
 	"context"
 
 	goa "goa.design/goa/v3/pkg"
+	"goa.design/goa/v3/security"
 )
 
 // The service performs get chat.
@@ -20,6 +21,12 @@ type Service interface {
 	Getchat(context.Context, *GetchatPayload) (res GoaChatCollection, err error)
 	// Postchat implements postchat.
 	Postchat(context.Context, *PostchatPayload) (res bool, err error)
+}
+
+// Auther defines the authorization functions to be implemented by the service.
+type Auther interface {
+	// APIKeyAuth implements the authorization logic for the APIKey security scheme.
+	APIKeyAuth(ctx context.Context, key string, schema *security.APIKeyScheme) (context.Context, error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -34,6 +41,8 @@ var MethodNames = [2]string{"getchat", "postchat"}
 
 // GetchatPayload is the payload type of the chatapi service getchat method.
 type GetchatPayload struct {
+	// API key used to perform authorization
+	Key string
 	// room id
 	ID int
 }
@@ -43,6 +52,8 @@ type GoaChatCollection []*GoaChat
 
 // PostchatPayload is the payload type of the chatapi service postchat method.
 type PostchatPayload struct {
+	// API key used to perform authorization
+	Key string
 	// room id
 	ID string
 	// user id

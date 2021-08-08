@@ -18,18 +18,18 @@ var _ = API("getchat", func() {
 var _ = Service("chatapi", func() {
 	Description("The service performs get chat.")
 	cors.Origin("*", func() { //("http://172.26.0.2", func() {
-		cors.Headers("Access-Control-Allow-Origin") //, "Authorization", "application/x-www-form-urlencoded")
+		cors.Headers("Access-Control-Allow-Origin", "Authorization", "application/x-www-form-urlencoded")
 		cors.Methods("GET", "POST")
 		//cors.Expose("X-Time") APIのキャッシュ時使用
 		//cors.MaxAge(600)
 		cors.Credentials()
 	})
 	Method("getchat", func() {
-		//Security(APIKeyAuth)
+		Security(APIKeyAuth)
 		Payload(func() {
-			//APIKeyField(1, "api_key", "key", String, "API key used to perform authorization")
-			Field(1, "id", Int, "room id")
-			Required("id") //Required("key", "id")
+			APIKeyField(1, "api_key", "key", String, "API key used to perform authorization")
+			Field(2, "id", Int, "room id")
+			Required("key", "id")
 		})
 		Result(CollectionOf(Chat))
 		Error("NotFound")
@@ -39,17 +39,17 @@ var _ = Service("chatapi", func() {
 		})
 	})
 	Method("postchat", func() {
-		//Security(APIKeyAuth)
+		Security(APIKeyAuth)
 		Payload(func() {
-			//APIKey("api_key", "key", String, "API key used to perform authorization")
-			Field(1, "Id", String, "room id")
-			Field(2, "UserId", String, "user id")
-			Field(3, "RoomName", String, "room name")
-			Field(4, "Member", String, "member")
-			Field(5, "Chat", String, "chat")
-			Field(6, "PostDt", String, func() { Format(FormatDateTime) })
-			Field(7, "Cookie", String, "cookie")
-			Required("Id", "UserId", "RoomName", "Member", "Chat", "PostDt", "Cookie") //("key", "Id", "UserId", "RoomName", "Member", "Chat", "PostDt", "Cookie")
+			APIKeyField(1, "api_key", "key", String, "API key used to perform authorization")
+			Field(2, "Id", String, "room id")
+			Field(3, "UserId", String, "user id")
+			Field(4, "RoomName", String, "room name")
+			Field(5, "Member", String, "member")
+			Field(6, "Chat", String, "chat")
+			Field(7, "PostDt", String, func() { Format(FormatDateTime) })
+			Field(8, "Cookie", String, "cookie")
+			Required("key", "Id", "UserId", "RoomName", "Member", "Chat", "PostDt", "Cookie")
 		})
 		Result(Boolean)
 		Error("NotFound")
@@ -74,9 +74,9 @@ var Chat = ResultType("application/vnd.goa.chat", func() {
 	})
 })
 
-// var APIKeyAuth = APIKeySecurity("api_key", func() {
-// 	Description("Secures endpoint by requiring an API key.")
-// })
+var APIKeyAuth = APIKeySecurity("api_key", func() {
+	Description("Secures endpoint by requiring an API key.")
+})
 
 //APIキー
 // package design

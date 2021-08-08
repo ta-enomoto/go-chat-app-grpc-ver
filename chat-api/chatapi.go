@@ -6,7 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	//"goa.design/goa/v3/security"
+	"goa.design/goa/v3/security"
 	"log"
 	"net/url"
 	"regexp"
@@ -23,6 +23,17 @@ type chatapisrvc struct {
 // NewChatapi returns the chatapi service implementation.
 func NewChatapi(logger *log.Logger) chatapi.Service {
 	return &chatapisrvc{logger}
+}
+
+// APIKeyAuth implements the authorization logic for service "chatapi" for the
+// "api_key" security scheme.
+func (s *chatapisrvc) APIKeyAuth(ctx context.Context, key string, scheme *security.APIKeyScheme) (context.Context, error) {
+
+	//簡易版、本番環境ではDBからの参照やアクセストークンを使用する方法
+	if key != "apikey" {
+		return ctx, fmt.Errorf("not implemented")
+	}
+	return ctx, nil
 }
 
 // Getchat implements getchat.

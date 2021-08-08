@@ -1,4 +1,4 @@
-const { GoaChat } = require('./modules/chatapi_pb');
+const { GetchatRequest } = require('./modules/chatapi_pb');
 const { ChatapiClient } = require('./modules/chatapi_grpc_web_pb');
 
 let socket = null;
@@ -10,8 +10,8 @@ let allchats = "";
 window.onload = function () {
 
   //   //API、WebSocket共通で使用するURLからのルームID取得処理
-  //   let url = location.href;
-  //   let roomid = url.replace("http://172.26.0.2/mypage/chatroom","");
+  let url = location.href;
+  let roomid = url.replace("http://172.26.0.2/mypage/chatroom", "");
 
   // //チャット読み込み処理
   //   //APIリクエスト(GET)先のURL
@@ -26,11 +26,10 @@ window.onload = function () {
 
   const client = new ChatapiClient('http://172.26.0.6:9000', null, null);
 
-  const request = new GoaChat();
-  let roomid = 2;
+  const request = new GetchatRequest();
   request.setId(roomid);
 
-  client.getchat(request, {}, (err, response) => {//{"Authorization": "apikey"}, (err, response) => {
+  client.getchat(request, { "Authorization": "apikey" }, (err, response) => {
     if (err) {
       console.log(`Unexpected error for getChat: code = ${err.code}` + `, message = "${err.message}"`);
     } else {
@@ -75,15 +74,15 @@ window.onload = function () {
       let roomname = document.getElementById("roomname-header");
       roomname.appendChild(newH2);
 
+      //全チャット表示後、ページ最下部にスクロールする
+      var element = document.documentElement;
+      var bottom = element.scrollHeight - element.clientHeight;
+      window.scroll(0, bottom);
+
       //以降の処理でも使用するため、allchatsをreturnする
       return allchats;
     };
   });
-
-  //全チャット表示後、ページ最下部にスクロールする
-  var element = document.documentElement;
-  var bottom = element.scrollHeight - element.clientHeight;
-  window.scroll(0, bottom);
 
   //async awaitが使えないためsetTimeを使用
   setTimeout(
@@ -217,7 +216,7 @@ window.send = function send() {
   // };
   const { PostchatRequest } = require('./modules/chatapi_pb');
   const { ChatapiClient } = require('./modules/chatapi_grpc_web_pb');
-  
+
   const client = new ChatapiClient('http://172.26.0.6:9000', null, null);
 
   const request = new PostchatRequest();
@@ -229,12 +228,12 @@ window.send = function send() {
   request.setPostDt(postdt)
   request.setCookie(cookie)
 
-  client.postchat(request, {}, (err, response) => {//{"Authorization": "apikey"}, (err, response) => {
+  client.postchat(request, { "Authorization": "apikey" }, (err, response) => {
     if (err) {
       console.log(`Unexpected error for getChat: code = ${err.code}` + `, message = "${err.message}"`);
     }
   });
-  
+
   // //APIを叩く関数(POST)
   // async function postChatToApi() {
   //   try {

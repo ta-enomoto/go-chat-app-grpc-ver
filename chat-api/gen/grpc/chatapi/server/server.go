@@ -18,7 +18,8 @@ import (
 
 // Server implements the chatapipb.ChatapiServer interface.
 type Server struct {
-	GetchatH goagrpc.UnaryHandler
+	GetchatH  goagrpc.UnaryHandler
+	PostchatH goagrpc.UnaryHandler
 	chatapipb.UnimplementedChatapiServer
 }
 
@@ -31,7 +32,8 @@ type ErrorNamer interface {
 // New instantiates the server struct with the chatapi service endpoints.
 func New(e *chatapi.Endpoints, uh goagrpc.UnaryHandler) *Server {
 	return &Server{
-		GetchatH: NewGetchatHandler(e.Getchat, uh),
+		GetchatH:  NewGetchatHandler(e.Getchat, uh),
+		PostchatH: NewPostchatHandler(e.Postchat, uh),
 	}
 }
 
@@ -53,4 +55,25 @@ func (s *Server) Getchat(ctx context.Context, message *chatapipb.GetchatRequest)
 		return nil, goagrpc.EncodeError(err)
 	}
 	return resp.(*chatapipb.GoaChatCollection), nil
+}
+
+// NewPostchatHandler creates a gRPC handler which serves the "chatapi" service
+// "postchat" endpoint.
+func NewPostchatHandler(endpoint goa.Endpoint, h goagrpc.UnaryHandler) goagrpc.UnaryHandler {
+	if h == nil {
+		h = goagrpc.NewUnaryHandler(endpoint, DecodePostchatRequest, EncodePostchatResponse)
+	}
+	return h
+}
+
+// Postchat implements the "Postchat" method in chatapipb.ChatapiServer
+// interface.
+func (s *Server) Postchat(ctx context.Context, message *chatapipb.PostchatRequest) (*chatapipb.PostchatResponse, error) {
+	ctx = context.WithValue(ctx, goa.MethodKey, "postchat")
+	ctx = context.WithValue(ctx, goa.ServiceKey, "chatapi")
+	resp, err := s.PostchatH.Handle(ctx, message)
+	if err != nil {
+		return nil, goagrpc.EncodeError(err)
+	}
+	return resp.(*chatapipb.PostchatResponse), nil
 }

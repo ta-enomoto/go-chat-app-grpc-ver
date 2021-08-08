@@ -15,6 +15,8 @@ option go_package = "/chatapipb";
 service Chatapi {
 	// Getchat implements getchat.
 	rpc Getchat (GetchatRequest) returns (GoaChatCollection);
+	// Postchat implements postchat.
+	rpc Postchat (PostchatRequest) returns (PostchatResponse);
 }
 
 message GetchatRequest {
@@ -38,4 +40,24 @@ message GoaChat {
 	// chat
 	string chat = 5;
 	string post_dt = 6;
+}
+
+message PostchatRequest {
+	// room id
+	string id = 1;
+	// user id
+	string user_id = 2;
+	// room name
+	string room_name = 3;
+	// member
+	string member = 4;
+	// chat
+	string chat = 5;
+	string post_dt = 6;
+	// cookie
+	string cookie = 7;
+}
+
+message PostchatResponse {
+	bool field = 1;
 }

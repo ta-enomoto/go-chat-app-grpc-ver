@@ -33,7 +33,7 @@ func main() {
 		if addr == "" {
 			switch *hostF {
 			case "172.26.0.3":
-				addr = "http://172.26.0.3:8000"
+				addr = "grpc://172.26.0.3:8080"
 			default:
 				fmt.Fprintf(os.Stderr, "invalid host argument: %q (valid hosts: 172.26.0.3)\n", *hostF)
 				os.Exit(1)
@@ -63,12 +63,10 @@ func main() {
 	)
 	{
 		switch scheme {
-		case "http", "https":
-			endpoint, payload, err = doHTTP(scheme, host, timeout, debug)
 		case "grpc", "grpcs":
 			endpoint, payload, err = doGRPC(scheme, host, timeout, debug)
 		default:
-			fmt.Fprintf(os.Stderr, "invalid scheme: %q (valid schemes: grpc|http)\n", scheme)
+			fmt.Fprintf(os.Stderr, "invalid scheme: %q (valid schemes: grpc)\n", scheme)
 			os.Exit(1)
 		}
 	}
@@ -111,7 +109,7 @@ Additional help:
 
 Example:
 %s
-`, os.Args[0], os.Args[0], indent(httpUsageCommands()), os.Args[0], indent(httpUsageExamples()))
+`, os.Args[0], os.Args[0], indent(grpcUsageCommands()), os.Args[0], indent(grpcUsageExamples()))
 }
 
 func indent(s string) string {

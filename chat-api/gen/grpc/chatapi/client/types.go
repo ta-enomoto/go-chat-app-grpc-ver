@@ -42,6 +42,28 @@ func NewGetchatResult(message *chatapipb.GoaChatCollection) chatapiviews.GoaChat
 	return result
 }
 
+// NewPostchatRequest builds the gRPC request type from the payload of the
+// "postchat" endpoint of the "chatapi" service.
+func NewPostchatRequest(payload *chatapi.PostchatPayload) *chatapipb.PostchatRequest {
+	message := &chatapipb.PostchatRequest{
+		Id:       payload.ID,
+		UserId:   payload.UserID,
+		RoomName: payload.RoomName,
+		Member:   payload.Member,
+		Chat:     payload.Chat,
+		PostDt:   payload.PostDt,
+		Cookie:   payload.Cookie,
+	}
+	return message
+}
+
+// NewPostchatResult builds the result type of the "postchat" endpoint of the
+// "chatapi" service from the gRPC response type.
+func NewPostchatResult(message *chatapipb.PostchatResponse) bool {
+	result := message.Field
+	return result
+}
+
 // ValidateGoaChatCollection runs the validations defined on GoaChatCollection.
 func ValidateGoaChatCollection(message *chatapipb.GoaChatCollection) (err error) {
 	for _, e := range message.Field {

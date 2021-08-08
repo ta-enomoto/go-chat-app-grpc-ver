@@ -11,6 +11,8 @@ import (
 	chatapi "chat-api/gen/chatapi"
 	chatapiviews "chat-api/gen/chatapi/views"
 	chatapipb "chat-api/gen/grpc/chatapi/pb"
+
+	goa "goa.design/goa/v3/pkg"
 )
 
 // NewGetchatPayload builds the payload of the "getchat" endpoint of the
@@ -49,4 +51,34 @@ func NewGoaChatCollection(result chatapiviews.GoaChatCollectionView) *chatapipb.
 		}
 	}
 	return message
+}
+
+// NewPostchatPayload builds the payload of the "postchat" endpoint of the
+// "chatapi" service from the gRPC request type.
+func NewPostchatPayload(message *chatapipb.PostchatRequest) *chatapi.PostchatPayload {
+	v := &chatapi.PostchatPayload{
+		ID:       message.Id,
+		UserID:   message.UserId,
+		RoomName: message.RoomName,
+		Member:   message.Member,
+		Chat:     message.Chat,
+		PostDt:   message.PostDt,
+		Cookie:   message.Cookie,
+	}
+	return v
+}
+
+// NewPostchatResponse builds the gRPC response type from the result of the
+// "postchat" endpoint of the "chatapi" service.
+func NewPostchatResponse(result bool) *chatapipb.PostchatResponse {
+	message := &chatapipb.PostchatResponse{}
+	message.Field = result
+	return message
+}
+
+// ValidatePostchatRequest runs the validations defined on PostchatRequest.
+func ValidatePostchatRequest(message *chatapipb.PostchatRequest) (err error) {
+	err = goa.MergeErrors(err, goa.ValidateFormat("message.PostDt", message.PostDt, goa.FormatDateTime))
+
+	return
 }

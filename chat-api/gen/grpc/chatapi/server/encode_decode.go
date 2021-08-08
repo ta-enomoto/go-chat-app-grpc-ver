@@ -48,3 +48,36 @@ func DecodeGetchatRequest(ctx context.Context, v interface{}, md metadata.MD) (i
 	}
 	return payload, nil
 }
+
+// EncodePostchatResponse encodes responses from the "chatapi" service
+// "postchat" endpoint.
+func EncodePostchatResponse(ctx context.Context, v interface{}, hdr, trlr *metadata.MD) (interface{}, error) {
+	result, ok := v.(bool)
+	if !ok {
+		return nil, goagrpc.ErrInvalidType("chatapi", "postchat", "bool", v)
+	}
+	resp := NewPostchatResponse(result)
+	return resp, nil
+}
+
+// DecodePostchatRequest decodes requests sent to "chatapi" service "postchat"
+// endpoint.
+func DecodePostchatRequest(ctx context.Context, v interface{}, md metadata.MD) (interface{}, error) {
+	var (
+		message *chatapipb.PostchatRequest
+		ok      bool
+	)
+	{
+		if message, ok = v.(*chatapipb.PostchatRequest); !ok {
+			return nil, goagrpc.ErrInvalidType("chatapi", "postchat", "*chatapipb.PostchatRequest", v)
+		}
+		if err := ValidatePostchatRequest(message); err != nil {
+			return nil, err
+		}
+	}
+	var payload *chatapi.PostchatPayload
+	{
+		payload = NewPostchatPayload(message)
+	}
+	return payload, nil
+}

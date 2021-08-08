@@ -4,59 +4,8 @@ info:
   description: Service for chat app, a Goa teaser
   version: "1.0"
 servers:
-- url: http://172.25.0.3:8000
+- url: http://172.26.0.3:8000
 paths:
-  /chatroom/{id}:
-    get:
-      tags:
-      - chatapi
-      summary: getchat chatapi
-      operationId: chatapi#getchat
-      parameters:
-      - name: id
-        in: path
-        description: room id
-        required: true
-        schema:
-          type: integer
-          description: room id
-          example: 4296689097314459712
-          format: int64
-        example: 6981397293335728417
-      responses:
-        "200":
-          description: OK response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GoaChatCollection'
-              example:
-              - Chat: Aut numquam similique.
-                Id: 5625972352155160976
-                Member: Nihil debitis magnam dolorem qui praesentium iure.
-                PostDt: "1985-11-21T12:48:29Z"
-                RoomName: Eveniet voluptas quod qui.
-                UserId: Rem voluptates nam voluptatem rerum rerum neque.
-              - Chat: Aut numquam similique.
-                Id: 5625972352155160976
-                Member: Nihil debitis magnam dolorem qui praesentium iure.
-                PostDt: "1985-11-21T12:48:29Z"
-                RoomName: Eveniet voluptas quod qui.
-                UserId: Rem voluptates nam voluptatem rerum rerum neque.
-              - Chat: Aut numquam similique.
-                Id: 5625972352155160976
-                Member: Nihil debitis magnam dolorem qui praesentium iure.
-                PostDt: "1985-11-21T12:48:29Z"
-                RoomName: Eveniet voluptas quod qui.
-                UserId: Rem voluptates nam voluptatem rerum rerum neque.
-              - Chat: Aut numquam similique.
-                Id: 5625972352155160976
-                Member: Nihil debitis magnam dolorem qui praesentium iure.
-                PostDt: "1985-11-21T12:48:29Z"
-                RoomName: Eveniet voluptas quod qui.
-                UserId: Rem voluptates nam voluptatem rerum rerum neque.
-      security:
-      - api_key_header_Authorization: []
   /chatroom/chat:
     post:
       tags:
@@ -70,13 +19,13 @@ paths:
             schema:
               $ref: '#/components/schemas/PostchatRequestBody'
             example:
-              Chat: Quia omnis aut doloribus reiciendis.
-              Cookie: Aut accusamus aut voluptas dicta totam.
-              Id: Quis repudiandae perferendis ut.
-              Member: Est est aut doloremque quo nulla.
-              PostDt: "1974-10-21T19:40:05Z"
-              RoomName: Odio recusandae atque ut.
-              UserId: Neque nostrum et magni eos enim.
+              Chat: Aut aliquam consequatur accusamus amet aspernatur et.
+              Cookie: Non voluptas quisquam.
+              Id: Non iste expedita ut placeat non.
+              Member: Temporibus quis.
+              PostDt: "2004-07-15T16:53:58Z"
+              RoomName: Dignissimos saepe.
+              UserId: Saepe est omnis.
       responses:
         "200":
           description: OK response.
@@ -86,121 +35,47 @@ paths:
                 type: boolean
                 example: false
               example: true
-      security:
-      - api_key_header_Authorization: []
 components:
   schemas:
-    GoaChat:
-      type: object
-      properties:
-        Chat:
-          type: string
-          description: chat
-          example: Soluta iste.
-        Id:
-          type: integer
-          description: room id
-          example: 6922129475788002348
-          format: int64
-        Member:
-          type: string
-          description: member
-          example: Iure suscipit assumenda eum.
-        PostDt:
-          type: string
-          example: "1982-08-12T07:15:20Z"
-          format: date-time
-        RoomName:
-          type: string
-          description: room name
-          example: Eos quia alias sequi sit tenetur molestias.
-        UserId:
-          type: string
-          description: user id
-          example: Et voluptatibus et doloribus.
-      description: All chat
-      example:
-        Chat: Illum ipsa ut error cum.
-        Id: 6998534079444475763
-        Member: Nesciunt velit a.
-        PostDt: "2011-10-23T05:55:47Z"
-        RoomName: Itaque impedit.
-        UserId: Quia animi necessitatibus voluptas.
-      required:
-      - Id
-      - UserId
-      - RoomName
-      - Member
-      - Chat
-      - PostDt
-    GoaChatCollection:
-      type: array
-      items:
-        $ref: '#/components/schemas/GoaChat'
-      example:
-      - Chat: Aut numquam similique.
-        Id: 5625972352155160976
-        Member: Nihil debitis magnam dolorem qui praesentium iure.
-        PostDt: "1985-11-21T12:48:29Z"
-        RoomName: Eveniet voluptas quod qui.
-        UserId: Rem voluptates nam voluptatem rerum rerum neque.
-      - Chat: Aut numquam similique.
-        Id: 5625972352155160976
-        Member: Nihil debitis magnam dolorem qui praesentium iure.
-        PostDt: "1985-11-21T12:48:29Z"
-        RoomName: Eveniet voluptas quod qui.
-        UserId: Rem voluptates nam voluptatem rerum rerum neque.
-      - Chat: Aut numquam similique.
-        Id: 5625972352155160976
-        Member: Nihil debitis magnam dolorem qui praesentium iure.
-        PostDt: "1985-11-21T12:48:29Z"
-        RoomName: Eveniet voluptas quod qui.
-        UserId: Rem voluptates nam voluptatem rerum rerum neque.
-      - Chat: Aut numquam similique.
-        Id: 5625972352155160976
-        Member: Nihil debitis magnam dolorem qui praesentium iure.
-        PostDt: "1985-11-21T12:48:29Z"
-        RoomName: Eveniet voluptas quod qui.
-        UserId: Rem voluptates nam voluptatem rerum rerum neque.
     PostchatRequestBody:
       type: object
       properties:
         Chat:
           type: string
           description: chat
-          example: Ut at.
+          example: Id ut id assumenda totam sed doloremque.
         Cookie:
           type: string
           description: cookie
-          example: Incidunt est sit voluptatem explicabo officia.
+          example: Amet placeat labore.
         Id:
           type: string
           description: room id
-          example: Voluptatem sit iusto consectetur amet.
+          example: Aut quidem.
         Member:
           type: string
           description: member
-          example: Enim architecto voluptates.
+          example: Voluptate perspiciatis cupiditate aut necessitatibus sed.
         PostDt:
           type: string
-          example: "2014-02-17T23:40:11Z"
+          example: "1975-05-21T18:23:47Z"
           format: date-time
         RoomName:
           type: string
           description: room name
-          example: Non autem provident veniam animi consequatur iste.
+          example: Aut veniam eligendi sint at soluta eveniet.
         UserId:
           type: string
           description: user id
-          example: Aut fugit.
+          example: In aspernatur amet.
       example:
-        Chat: Iusto consequuntur doloremque praesentium perspiciatis enim.
-        Cookie: Blanditiis ullam laboriosam exercitationem mollitia molestiae pariatur.
-        Id: At unde distinctio quis quisquam ullam voluptatibus.
-        Member: Pariatur rerum nobis animi incidunt harum corrupti.
-        PostDt: "2001-04-17T15:42:04Z"
-        RoomName: Ratione similique ullam.
-        UserId: Velit accusamus odio.
+        Chat: Non ea accusamus culpa impedit.
+        Cookie: Et saepe vero.
+        Id: Laboriosam culpa totam modi.
+        Member: Voluptatem fugiat repellat.
+        PostDt: "2003-07-19T03:06:57Z"
+        RoomName: Blanditiis aut dolorum assumenda.
+        UserId: Et magnam molestiae laboriosam libero ut.
       required:
       - Id
       - UserId
@@ -209,12 +84,6 @@ components:
       - Chat
       - PostDt
       - Cookie
-  securitySchemes:
-    api_key_header_Authorization:
-      type: apiKey
-      description: Secures endpoint by requiring an API key.
-      name: Authorization
-      in: header
 tags:
 - name: chatapi
   description: The service performs get chat.

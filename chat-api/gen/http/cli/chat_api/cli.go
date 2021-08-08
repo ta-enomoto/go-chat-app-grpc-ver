@@ -23,13 +23,21 @@ import (
 //    command (subcommand1|subcommand2|...)
 //
 func UsageCommands() string {
-	return `chatapi (getchat|postchat)
+	return `chatapi postchat
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` chatapi getchat --id 150232791008831812 --key "Nihil ab."` + "\n" +
+	return os.Args[0] + ` chatapi postchat --body '{
+      "Chat": "Aut aliquam consequatur accusamus amet aspernatur et.",
+      "Cookie": "Non voluptas quisquam.",
+      "Id": "Non iste expedita ut placeat non.",
+      "Member": "Temporibus quis.",
+      "PostDt": "2004-07-15T16:53:58Z",
+      "RoomName": "Dignissimos saepe.",
+      "UserId": "Saepe est omnis."
+   }'` + "\n" +
 		""
 }
 
@@ -45,16 +53,10 @@ func ParseEndpoint(
 	var (
 		chatapiFlags = flag.NewFlagSet("chatapi", flag.ContinueOnError)
 
-		chatapiGetchatFlags   = flag.NewFlagSet("getchat", flag.ExitOnError)
-		chatapiGetchatIDFlag  = chatapiGetchatFlags.String("id", "REQUIRED", "room id")
-		chatapiGetchatKeyFlag = chatapiGetchatFlags.String("key", "REQUIRED", "")
-
 		chatapiPostchatFlags    = flag.NewFlagSet("postchat", flag.ExitOnError)
 		chatapiPostchatBodyFlag = chatapiPostchatFlags.String("body", "REQUIRED", "")
-		chatapiPostchatKeyFlag  = chatapiPostchatFlags.String("key", "REQUIRED", "")
 	)
 	chatapiFlags.Usage = chatapiUsage
-	chatapiGetchatFlags.Usage = chatapiGetchatUsage
 	chatapiPostchatFlags.Usage = chatapiPostchatUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
@@ -91,9 +93,6 @@ func ParseEndpoint(
 		switch svcn {
 		case "chatapi":
 			switch epn {
-			case "getchat":
-				epf = chatapiGetchatFlags
-
 			case "postchat":
 				epf = chatapiPostchatFlags
 
@@ -122,12 +121,9 @@ func ParseEndpoint(
 		case "chatapi":
 			c := chatapic.NewClient(scheme, host, doer, enc, dec, restore)
 			switch epn {
-			case "getchat":
-				endpoint = c.Getchat()
-				data, err = chatapic.BuildGetchatPayload(*chatapiGetchatIDFlag, *chatapiGetchatKeyFlag)
 			case "postchat":
 				endpoint = c.Postchat()
-				data, err = chatapic.BuildPostchatPayload(*chatapiPostchatBodyFlag, *chatapiPostchatKeyFlag)
+				data, err = chatapic.BuildPostchatPayload(*chatapiPostchatBodyFlag)
 			}
 		}
 	}
@@ -145,41 +141,27 @@ Usage:
     %s [globalflags] chatapi COMMAND [flags]
 
 COMMAND:
-    getchat: Getchat implements getchat.
     postchat: Postchat implements postchat.
 
 Additional help:
     %s chatapi COMMAND --help
 `, os.Args[0], os.Args[0])
 }
-func chatapiGetchatUsage() {
-	fmt.Fprintf(os.Stderr, `%s [flags] chatapi getchat -id INT -key STRING
-
-Getchat implements getchat.
-    -id INT: room id
-    -key STRING: 
-
-Example:
-    `+os.Args[0]+` chatapi getchat --id 150232791008831812 --key "Nihil ab."
-`, os.Args[0])
-}
-
 func chatapiPostchatUsage() {
-	fmt.Fprintf(os.Stderr, `%s [flags] chatapi postchat -body JSON -key STRING
+	fmt.Fprintf(os.Stderr, `%s [flags] chatapi postchat -body JSON
 
 Postchat implements postchat.
     -body JSON: 
-    -key STRING: 
 
 Example:
     `+os.Args[0]+` chatapi postchat --body '{
-      "Chat": "Quia omnis aut doloribus reiciendis.",
-      "Cookie": "Aut accusamus aut voluptas dicta totam.",
-      "Id": "Quis repudiandae perferendis ut.",
-      "Member": "Est est aut doloremque quo nulla.",
-      "PostDt": "1974-10-21T19:40:05Z",
-      "RoomName": "Odio recusandae atque ut.",
-      "UserId": "Neque nostrum et magni eos enim."
-   }' --key "Quidem labore."
+      "Chat": "Aut aliquam consequatur accusamus amet aspernatur et.",
+      "Cookie": "Non voluptas quisquam.",
+      "Id": "Non iste expedita ut placeat non.",
+      "Member": "Temporibus quis.",
+      "PostDt": "2004-07-15T16:53:58Z",
+      "RoomName": "Dignissimos saepe.",
+      "UserId": "Saepe est omnis."
+   }'
 `, os.Args[0])
 }

@@ -1,0 +1,41 @@
+// Code generated with goa v3.4.3, DO NOT EDIT.
+//
+// chatapi protocol buffer definition
+//
+// Command:
+// $ goa gen chat-api/design
+
+syntax = "proto3";
+
+package chatapi;
+
+option go_package = "/chatapipb";
+
+// The service performs get chat.
+service Chatapi {
+	// Getchat implements getchat.
+	rpc Getchat (GetchatRequest) returns (GoaChatCollection);
+}
+
+message GetchatRequest {
+	// room id
+	sint32 id = 1;
+}
+
+message GoaChatCollection {
+	repeated GoaChat field = 1;
+}
+// All chat
+message GoaChat {
+	// room id
+	sint32 id = 1;
+	// user id
+	string user_id = 2;
+	// room name
+	string room_name = 3;
+	// member
+	string member = 4;
+	// chat
+	string chat = 5;
+	string post_dt = 6;
+}

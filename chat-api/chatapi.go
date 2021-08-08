@@ -6,13 +6,12 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	//"goa.design/goa/v3/security"
 	"log"
 	"net/url"
 	"regexp"
 	"strconv"
 	"time"
-
-	"goa.design/goa/v3/security"
 )
 
 // chatapi service example implementation.
@@ -26,18 +25,7 @@ func NewChatapi(logger *log.Logger) chatapi.Service {
 	return &chatapisrvc{logger}
 }
 
-// APIKeyAuth implements the authorization logic for service "chatapi" for the
-// "api_key" security scheme.
-func (s *chatapisrvc) APIKeyAuth(ctx context.Context, key string, scheme *security.APIKeyScheme) (context.Context, error) {
-
-	//簡易版、本番環境ではDBからの参照やアクセストークンを使用する方法
-	if key != "apikey" {
-		return ctx, fmt.Errorf("not implemented")
-	}
-	return ctx, nil
-}
-
-//チャット取得用関数(GET)
+// Getchat implements getchat.
 func (s *chatapisrvc) Getchat(ctx context.Context, p *chatapi.GetchatPayload) (res chatapi.GoaChatCollection, err error) {
 
 	//チャットルームDBに接続する
@@ -59,7 +47,7 @@ func (s *chatapisrvc) Getchat(ctx context.Context, p *chatapi.GetchatPayload) (r
 	return Chats, nil
 }
 
-//チャット投稿用関数(POST)
+// Postchat implements postchat.
 func (s *chatapisrvc) Postchat(ctx context.Context, p *chatapi.PostchatPayload) (res bool, err error) {
 	s.logger.Print("chatapi.postchat")
 

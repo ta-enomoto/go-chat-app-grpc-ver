@@ -1,6 +1,6 @@
 let socket = null;
 let data = "";
-let wsuri = "ws://172.25.0.2/wsserver";
+let wsuri = "ws://172.26.0.2/wsserver";
 let allchats ="";
 
 //ウィンドウ表示時に、APIからのチャットの取得と、WebSocketのハンドシェイク処理を行う
@@ -8,11 +8,11 @@ window.onload = async function() {
   
   //API、WebSocket共通で使用するURLからのルームID取得処理
   let url = location.href;
-  let roomid = url.replace("http://172.25.0.2/mypage/chatroom","");
+  let roomid = url.replace("http://172.26.0.2/mypage/chatroom","");
 
 //チャット読み込み処理
   //APIリクエスト(GET)先のURL
-  const urlForApiGet = "http://172.25.0.3:8000/chatroom/" + roomid;
+  const urlForApiGet = "http://172.26.0.3:8000/chatroom/" + roomid;
   
   //headersにAPIキー認証用のAuthorizationヘッダーを設定
   const axiosConfig = {
@@ -172,7 +172,7 @@ function send() {
 
   //URLから当該ルームIDを取得
   let url = location.href;
-  let roomid = url.replace("http://172.25.0.2/mypage/chatroom","");
+  let roomid = url.replace("http://172.26.0.2/mypage/chatroom","");
 
   //チャット欄が空欄で投稿ボタンが押された時は処理中断・alertで通知する
   let chat = document.getElementById('chat').value;
@@ -201,7 +201,7 @@ function send() {
   socket.send(newchatJSON);
 
   //APIリクエスト(POST)先のURLを設定
-  const urlForApiPost = "http://172.25.0.3:8000/chatroom/chat";
+  const urlForApiPost = "http://172.26.0.3:8000/chatroom/chat";
   
   //headersにAPIキー認証用のAuthorizationヘッダーを設定
   const axiosConfig = {

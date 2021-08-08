@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: web-server/docker/app/dockerfile
-    container_name: go-chat-app-api-ver_web
+    container_name: go-chat-app-grpc-ver_web
     ports:
       - "80:80"
     environment:
@@ -12,25 +12,25 @@ services:
     volumes:
       - ./web-server:/go/src/go-chat-app-api-ver/web-server
     networks:
-      app-api-db-net:
-        ipv4_address: 172.25.0.2
+      app-grpc-db-net:
+        ipv4_address: 172.26.0.2
   api:
     build:
       context: .
       dockerfile: chat-api/docker/api/dockerfile
-    container_name: go-chat-app-api-ver_api
+    container_name: go-chat-app-grpc-ver_api
     ports:
       - "8080:80"
     volumes:
      - .:/api
     networks: 
-      app-api-db-net:
-        ipv4_address: 172.25.0.3
+      app-grpc-db-net:
+        ipv4_address: 172.26.0.3
   db-users:
     build:
       context: .
       dockerfile: db-users/dockerfile
-    container_name: go-chat-app-api-ver_db-users
+    container_name: go-chat-app-grpc-ver_db-users
     ports:
       - "3306:3306"
     environment:
@@ -45,13 +45,13 @@ services:
       - ./db-users/my.conf:/etc/mysql/conf.d/my.conf
       - ./db-users/initdb.d:/docker-entrypoint-initdb.d
     networks:
-      app-api-db-net:
-        ipv4_address: 172.25.0.4
+      app-grpc-db-net:
+        ipv4_address: 172.26.0.4
   db-chats:
     build:
       context: .
       dockerfile: db-chats/dockerfile
-    container_name: go-chat-app-api-ver_db-chats
+    container_name: go-chat-app-grpc-ver_db-chats
     ports:
       - "3307:3306"
     environment:
@@ -66,8 +66,18 @@ services:
       - ./db-chats/my.conf:/etc/mysql/conf.d/my.conf
       - ./db-chats/initdb.d:/docker-entrypoint-initdb.d
     networks:
-      app-api-db-net:
-        ipv4_address: 172.25.0.5
+      app-grpc-db-net:
+        ipv4_address: 172.26.0.5
+  envoy:
+    build:
+      context: .
+      dockerfile: proxy/dockerfile
+    container_name: go-chat-app-grpc_envoy-grpc-proxy
+    ports:
+      - "9000:9000"
+    networks:
+      app-grpc-db-net:
+        ipv4_address: 172.26.0.6
 
 volumes:
   db-data-users:
@@ -76,9 +86,9 @@ volumes:
     driver: local
 
 networks:
-  app-api-db-net:
+  app-grpc-db-net:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: 172.25.0.0/24
+        - subnet: 172.26.0.0/24

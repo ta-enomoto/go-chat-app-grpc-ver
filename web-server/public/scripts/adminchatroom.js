@@ -5,10 +5,10 @@ window.onload = async function() {
   
   //APIで使用するURLからのルームID取得処理
   let url = location.href;
-  let roomid = url.replace("http://172.25.0.2/admin/chatrooms/chatroom","");
+  let roomid = url.replace("http://172.26.0.2/admin/chatrooms/chatroom","");
 
   //APIリクエスト(GET)先のURL
-  const urlForApiGet = "http://172.25.0.3:8000/chatroom/" + roomid;
+  const urlForApiGet = "http://172.26.0.3:8000/chatroom/" + roomid;
 
   //headersにAPIキー認証用のAuthorizationヘッダーを設定
   const axiosConfig = {

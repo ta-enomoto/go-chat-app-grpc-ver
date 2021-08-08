@@ -13,24 +13,28 @@ body {
   width:30%;
 }
 
-div.logout-link{
-  color: #FFFFFF;
+div.logout-link {
   text-align: right;
+}
+
+div.logout-link a{
+  color: #FFFFFF;
 }
 
 div.logout-link a:visited {
   color: #FFFFFF;
-  text-align: right;
 }
 
 div.withdrawal-link {
-  color: #FFFFFF;
   text-align: right;
+}
+
+div.withdrawal-link a{
+  color: #FFFFFF;
 }
 
 div.withdrawal-link a:visited {
   color: #FFFFFF;
-  text-align: center;
 }
 
 #title-create-new-room{

@@ -11,54 +11,25 @@ import (
 	chatapi "chat-api/gen/chatapi"
 	"encoding/json"
 	"fmt"
-	"strconv"
 
 	goa "goa.design/goa/v3/pkg"
 )
 
-// BuildGetchatPayload builds the payload for the chatapi getchat endpoint from
-// CLI flags.
-func BuildGetchatPayload(chatapiGetchatID string, chatapiGetchatKey string) (*chatapi.GetchatPayload, error) {
-	var err error
-	var id int
-	{
-		var v int64
-		v, err = strconv.ParseInt(chatapiGetchatID, 10, 64)
-		id = int(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid value for id, must be INT")
-		}
-	}
-	var key string
-	{
-		key = chatapiGetchatKey
-	}
-	v := &chatapi.GetchatPayload{}
-	v.ID = id
-	v.Key = key
-
-	return v, nil
-}
-
 // BuildPostchatPayload builds the payload for the chatapi postchat endpoint
 // from CLI flags.
-func BuildPostchatPayload(chatapiPostchatBody string, chatapiPostchatKey string) (*chatapi.PostchatPayload, error) {
+func BuildPostchatPayload(chatapiPostchatBody string) (*chatapi.PostchatPayload, error) {
 	var err error
 	var body PostchatRequestBody
 	{
 		err = json.Unmarshal([]byte(chatapiPostchatBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"Chat\": \"Quia omnis aut doloribus reiciendis.\",\n      \"Cookie\": \"Aut accusamus aut voluptas dicta totam.\",\n      \"Id\": \"Quis repudiandae perferendis ut.\",\n      \"Member\": \"Est est aut doloremque quo nulla.\",\n      \"PostDt\": \"1974-10-21T19:40:05Z\",\n      \"RoomName\": \"Odio recusandae atque ut.\",\n      \"UserId\": \"Neque nostrum et magni eos enim.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"Chat\": \"Aut aliquam consequatur accusamus amet aspernatur et.\",\n      \"Cookie\": \"Non voluptas quisquam.\",\n      \"Id\": \"Non iste expedita ut placeat non.\",\n      \"Member\": \"Temporibus quis.\",\n      \"PostDt\": \"2004-07-15T16:53:58Z\",\n      \"RoomName\": \"Dignissimos saepe.\",\n      \"UserId\": \"Saepe est omnis.\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.PostDt", body.PostDt, goa.FormatDateTime))
 
 		if err != nil {
 			return nil, err
 		}
-	}
-	var key string
-	{
-		key = chatapiPostchatKey
 	}
 	v := &chatapi.PostchatPayload{
 		ID:       body.ID,
@@ -69,7 +40,6 @@ func BuildPostchatPayload(chatapiPostchatBody string, chatapiPostchatKey string)
 		PostDt:   body.PostDt,
 		Cookie:   body.Cookie,
 	}
-	v.Key = key
 
 	return v, nil
 }

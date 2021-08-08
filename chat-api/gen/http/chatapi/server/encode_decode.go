@@ -8,65 +8,13 @@
 package server
 
 import (
-	chatapiviews "chat-api/gen/chatapi/views"
 	"context"
 	"io"
 	"net/http"
-	"strconv"
-	"strings"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
 )
-
-// EncodeGetchatResponse returns an encoder for responses returned by the
-// chatapi getchat endpoint.
-func EncodeGetchatResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
-	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
-		res := v.(chatapiviews.GoaChatCollection)
-		enc := encoder(ctx, w)
-		body := NewGoaChatResponseCollection(res.Projected)
-		w.WriteHeader(http.StatusOK)
-		return enc.Encode(body)
-	}
-}
-
-// DecodeGetchatRequest returns a decoder for requests sent to the chatapi
-// getchat endpoint.
-func DecodeGetchatRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
-	return func(r *http.Request) (interface{}, error) {
-		var (
-			id  int
-			key string
-			err error
-
-			params = mux.Vars(r)
-		)
-		{
-			idRaw := params["id"]
-			v, err2 := strconv.ParseInt(idRaw, 10, strconv.IntSize)
-			if err2 != nil {
-				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("id", idRaw, "integer"))
-			}
-			id = int(v)
-		}
-		key = r.Header.Get("Authorization")
-		if key == "" {
-			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
-		}
-		if err != nil {
-			return nil, err
-		}
-		payload := NewGetchatPayload(id, key)
-		if strings.Contains(payload.Key, " ") {
-			// Remove authorization scheme prefix (e.g. "Bearer")
-			cred := strings.SplitN(payload.Key, " ", 2)[1]
-			payload.Key = cred
-		}
-
-		return payload, nil
-	}
-}
 
 // EncodePostchatResponse returns an encoder for responses returned by the
 // chatapi postchat endpoint.
@@ -99,39 +47,8 @@ func DecodePostchatRequest(mux goahttp.Muxer, decoder func(*http.Request) goahtt
 		if err != nil {
 			return nil, err
 		}
-
-		var (
-			key string
-		)
-		key = r.Header.Get("Authorization")
-		if key == "" {
-			err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
-		}
-		if err != nil {
-			return nil, err
-		}
-		payload := NewPostchatPayload(&body, key)
-		if strings.Contains(payload.Key, " ") {
-			// Remove authorization scheme prefix (e.g. "Bearer")
-			cred := strings.SplitN(payload.Key, " ", 2)[1]
-			payload.Key = cred
-		}
+		payload := NewPostchatPayload(&body)
 
 		return payload, nil
 	}
-}
-
-// marshalChatapiviewsGoaChatViewToGoaChatResponse builds a value of type
-// *GoaChatResponse from a value of type *chatapiviews.GoaChatView.
-func marshalChatapiviewsGoaChatViewToGoaChatResponse(v *chatapiviews.GoaChatView) *GoaChatResponse {
-	res := &GoaChatResponse{
-		ID:       *v.ID,
-		UserID:   *v.UserID,
-		RoomName: *v.RoomName,
-		Member:   *v.Member,
-		Chat:     *v.Chat,
-		PostDt:   *v.PostDt,
-	}
-
-	return res
 }

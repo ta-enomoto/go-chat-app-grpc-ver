@@ -9,7 +9,6 @@ package server
 
 import (
 	chatapi "chat-api/gen/chatapi"
-	chatapiviews "chat-api/gen/chatapi/views"
 
 	goa "goa.design/goa/v3/pkg"
 )
@@ -32,46 +31,8 @@ type PostchatRequestBody struct {
 	Cookie *string `form:"Cookie,omitempty" json:"Cookie,omitempty" xml:"Cookie,omitempty"`
 }
 
-// GoaChatResponseCollection is the type of the "chatapi" service "getchat"
-// endpoint HTTP response body.
-type GoaChatResponseCollection []*GoaChatResponse
-
-// GoaChatResponse is used to define fields on response body types.
-type GoaChatResponse struct {
-	// room id
-	ID int `form:"Id" json:"Id" xml:"Id"`
-	// user id
-	UserID string `form:"UserId" json:"UserId" xml:"UserId"`
-	// room name
-	RoomName string `form:"RoomName" json:"RoomName" xml:"RoomName"`
-	// member
-	Member string `form:"Member" json:"Member" xml:"Member"`
-	// chat
-	Chat   string `form:"Chat" json:"Chat" xml:"Chat"`
-	PostDt string `form:"PostDt" json:"PostDt" xml:"PostDt"`
-}
-
-// NewGoaChatResponseCollection builds the HTTP response body from the result
-// of the "getchat" endpoint of the "chatapi" service.
-func NewGoaChatResponseCollection(res chatapiviews.GoaChatCollectionView) GoaChatResponseCollection {
-	body := make([]*GoaChatResponse, len(res))
-	for i, val := range res {
-		body[i] = marshalChatapiviewsGoaChatViewToGoaChatResponse(val)
-	}
-	return body
-}
-
-// NewGetchatPayload builds a chatapi service getchat endpoint payload.
-func NewGetchatPayload(id int, key string) *chatapi.GetchatPayload {
-	v := &chatapi.GetchatPayload{}
-	v.ID = id
-	v.Key = key
-
-	return v
-}
-
 // NewPostchatPayload builds a chatapi service postchat endpoint payload.
-func NewPostchatPayload(body *PostchatRequestBody, key string) *chatapi.PostchatPayload {
+func NewPostchatPayload(body *PostchatRequestBody) *chatapi.PostchatPayload {
 	v := &chatapi.PostchatPayload{
 		ID:       *body.ID,
 		UserID:   *body.UserID,
@@ -81,7 +42,6 @@ func NewPostchatPayload(body *PostchatRequestBody, key string) *chatapi.Postchat
 		PostDt:   *body.PostDt,
 		Cookie:   *body.Cookie,
 	}
-	v.Key = key
 
 	return v
 }

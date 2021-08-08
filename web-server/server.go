@@ -21,7 +21,7 @@ func (mux MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var resistration = regexp.MustCompile(`^/resistration$`)
 	var logout = regexp.MustCompile(`^/logout$`)
 	var withdrawal = regexp.MustCompile(`^/withdrawal$`)
-	var dirOfChatroom = regexp.MustCompile(`/mypage/.*`)
+	var dirOfChatroom = regexp.MustCompile(`/mypage/chatroom[0-9]*`)
 	var websocketSever = regexp.MustCompile(`^/wsserver$`)
 	var publicFiles = regexp.MustCompile(`/public/.*`)
 	var adminLogin = regexp.MustCompile(`^/admin/login$`)
@@ -29,7 +29,7 @@ func (mux MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var adminUsers = regexp.MustCompile(`^/admin/users$`)
 	var adminChatrooms = regexp.MustCompile(`^/admin/chatrooms$`)
 	var adminUser = regexp.MustCompile(`^/admin/users/.*`)
-	var adminChatroom = regexp.MustCompile(`^/admin/chatrooms/.*`)
+	var adminChatroom = regexp.MustCompile(`^/admin/chatroom[0-9]*`)
 	var adminLogout = regexp.MustCompile(`^/admin/logout$`)
 	url := r.URL.Path
 

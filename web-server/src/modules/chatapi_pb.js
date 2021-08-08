@@ -154,7 +154,7 @@ proto.chatapi.GetchatRequest.prototype.toObject = function(opt_includeInstance) 
  */
 proto.chatapi.GetchatRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    id: jspb.Message.getFieldWithDefault(msg, 1, 0)
+    id: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -191,7 +191,7 @@ proto.chatapi.GetchatRequest.deserializeBinaryFromReader = function(msg, reader)
     }
     var field = reader.getFieldNumber();
     switch (field) {
-    case 1:
+    case 2:
       var value = /** @type {number} */ (reader.readSint32());
       msg.setId(value);
       break;
@@ -227,7 +227,7 @@ proto.chatapi.GetchatRequest.serializeBinaryToWriter = function(message, writer)
   f = message.getId();
   if (f !== 0) {
     writer.writeSint32(
-      1,
+      2,
       f
     );
   }
@@ -235,11 +235,11 @@ proto.chatapi.GetchatRequest.serializeBinaryToWriter = function(message, writer)
 
 
 /**
- * optional sint32 id = 1;
+ * optional sint32 id = 2;
  * @return {number}
  */
 proto.chatapi.GetchatRequest.prototype.getId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
@@ -248,7 +248,7 @@ proto.chatapi.GetchatRequest.prototype.getId = function() {
  * @return {!proto.chatapi.GetchatRequest} returns this
  */
 proto.chatapi.GetchatRequest.prototype.setId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3IntField(this, 2, value);
 };
 
 
@@ -724,13 +724,13 @@ proto.chatapi.PostchatRequest.prototype.toObject = function(opt_includeInstance)
  */
 proto.chatapi.PostchatRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    id: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    userId: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    roomName: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    member: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    chat: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    postDt: jspb.Message.getFieldWithDefault(msg, 6, ""),
-    cookie: jspb.Message.getFieldWithDefault(msg, 7, "")
+    id: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    userId: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    roomName: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    member: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    chat: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    postDt: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    cookie: jspb.Message.getFieldWithDefault(msg, 8, "")
   };
 
   if (includeInstance) {
@@ -767,31 +767,31 @@ proto.chatapi.PostchatRequest.deserializeBinaryFromReader = function(msg, reader
     }
     var field = reader.getFieldNumber();
     switch (field) {
-    case 1:
+    case 2:
       var value = /** @type {string} */ (reader.readString());
       msg.setId(value);
       break;
-    case 2:
+    case 3:
       var value = /** @type {string} */ (reader.readString());
       msg.setUserId(value);
       break;
-    case 3:
+    case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setRoomName(value);
       break;
-    case 4:
+    case 5:
       var value = /** @type {string} */ (reader.readString());
       msg.setMember(value);
       break;
-    case 5:
+    case 6:
       var value = /** @type {string} */ (reader.readString());
       msg.setChat(value);
       break;
-    case 6:
+    case 7:
       var value = /** @type {string} */ (reader.readString());
       msg.setPostDt(value);
       break;
-    case 7:
+    case 8:
       var value = /** @type {string} */ (reader.readString());
       msg.setCookie(value);
       break;
@@ -827,49 +827,49 @@ proto.chatapi.PostchatRequest.serializeBinaryToWriter = function(message, writer
   f = message.getId();
   if (f.length > 0) {
     writer.writeString(
-      1,
+      2,
       f
     );
   }
   f = message.getUserId();
   if (f.length > 0) {
     writer.writeString(
-      2,
+      3,
       f
     );
   }
   f = message.getRoomName();
   if (f.length > 0) {
     writer.writeString(
-      3,
+      4,
       f
     );
   }
   f = message.getMember();
   if (f.length > 0) {
     writer.writeString(
-      4,
+      5,
       f
     );
   }
   f = message.getChat();
   if (f.length > 0) {
     writer.writeString(
-      5,
+      6,
       f
     );
   }
   f = message.getPostDt();
   if (f.length > 0) {
     writer.writeString(
-      6,
+      7,
       f
     );
   }
   f = message.getCookie();
   if (f.length > 0) {
     writer.writeString(
-      7,
+      8,
       f
     );
   }
@@ -877,28 +877,10 @@ proto.chatapi.PostchatRequest.serializeBinaryToWriter = function(message, writer
 
 
 /**
- * optional string id = 1;
+ * optional string id = 2;
  * @return {string}
  */
 proto.chatapi.PostchatRequest.prototype.getId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.chatapi.PostchatRequest} returns this
- */
-proto.chatapi.PostchatRequest.prototype.setId = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
-};
-
-
-/**
- * optional string user_id = 2;
- * @return {string}
- */
-proto.chatapi.PostchatRequest.prototype.getUserId = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
@@ -907,16 +889,16 @@ proto.chatapi.PostchatRequest.prototype.getUserId = function() {
  * @param {string} value
  * @return {!proto.chatapi.PostchatRequest} returns this
  */
-proto.chatapi.PostchatRequest.prototype.setUserId = function(value) {
+proto.chatapi.PostchatRequest.prototype.setId = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
 /**
- * optional string room_name = 3;
+ * optional string user_id = 3;
  * @return {string}
  */
-proto.chatapi.PostchatRequest.prototype.getRoomName = function() {
+proto.chatapi.PostchatRequest.prototype.getUserId = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
@@ -925,16 +907,16 @@ proto.chatapi.PostchatRequest.prototype.getRoomName = function() {
  * @param {string} value
  * @return {!proto.chatapi.PostchatRequest} returns this
  */
-proto.chatapi.PostchatRequest.prototype.setRoomName = function(value) {
+proto.chatapi.PostchatRequest.prototype.setUserId = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
 /**
- * optional string member = 4;
+ * optional string room_name = 4;
  * @return {string}
  */
-proto.chatapi.PostchatRequest.prototype.getMember = function() {
+proto.chatapi.PostchatRequest.prototype.getRoomName = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
@@ -943,16 +925,16 @@ proto.chatapi.PostchatRequest.prototype.getMember = function() {
  * @param {string} value
  * @return {!proto.chatapi.PostchatRequest} returns this
  */
-proto.chatapi.PostchatRequest.prototype.setMember = function(value) {
+proto.chatapi.PostchatRequest.prototype.setRoomName = function(value) {
   return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
 /**
- * optional string chat = 5;
+ * optional string member = 5;
  * @return {string}
  */
-proto.chatapi.PostchatRequest.prototype.getChat = function() {
+proto.chatapi.PostchatRequest.prototype.getMember = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
@@ -961,16 +943,16 @@ proto.chatapi.PostchatRequest.prototype.getChat = function() {
  * @param {string} value
  * @return {!proto.chatapi.PostchatRequest} returns this
  */
-proto.chatapi.PostchatRequest.prototype.setChat = function(value) {
+proto.chatapi.PostchatRequest.prototype.setMember = function(value) {
   return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
 /**
- * optional string post_dt = 6;
+ * optional string chat = 6;
  * @return {string}
  */
-proto.chatapi.PostchatRequest.prototype.getPostDt = function() {
+proto.chatapi.PostchatRequest.prototype.getChat = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
@@ -979,16 +961,16 @@ proto.chatapi.PostchatRequest.prototype.getPostDt = function() {
  * @param {string} value
  * @return {!proto.chatapi.PostchatRequest} returns this
  */
-proto.chatapi.PostchatRequest.prototype.setPostDt = function(value) {
+proto.chatapi.PostchatRequest.prototype.setChat = function(value) {
   return jspb.Message.setProto3StringField(this, 6, value);
 };
 
 
 /**
- * optional string cookie = 7;
+ * optional string post_dt = 7;
  * @return {string}
  */
-proto.chatapi.PostchatRequest.prototype.getCookie = function() {
+proto.chatapi.PostchatRequest.prototype.getPostDt = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
 };
 
@@ -997,8 +979,26 @@ proto.chatapi.PostchatRequest.prototype.getCookie = function() {
  * @param {string} value
  * @return {!proto.chatapi.PostchatRequest} returns this
  */
-proto.chatapi.PostchatRequest.prototype.setCookie = function(value) {
+proto.chatapi.PostchatRequest.prototype.setPostDt = function(value) {
   return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+/**
+ * optional string cookie = 8;
+ * @return {string}
+ */
+proto.chatapi.PostchatRequest.prototype.getCookie = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.chatapi.PostchatRequest} returns this
+ */
+proto.chatapi.PostchatRequest.prototype.setCookie = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
 };
 
 

@@ -17,10 +17,11 @@ import (
 
 // NewGetchatPayload builds the payload of the "getchat" endpoint of the
 // "chatapi" service from the gRPC request type.
-func NewGetchatPayload(message *chatapipb.GetchatRequest) *chatapi.GetchatPayload {
+func NewGetchatPayload(message *chatapipb.GetchatRequest, key string) *chatapi.GetchatPayload {
 	v := &chatapi.GetchatPayload{
 		ID: int(message.Id),
 	}
+	v.Key = key
 	return v
 }
 
@@ -55,7 +56,7 @@ func NewGoaChatCollection(result chatapiviews.GoaChatCollectionView) *chatapipb.
 
 // NewPostchatPayload builds the payload of the "postchat" endpoint of the
 // "chatapi" service from the gRPC request type.
-func NewPostchatPayload(message *chatapipb.PostchatRequest) *chatapi.PostchatPayload {
+func NewPostchatPayload(message *chatapipb.PostchatRequest, key string) *chatapi.PostchatPayload {
 	v := &chatapi.PostchatPayload{
 		ID:       message.Id,
 		UserID:   message.UserId,
@@ -65,6 +66,7 @@ func NewPostchatPayload(message *chatapipb.PostchatRequest) *chatapi.PostchatPay
 		PostDt:   message.PostDt,
 		Cookie:   message.Cookie,
 	}
+	v.Key = key
 	return v
 }
 

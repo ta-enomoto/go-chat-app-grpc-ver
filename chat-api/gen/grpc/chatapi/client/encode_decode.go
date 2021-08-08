@@ -38,6 +38,7 @@ func EncodeGetchatRequest(ctx context.Context, v interface{}, md *metadata.MD) (
 	if !ok {
 		return nil, goagrpc.ErrInvalidType("chatapi", "getchat", "*chatapi.GetchatPayload", v)
 	}
+	(*md).Append("authorization", payload.Key)
 	return NewGetchatRequest(payload), nil
 }
 
@@ -81,6 +82,7 @@ func EncodePostchatRequest(ctx context.Context, v interface{}, md *metadata.MD) 
 	if !ok {
 		return nil, goagrpc.ErrInvalidType("chatapi", "postchat", "*chatapi.PostchatPayload", v)
 	}
+	(*md).Append("authorization", payload.Key)
 	return NewPostchatRequest(payload), nil
 }
 

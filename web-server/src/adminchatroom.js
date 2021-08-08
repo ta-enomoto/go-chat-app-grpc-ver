@@ -1,4 +1,4 @@
-const { GoaChat } = require('./modules/chatapi_pb');
+const { GetchatRequest } = require('./modules/chatapi_pb');
 const { ChatapiClient } = require('./modules/chatapi_grpc_web_pb');
 
 let allchats = "";
@@ -7,8 +7,8 @@ let allchats = "";
 window.onload = function () {
 
   // //APIで使用するURLからのルームID取得処理
-  // let url = location.href;
-  // let roomid = url.replace("http://172.26.0.2/admin/chatrooms/chatroom","");
+  let url = location.href;
+  let roomid = url.replace("http://172.26.0.2/admin/chatrooms/chatroom","");
 
   // //APIリクエスト(GET)先のURL
   // const urlForApiGet = "http://172.26.0.3:8000/chatroom/" + roomid;
@@ -22,12 +22,11 @@ window.onload = function () {
 
   const client = new ChatapiClient('http://172.26.0.6:9000', null, null);
 
-  const request = new GoaChat();
-  let id = 2;
-  request.setId(id);
+  const request = new GetchatRequest();
+  request.setId(roomid);
 
   //APIを叩く関数
-  client.getchat(request, {}, (err, response) => {//{"Authorization": "apikey"}, (err, response) => {
+  client.getchat(request, {"Authorization": "apikey"}, (err, response) => {
     if (err) {
       console.log(`Unexpected error for getChat: code = ${err.code}` + `, message = "${err.message}"`);
     } else {

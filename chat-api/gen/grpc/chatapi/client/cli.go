@@ -16,36 +16,45 @@ import (
 
 // BuildGetchatPayload builds the payload for the chatapi getchat endpoint from
 // CLI flags.
-func BuildGetchatPayload(chatapiGetchatMessage string) (*chatapi.GetchatPayload, error) {
+func BuildGetchatPayload(chatapiGetchatMessage string, chatapiGetchatKey string) (*chatapi.GetchatPayload, error) {
 	var err error
 	var message chatapipb.GetchatRequest
 	{
 		if chatapiGetchatMessage != "" {
 			err = json.Unmarshal([]byte(chatapiGetchatMessage), &message)
 			if err != nil {
-				return nil, fmt.Errorf("invalid JSON for message, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 6790830336211114453\n   }'")
+				return nil, fmt.Errorf("invalid JSON for message, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 3009151431332760301\n   }'")
 			}
 		}
+	}
+	var key string
+	{
+		key = chatapiGetchatKey
 	}
 	v := &chatapi.GetchatPayload{
 		ID: int(message.Id),
 	}
+	v.Key = key
 
 	return v, nil
 }
 
 // BuildPostchatPayload builds the payload for the chatapi postchat endpoint
 // from CLI flags.
-func BuildPostchatPayload(chatapiPostchatMessage string) (*chatapi.PostchatPayload, error) {
+func BuildPostchatPayload(chatapiPostchatMessage string, chatapiPostchatKey string) (*chatapi.PostchatPayload, error) {
 	var err error
 	var message chatapipb.PostchatRequest
 	{
 		if chatapiPostchatMessage != "" {
 			err = json.Unmarshal([]byte(chatapiPostchatMessage), &message)
 			if err != nil {
-				return nil, fmt.Errorf("invalid JSON for message, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"Chat\": \"Ab sint voluptas rerum exercitationem.\",\n      \"Cookie\": \"Expedita recusandae vel.\",\n      \"Id\": \"Iste expedita ut placeat non consequuntur.\",\n      \"Member\": \"Aut aliquam consequatur accusamus amet aspernatur et.\",\n      \"PostDt\": \"2014-01-16T11:20:22Z\",\n      \"RoomName\": \"Temporibus quis.\",\n      \"UserId\": \"Est omnis rem dignissimos saepe.\"\n   }'")
+				return nil, fmt.Errorf("invalid JSON for message, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"Chat\": \"Aliquam dolor necessitatibus.\",\n      \"Cookie\": \"Quaerat est est aut.\",\n      \"Id\": \"Neque est.\",\n      \"Member\": \"Reiciendis quae reiciendis aperiam atque minus.\",\n      \"PostDt\": \"2000-03-10T00:55:40Z\",\n      \"RoomName\": \"Fugiat excepturi quo accusamus sed asperiores nihil.\",\n      \"UserId\": \"Saepe voluptas possimus voluptas.\"\n   }'")
 			}
 		}
+	}
+	var key string
+	{
+		key = chatapiPostchatKey
 	}
 	v := &chatapi.PostchatPayload{
 		ID:       message.Id,
@@ -56,6 +65,7 @@ func BuildPostchatPayload(chatapiPostchatMessage string) (*chatapi.PostchatPaylo
 		PostDt:   message.PostDt,
 		Cookie:   message.Cookie,
 	}
+	v.Key = key
 
 	return v, nil
 }

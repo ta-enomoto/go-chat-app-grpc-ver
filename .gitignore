@@ -4,4 +4,5 @@ chat-api/chat_api-cli
 *.txt
 chat-api/node_modules/
 web-server/tmp/
+node_modules/
 .vscode

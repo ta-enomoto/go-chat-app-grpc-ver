@@ -44,3 +44,18 @@ func (c *Client) Getchat() goa.Endpoint {
 		return res, nil
 	}
 }
+
+// Postchat calls the "Postchat" function in chatapipb.ChatapiClient interface.
+func (c *Client) Postchat() goa.Endpoint {
+	return func(ctx context.Context, v interface{}) (interface{}, error) {
+		inv := goagrpc.NewInvoker(
+			BuildPostchatFunc(c.grpccli, c.opts...),
+			EncodePostchatRequest,
+			DecodePostchatResponse)
+		res, err := inv.Invoke(ctx, v)
+		if err != nil {
+			return nil, goa.Fault(err.Error())
+		}
+		return res, nil
+	}
+}

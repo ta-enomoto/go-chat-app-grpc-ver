@@ -22,14 +22,14 @@ import (
 //    command (subcommand1|subcommand2|...)
 //
 func UsageCommands() string {
-	return `chatapi getchat
+	return `chatapi (getchat|postchat)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` chatapi getchat --message '{
-      "id": 8120138061326814411
+      "id": 6790830336211114453
    }'` + "\n" +
 		""
 }
@@ -42,9 +42,13 @@ func ParseEndpoint(cc *grpc.ClientConn, opts ...grpc.CallOption) (goa.Endpoint, 
 
 		chatapiGetchatFlags       = flag.NewFlagSet("getchat", flag.ExitOnError)
 		chatapiGetchatMessageFlag = chatapiGetchatFlags.String("message", "", "")
+
+		chatapiPostchatFlags       = flag.NewFlagSet("postchat", flag.ExitOnError)
+		chatapiPostchatMessageFlag = chatapiPostchatFlags.String("message", "", "")
 	)
 	chatapiFlags.Usage = chatapiUsage
 	chatapiGetchatFlags.Usage = chatapiGetchatUsage
+	chatapiPostchatFlags.Usage = chatapiPostchatUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -83,6 +87,9 @@ func ParseEndpoint(cc *grpc.ClientConn, opts ...grpc.CallOption) (goa.Endpoint, 
 			case "getchat":
 				epf = chatapiGetchatFlags
 
+			case "postchat":
+				epf = chatapiPostchatFlags
+
 			}
 
 		}
@@ -111,6 +118,9 @@ func ParseEndpoint(cc *grpc.ClientConn, opts ...grpc.CallOption) (goa.Endpoint, 
 			case "getchat":
 				endpoint = c.Getchat()
 				data, err = chatapic.BuildGetchatPayload(*chatapiGetchatMessageFlag)
+			case "postchat":
+				endpoint = c.Postchat()
+				data, err = chatapic.BuildPostchatPayload(*chatapiPostchatMessageFlag)
 			}
 		}
 	}
@@ -129,6 +139,7 @@ Usage:
 
 COMMAND:
     getchat: Getchat implements getchat.
+    postchat: Postchat implements postchat.
 
 Additional help:
     %s chatapi COMMAND --help
@@ -142,7 +153,26 @@ Getchat implements getchat.
 
 Example:
     `+os.Args[0]+` chatapi getchat --message '{
-      "id": 8120138061326814411
+      "id": 6790830336211114453
+   }'
+`, os.Args[0])
+}
+
+func chatapiPostchatUsage() {
+	fmt.Fprintf(os.Stderr, `%s [flags] chatapi postchat -message JSON
+
+Postchat implements postchat.
+    -message JSON: 
+
+Example:
+    `+os.Args[0]+` chatapi postchat --message '{
+      "Chat": "Ab sint voluptas rerum exercitationem.",
+      "Cookie": "Expedita recusandae vel.",
+      "Id": "Iste expedita ut placeat non consequuntur.",
+      "Member": "Aut aliquam consequatur accusamus amet aspernatur et.",
+      "PostDt": "2014-01-16T11:20:22Z",
+      "RoomName": "Temporibus quis.",
+      "UserId": "Est omnis rem dignissimos saepe."
    }'
 `, os.Args[0])
 }

@@ -156,7 +156,7 @@ window.onload = function () {
         };
       };
     },
-    "1000"
+    "1500"
   );
 };
 
@@ -191,8 +191,9 @@ window.send = function send() {
   let roomname = allchats[0]['roomName'];
   let userid = allchats[0]['userId'];
   let member = allchats[0]['member'];
-  let date = Date.now();
-  let postdt = new Date(date);
+  let millisec = Date.now();
+  let date = new Date(millisec);
+  let postdt = date.toISOString();
 
   //ブラウザに保存されているcookieを取得する
   let cookieValue = document.cookie;
@@ -206,7 +207,7 @@ window.send = function send() {
   socket.send(newchatJSON);
 
   //APIリクエスト(POST)先のURLを設定
-  const urlForApiPost = "http://172.26.0.3:8000/chatroom/chat";
+  //const urlForApiPost = "http://172.26.0.6:9000";
 
   //headersにAPIキー認証用のAuthorizationヘッダーを設定
   // const axiosConfig = {
@@ -214,26 +215,45 @@ window.send = function send() {
   //     "Authorization": "apikey",
   //   }
   // };
+  const { PostchatRequest } = require('./modules/chatapi_pb');
+  const { ChatapiClient } = require('./modules/chatapi_grpc_web_pb');
+  
+  const client = new ChatapiClient('http://172.26.0.6:9000', null, null);
 
-  //APIを叩く関数(POST)
-  async function postChatToApi() {
-    try {
-      res = await axios.post(urlForApiPost, newchatJSON)//, axiosConfig);
-      if (res.data == true) {
-        console.log("投稿成功");
-      } else {
-        console.log("投稿失敗");
-        return;
-      };
-    } catch (error) {
-      const {
-        status,
-        statusText
-      } = error.response;
-      console.log(`Error! HTTP Status: ${status} ${statusText}`);
-    };
-  };
-  postChatToApi();
+  const request = new PostchatRequest();
+  request.setId(roomid)
+  request.setUserId(userid)
+  request.setRoomName(roomname)
+  request.setMember(member)
+  request.setChat(chatEscaped)
+  request.setPostDt(postdt)
+  request.setCookie(cookie)
+
+  client.postchat(request, {}, (err, response) => {//{"Authorization": "apikey"}, (err, response) => {
+    if (err) {
+      console.log(`Unexpected error for getChat: code = ${err.code}` + `, message = "${err.message}"`);
+    }
+  });
+  
+  // //APIを叩く関数(POST)
+  // async function postChatToApi() {
+  //   try {
+  //     res = await axios.post(urlForApiPost, newchatJSON)//, axiosConfig);
+  //     if (res.data == true) {
+  //       console.log("投稿成功");
+  //     } else {
+  //       console.log("投稿失敗");
+  //       return;
+  //     };
+  //   } catch (error) {
+  //     const {
+  //       status,
+  //       statusText
+  //     } = error.response;
+  //     console.log(`Error! HTTP Status: ${status} ${statusText}`);
+  //   };
+  // };
+  // postChatToApi();
 
   //投稿後、チャット投稿欄は空欄に戻す
   document.chatform.reset();

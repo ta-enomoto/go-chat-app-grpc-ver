@@ -16,3 +16,11 @@ func doGRPC(scheme, host string, timeout int, debug bool) (goa.Endpoint, interfa
 	}
 	return cli.ParseEndpoint(conn)
 }
+
+func grpcUsageCommands() string {
+	return cli.UsageCommands()
+}
+
+func grpcUsageExamples() string {
+	return cli.UsageExamples()
+}

@@ -60,3 +60,36 @@ func DecodeGetchatResponse(ctx context.Context, v interface{}, hdr, trlr metadat
 	}
 	return chatapi.NewGoaChatCollection(vres), nil
 }
+
+// BuildPostchatFunc builds the remote method to invoke for "chatapi" service
+// "postchat" endpoint.
+func BuildPostchatFunc(grpccli chatapipb.ChatapiClient, cliopts ...grpc.CallOption) goagrpc.RemoteFunc {
+	return func(ctx context.Context, reqpb interface{}, opts ...grpc.CallOption) (interface{}, error) {
+		for _, opt := range cliopts {
+			opts = append(opts, opt)
+		}
+		if reqpb != nil {
+			return grpccli.Postchat(ctx, reqpb.(*chatapipb.PostchatRequest), opts...)
+		}
+		return grpccli.Postchat(ctx, &chatapipb.PostchatRequest{}, opts...)
+	}
+}
+
+// EncodePostchatRequest encodes requests sent to chatapi postchat endpoint.
+func EncodePostchatRequest(ctx context.Context, v interface{}, md *metadata.MD) (interface{}, error) {
+	payload, ok := v.(*chatapi.PostchatPayload)
+	if !ok {
+		return nil, goagrpc.ErrInvalidType("chatapi", "postchat", "*chatapi.PostchatPayload", v)
+	}
+	return NewPostchatRequest(payload), nil
+}
+
+// DecodePostchatResponse decodes responses from the chatapi postchat endpoint.
+func DecodePostchatResponse(ctx context.Context, v interface{}, hdr, trlr metadata.MD) (interface{}, error) {
+	message, ok := v.(*chatapipb.PostchatResponse)
+	if !ok {
+		return nil, goagrpc.ErrInvalidType("chatapi", "postchat", "*chatapipb.PostchatResponse", v)
+	}
+	res := NewPostchatResult(message)
+	return res, nil
+}

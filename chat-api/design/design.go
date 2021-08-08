@@ -10,7 +10,6 @@ var _ = API("getchat", func() {
 	Description("Service for chat app, a Goa teaser")
 	Server("chat api", func() {
 		Host("172.26.0.3", func() {
-			URI("http://172.26.0.3:8000")
 			URI("grpc://172.26.0.3:8080")
 		})
 	})
@@ -20,7 +19,7 @@ var _ = Service("chatapi", func() {
 	Description("The service performs get chat.")
 	cors.Origin("*", func() { //("http://172.26.0.2", func() {
 		cors.Headers("Access-Control-Allow-Origin") //, "Authorization", "application/x-www-form-urlencoded")
-		cors.Methods("GET")
+		cors.Methods("GET", "POST")
 		//cors.Expose("X-Time") APIのキャッシュ時使用
 		//cors.MaxAge(600)
 		cors.Credentials()
@@ -43,22 +42,20 @@ var _ = Service("chatapi", func() {
 		//Security(APIKeyAuth)
 		Payload(func() {
 			//APIKey("api_key", "key", String, "API key used to perform authorization")
-			Attribute("Id", String, "room id")
-			Attribute("UserId", String, "user id")
-			Attribute("RoomName", String, "room name")
-			Attribute("Member", String, "member")
-			Attribute("Chat", String, "chat")
-			Attribute("PostDt", String, func() { Format(FormatDateTime) })
-			Attribute("Cookie", String, "cookie")
+			Field(1, "Id", String, "room id")
+			Field(2, "UserId", String, "user id")
+			Field(3, "RoomName", String, "room name")
+			Field(4, "Member", String, "member")
+			Field(5, "Chat", String, "chat")
+			Field(6, "PostDt", String, func() { Format(FormatDateTime) })
+			Field(7, "Cookie", String, "cookie")
 			Required("Id", "UserId", "RoomName", "Member", "Chat", "PostDt", "Cookie") //("key", "Id", "UserId", "RoomName", "Member", "Chat", "PostDt", "Cookie")
 		})
 		Result(Boolean)
 		Error("NotFound")
 		Error("BadRequest")
-		HTTP(func() {
-			POST("/chatroom/chat")
-			//Header("key:Authorization")
-			Response(StatusOK)
+		GRPC(func() {
+			Response(CodeOK)
 		})
 	})
 })

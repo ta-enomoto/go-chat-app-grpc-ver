@@ -23,12 +23,38 @@ func BuildGetchatPayload(chatapiGetchatMessage string) (*chatapi.GetchatPayload,
 		if chatapiGetchatMessage != "" {
 			err = json.Unmarshal([]byte(chatapiGetchatMessage), &message)
 			if err != nil {
-				return nil, fmt.Errorf("invalid JSON for message, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 8120138061326814411\n   }'")
+				return nil, fmt.Errorf("invalid JSON for message, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 6790830336211114453\n   }'")
 			}
 		}
 	}
 	v := &chatapi.GetchatPayload{
 		ID: int(message.Id),
+	}
+
+	return v, nil
+}
+
+// BuildPostchatPayload builds the payload for the chatapi postchat endpoint
+// from CLI flags.
+func BuildPostchatPayload(chatapiPostchatMessage string) (*chatapi.PostchatPayload, error) {
+	var err error
+	var message chatapipb.PostchatRequest
+	{
+		if chatapiPostchatMessage != "" {
+			err = json.Unmarshal([]byte(chatapiPostchatMessage), &message)
+			if err != nil {
+				return nil, fmt.Errorf("invalid JSON for message, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"Chat\": \"Ab sint voluptas rerum exercitationem.\",\n      \"Cookie\": \"Expedita recusandae vel.\",\n      \"Id\": \"Iste expedita ut placeat non consequuntur.\",\n      \"Member\": \"Aut aliquam consequatur accusamus amet aspernatur et.\",\n      \"PostDt\": \"2014-01-16T11:20:22Z\",\n      \"RoomName\": \"Temporibus quis.\",\n      \"UserId\": \"Est omnis rem dignissimos saepe.\"\n   }'")
+			}
+		}
+	}
+	v := &chatapi.PostchatPayload{
+		ID:       message.Id,
+		UserID:   message.UserId,
+		RoomName: message.RoomName,
+		Member:   message.Member,
+		Chat:     message.Chat,
+		PostDt:   message.PostDt,
+		Cookie:   message.Cookie,
 	}
 
 	return v, nil

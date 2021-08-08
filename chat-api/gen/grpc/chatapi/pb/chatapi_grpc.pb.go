@@ -20,6 +20,8 @@ const _ = grpc.SupportPackageIsVersion7
 type ChatapiClient interface {
 	// Getchat implements getchat.
 	Getchat(ctx context.Context, in *GetchatRequest, opts ...grpc.CallOption) (*GoaChatCollection, error)
+	// Postchat implements postchat.
+	Postchat(ctx context.Context, in *PostchatRequest, opts ...grpc.CallOption) (*PostchatResponse, error)
 }
 
 type chatapiClient struct {
@@ -39,12 +41,23 @@ func (c *chatapiClient) Getchat(ctx context.Context, in *GetchatRequest, opts ..
 	return out, nil
 }
 
+func (c *chatapiClient) Postchat(ctx context.Context, in *PostchatRequest, opts ...grpc.CallOption) (*PostchatResponse, error) {
+	out := new(PostchatResponse)
+	err := c.cc.Invoke(ctx, "/chatapi.Chatapi/Postchat", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChatapiServer is the server API for Chatapi service.
 // All implementations must embed UnimplementedChatapiServer
 // for forward compatibility
 type ChatapiServer interface {
 	// Getchat implements getchat.
 	Getchat(context.Context, *GetchatRequest) (*GoaChatCollection, error)
+	// Postchat implements postchat.
+	Postchat(context.Context, *PostchatRequest) (*PostchatResponse, error)
 	mustEmbedUnimplementedChatapiServer()
 }
 
@@ -54,6 +67,9 @@ type UnimplementedChatapiServer struct {
 
 func (UnimplementedChatapiServer) Getchat(context.Context, *GetchatRequest) (*GoaChatCollection, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Getchat not implemented")
+}
+func (UnimplementedChatapiServer) Postchat(context.Context, *PostchatRequest) (*PostchatResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Postchat not implemented")
 }
 func (UnimplementedChatapiServer) mustEmbedUnimplementedChatapiServer() {}
 
@@ -86,6 +102,24 @@ func _Chatapi_Getchat_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Chatapi_Postchat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostchatRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatapiServer).Postchat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chatapi.Chatapi/Postchat",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatapiServer).Postchat(ctx, req.(*PostchatRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Chatapi_ServiceDesc is the grpc.ServiceDesc for Chatapi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -96,6 +130,10 @@ var Chatapi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Getchat",
 			Handler:    _Chatapi_Getchat_Handler,
+		},
+		{
+			MethodName: "Postchat",
+			Handler:    _Chatapi_Postchat_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

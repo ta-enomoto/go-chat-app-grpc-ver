@@ -18,9 +18,6 @@ static_resources:
               routes:
               - match:
                   prefix: "/"
-                  # safe_regex:
-                    # google_re2: {}
-                    # regex: "\/chatroom\/[0-9]*"
                 route:
                   cluster: getchat-cluster
                   max_stream_duration:

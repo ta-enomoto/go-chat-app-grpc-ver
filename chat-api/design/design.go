@@ -17,9 +17,9 @@ var _ = API("getchat", func() {
 
 var _ = Service("chatapi", func() {
 	Description("The service performs get chat.")
-	cors.Origin("*", func() { //("http://172.26.0.2", func() {
-		cors.Headers("Access-Control-Allow-Origin", "Authorization", "application/x-www-form-urlencoded")
-		cors.Methods("GET", "POST")
+	cors.Origin("http://172.26.0.2", func() {
+		cors.Headers("Access-Control-Allow-Origin", "Authorization")
+		cors.Methods("POST")
 		//cors.Expose("X-Time") APIのキャッシュ時使用
 		//cors.MaxAge(600)
 		cors.Credentials()

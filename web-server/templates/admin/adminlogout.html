@@ -10,7 +10,9 @@
     <a href="http://172.26.0.2/admin/login">ログインページに戻る</a>
   </div>
   <script>
-    document.cookie = "cookieName=; max-age=0";
+    if (document.cookie != ""){
+      document.cookie = "cookieName=; max-age=0";
+    }
   </script>
 </body>
 </html>

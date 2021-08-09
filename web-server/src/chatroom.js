@@ -1,41 +1,31 @@
 const { GetchatRequest } = require('./modules/chatapi_pb');
+const { PostchatRequest } = require('./modules/chatapi_pb');
 const { ChatapiClient } = require('./modules/chatapi_grpc_web_pb');
 
 let socket = null;
-let data = "";
-let wsuri = "ws://172.26.0.2/wsserver";
 let allchats = "";
 
 //ウィンドウ表示時に、APIからのチャットの取得と、WebSocketのハンドシェイク処理を行う
 window.onload = function () {
 
-  //   //API、WebSocket共通で使用するURLからのルームID取得処理
+  //API、WebSocket共通で使用するURLからのルームID取得処理
   let url = location.href;
   let roomid = url.replace("http://172.26.0.2/mypage/chatroom", "");
 
-  // //チャット読み込み処理
-  //   //APIリクエスト(GET)先のURL
-  //   const urlForApiGet = "http://172.26.0.3:8000/chatroom/" + roomid;
-
-  //   //headersにAPIキー認証用のAuthorizationヘッダーを設定
-  //   const axiosConfig = {
-  //     headers: {
-  //       "Authorization": "apikey",
-  //     }
-  //   };
-
+  //RPCのためクライアントオブジェクト・リクエストオブジェクトを初期化
   const client = new ChatapiClient('http://172.26.0.6:9000', null, null);
-
   const request = new GetchatRequest();
+  
+  //リクエストにルームIDをセット
   request.setId(roomid);
 
+  //リクエストを送信
   client.getchat(request, { "Authorization": "apikey" }, (err, response) => {
     if (err) {
       console.log(`Unexpected error for getChat: code = ${err.code}` + `, message = "${err.message}"`);
     } else {
       let res = response.toObject();
       allchats = res['fieldList']
-      //console.log(allchats['fieldList'][0]['userId']);
 
       for (const chat of allchats) {
         //各チャット毎にHTML要素を生成・順に追加していく
@@ -88,6 +78,7 @@ window.onload = function () {
   setTimeout(
     function () {
       //WebSocketハンドシェイク
+      let wsuri = "ws://172.26.0.2/wsserver";
       socket = new WebSocket(wsuri);
 
       //WebSocket開通時の処理
@@ -205,21 +196,11 @@ window.send = function send() {
   const newchatJSON = JSON.stringify(newchat);
   socket.send(newchatJSON);
 
-  //APIリクエスト(POST)先のURLを設定
-  //const urlForApiPost = "http://172.26.0.6:9000";
-
-  //headersにAPIキー認証用のAuthorizationヘッダーを設定
-  // const axiosConfig = {
-  //   headers: {
-  //     "Authorization": "apikey",
-  //   }
-  // };
-  const { PostchatRequest } = require('./modules/chatapi_pb');
-  const { ChatapiClient } = require('./modules/chatapi_grpc_web_pb');
-
+  //RPC通信のためクライアントオブジェクト・リクエストオブジェクトを初期化
   const client = new ChatapiClient('http://172.26.0.6:9000', null, null);
-
   const request = new PostchatRequest();
+  
+  //リクエストに各種値をセット
   request.setId(roomid)
   request.setUserId(userid)
   request.setRoomName(roomname)
@@ -228,31 +209,12 @@ window.send = function send() {
   request.setPostDt(postdt)
   request.setCookie(cookie)
 
+  //リクエストを送信
   client.postchat(request, { "Authorization": "apikey" }, (err, response) => {
     if (err) {
       console.log(`Unexpected error for getChat: code = ${err.code}` + `, message = "${err.message}"`);
     }
   });
-
-  // //APIを叩く関数(POST)
-  // async function postChatToApi() {
-  //   try {
-  //     res = await axios.post(urlForApiPost, newchatJSON)//, axiosConfig);
-  //     if (res.data == true) {
-  //       console.log("投稿成功");
-  //     } else {
-  //       console.log("投稿失敗");
-  //       return;
-  //     };
-  //   } catch (error) {
-  //     const {
-  //       status,
-  //       statusText
-  //     } = error.response;
-  //     console.log(`Error! HTTP Status: ${status} ${statusText}`);
-  //   };
-  // };
-  // postChatToApi();
 
   //投稿後、チャット投稿欄は空欄に戻す
   document.chatform.reset();

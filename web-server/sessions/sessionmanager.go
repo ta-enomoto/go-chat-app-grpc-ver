@@ -130,7 +130,8 @@ func (Manager *MANAGER) DeleteSessionFromStore(w http.ResponseWriter, r *http.Re
 	//クライアントのcookieを取得する
 	clientCookie, err := r.Cookie(Manager.CookieName)
 	if err != nil {
-		fmt.Println(err.Error())
+		return nil
+		//fmt.Println(err.Error())
 	}
 
 	//クライアントのcookieからセッションIDを取得する

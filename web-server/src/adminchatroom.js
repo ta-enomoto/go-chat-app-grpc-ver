@@ -1,8 +1,6 @@
 const { GetchatRequest } = require('./modules/chatapi_pb');
 const { ChatapiClient } = require('./modules/chatapi_grpc_web_pb');
 
-let allchats = "";
-
 //ウィンドウ表示時に、APIからのチャットの取得する
 window.onload = function () {
 
@@ -10,29 +8,20 @@ window.onload = function () {
   let url = location.href;
   let roomid = url.replace("http://172.26.0.2/admin/chatrooms/chatroom","");
 
-  // //APIリクエスト(GET)先のURL
-  // const urlForApiGet = "http://172.26.0.3:8000/chatroom/" + roomid;
-
-  // //headersにAPIキー認証用のAuthorizationヘッダーを設定
-  // const axiosConfig = {
-  //   headers: {
-  //     "Authorization": "apikey",
-  //   }
-  // };
-
+  //RPCのためクライアントオブジェクト・リクエストオブジェクトを初期化
   const client = new ChatapiClient('http://172.26.0.6:9000', null, null);
-
   const request = new GetchatRequest();
+
+  //リクエストにルームIDをセット
   request.setId(roomid);
 
-  //APIを叩く関数
+  //リクエストを送信
   client.getchat(request, {"Authorization": "apikey"}, (err, response) => {
     if (err) {
       console.log(`Unexpected error for getChat: code = ${err.code}` + `, message = "${err.message}"`);
     } else {
       let res = response.toObject();
-      allchats = res['fieldList']
-      //console.log(allchats['fieldList'][0]['userId']);
+      let allchats = res['fieldList']
 
       for (const chat of allchats) {
         //各チャット毎にHTML要素を生成・順に追加していく

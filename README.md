@@ -1,4 +1,4 @@
-## チャットアプリケーション(REST API ver.)
+## チャットアプリケーション(gRPC ver.)
 ### ※REST API実装ver.も作成しています：[go-chat-app-api-ver](https://github.com/ta-enomoto/go-chat-app-api-ver)
 
 ### Go言語の標準・準標準ライブラリを中心に実装を目指したウェブアプリケーションです。

@@ -22,12 +22,10 @@
   <p id="login-link"><a href="/login">ログイン画面に戻る</a></p>
   </div>
   <script>
-    //登録ボタンクリック時の処理
   function resistrationFunc (){
     let userId = document.getElementById("userId").value;
     let password = document.getElementById("password").value;
 
-    //フォームが空欄の場合はsubmitせず、alertで通知
     if (userId == "" && password == "") {
       window.alert("ユーザーID・パスワードが入力されていません");
       return false;

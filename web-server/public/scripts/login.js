@@ -3,7 +3,6 @@ function loginFunc(){
   let userId = document.getElementById("inputedUserId").value;
   let password = document.getElementById("inputedPassword").value;
 
-  //フォームが空欄の場合はsubmitせず、alertで通知
   if (userId == "" && password == "") {
     window.alert("ユーザーID・パスワードが入力されていません");
     return false;

@@ -7,28 +7,24 @@ import (
 )
 
 type ConfDbChtrm struct {
-	Host    string `toml:"host"`    // ホスト名
-	Port    int    `toml:"port"`    // ポート番号
-	DbName  string `toml:"db-name"` // 接続先DB名
-	Charset string `toml:"charset"` // 文字コード
-	User    string `toml:"user"`    // 接続ユーザ名
-	Pass    string // 接続パスワード
+	Host    string `toml:"host"`
+	Port    int    `toml:"port"`
+	DbName  string `toml:"db-name"`
+	Charset string `toml:"charset"`
+	User    string `toml:"user"`
+	Pass    string //環境変数の値を取得
 }
 
 type ConfigChtrm struct {
 	ConfDbChtrm `toml:"database2"`
 }
 
-// URL設定の構造体
 func ReadConfDbChtrm() (*ConfigChtrm, error) {
 
-	// 設定ファイル名
 	confpath := "config/db.toml"
 
-	// 構造体を初期化
 	conf := new(ConfigChtrm)
 
-	// 読み込んだjson文字列をデコードし構造体にセット
 	_, err := toml.DecodeFile(confpath, &conf)
 	if err != nil {
 		return conf, err

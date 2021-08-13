@@ -53,14 +53,12 @@ type MANAGER struct {
 	WsRooms map[string]*WsChatroom
 }
 
-//サーバー起動時にセッションマネージャも初期化
 var Manager *MANAGER
 
 func init() {
 	Manager = NewManager()
 }
 
-//init()でセッションマネージャ初期化時に使う関数
 func NewManager() *MANAGER {
 	database := make(map[string]*WsChatroom)
 	return &MANAGER{WsRooms: database}
@@ -78,19 +76,16 @@ func WebSocketHandler(ws *websocket.Conn) {
 
 		//以下、アクセスしたいルームのWebSocket用チャットルームが既に存在する場合と、まだ存在しない場合で処理を分岐
 		if _, exist := Manager.WsRooms[roomId]; exist {
+
 			//既にWebSocket用チャットルームが存在していた場合の処理
 
-			//WebSocket用クライアント構造体を初期化し、Roomフィールドに当該WebSocket用チャットルームを登録
 			WsClient := &WsClient{
 				Send: make(chan string),
 				Room: Manager.WsRooms[roomId],
 			}
 
-			//WebSocket用チャットルームのJoinチャンネルにWebSocket用クライアントを送信
 			Manager.WsRooms[roomId].Join <- WsClient
 
-			//WebSocket用チャットルームのLeaveチャンネルにWebSocket用クライアントが送信され、
-			//Ws用ルーム中のクライント数が0になったら、Ws用ルームを削除する
 			defer func() {
 				Manager.WsRooms[roomId].Leave <- WsClient
 				if len(Manager.WsRooms[roomId].clients) == 0 {
@@ -99,15 +94,13 @@ func WebSocketHandler(ws *websocket.Conn) {
 				}
 			}()
 
-			//メッセージ受信時の各クライアントへの書き出しを行う
 			go WsClient.Write(ws)
-
-			//各クライアントからのメッセージを受信する
 			WsClient.Read(ws)
+
 		} else {
+
 			//まだアクセスしたルームのWebSocket用チャットルームが存在しない時の処理(Wsルーム生成)
 
-			//WebSocket用チャットルーム構造体を初期化する
 			WsChatroom := &WsChatroom{
 				forward: make(chan string),
 				Join:    make(chan *WsClient),
@@ -118,25 +111,20 @@ func WebSocketHandler(ws *websocket.Conn) {
 			//WebSocket用チャットルームを起動し、入退室・メッセージの送受信を監視する
 			go WsChatroom.ChatroomRun()
 
-			//WebSocket開通時に送信するメッセージを元に、ルームIDを設定する
+			//WebSocket開通時に送信するメッセージを元に、ルームIDを特定する
 			var chatroom WsChat
 			json.Unmarshal([]byte(chatroomJson), &chatroom)
 			WsChatroom.id = chatroom.Id
 
-			//Ws用ルームマネージャに、生成したルームを登録する
 			Manager.WsRooms[WsChatroom.id] = WsChatroom
 
-			//WebSocket用クライアント構造体を初期化し、Roomフィールドに当該WebSocket用チャットルームを登録
 			WsClient := &WsClient{
 				Send: make(chan string),
 				Room: WsChatroom,
 			}
 
-			//WebSocket用チャットルームのJoinチャンネルにWebSocket用クライアントを送信
-
-			//WebSocket用チャットルームのLeaveチャンネルにWebSocket用クライアントが送信され、
-			//Ws用ルーム中のクライント数が0になったら、Ws用ルームを削除する
 			WsChatroom.Join <- WsClient
+
 			defer func() {
 				WsChatroom.Leave <- WsClient
 				Manager.WsRooms[WsChatroom.id].Leave <- WsClient
@@ -146,10 +134,7 @@ func WebSocketHandler(ws *websocket.Conn) {
 				}
 			}()
 
-			//メッセージ受信時の各クライアントへの書き出しを行う
 			go WsClient.Write(ws)
-
-			//各クライアントからのメッセージを受信する
 			WsClient.Read(ws)
 		}
 	}
@@ -160,20 +145,17 @@ func (WsChatroom *WsChatroom) ChatroomRun() {
 	for {
 		select {
 		case WsClient := <-WsChatroom.Join:
-			//ルームへの入室処理
 
 			WsChatroom.clients[WsClient] = true
 			fmt.Printf("クライアントが入室しました。現在 %x 人のクライアントが存在します。\n", len(WsChatroom.clients))
 
 		case WsClient := <-WsChatroom.Leave:
-			//ルームからの退室処理
 
-			//ルームからWs用クライアントを削除する
 			delete(WsChatroom.clients, WsClient)
 			fmt.Printf("クライアントが退出しました。現在 %x 人のクライアントが存在します。\n", len(WsChatroom.clients))
 
 		case msg := <-WsChatroom.forward:
-			//メッセージ受信時の処理
+
 			fmt.Println("メッセージ受信")
 			for target := range WsChatroom.clients {
 				select {
@@ -192,7 +174,6 @@ func (WsChatroom *WsChatroom) ChatroomRun() {
 func (wc *WsClient) Read(ws *websocket.Conn) {
 
 	for {
-		//JSONデータを受信、デコード後、WebSocket用チャット構造体にマッピングする
 		var msg string
 		var receivedChat WsChat
 		if err := websocket.Message.Receive(ws, &msg); err == nil {
@@ -202,28 +183,25 @@ func (wc *WsClient) Read(ws *websocket.Conn) {
 			return
 		}
 
-		//チャットルームDBに接続する
 		dbChtrm, err := sql.Open("mysql", query.ConStrChtrm)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 		defer dbChtrm.Close()
 
-		//送信用に通常のチャット構造体を初期化
 		sendingChat := new(query.Chat)
 
-		//ルームIDを数値に変換し、DBからルーム情報を取得する
+		//ルームIDを元にDBから取得したルーム情報を使用する
 		roomId, _ := strconv.Atoi(receivedChat.Id)
 		currentChatroom := query.SelectChatroomById(roomId, dbChtrm)
 
 		sendingChat.Chatroom.Id = currentChatroom.Id
 		sendingChat.Chatroom.RoomName = currentChatroom.RoomName
 
-		//受信メッセージのcookieから、投稿者のセッション変数(ユーザーID)を取得する
 		cookie, _ := url.QueryUnescape(receivedChat.Cookie)
 		userSessionVar := session.Manager.SessionStore[cookie].SessionValue["userId"]
 
-		//投稿者がルーム作成者と同じかどうかで、送信用チャットの投稿者を変える
+		//以下では投稿者がルーム作成者と同じかどうかで、送信用チャットの投稿者を変える
 		if userSessionVar == currentChatroom.UserId {
 			//投稿主と部屋作成者が同じ場合
 			sendingChat.Chatroom.UserId = currentChatroom.UserId
@@ -237,7 +215,6 @@ func (wc *WsClient) Read(ws *websocket.Conn) {
 		sendingChat.Chat = receivedChat.Chat
 		sendingChat.PostDt = time.Now().UTC().Round(time.Second)
 
-		//送信用チャットをJSONにエンコード・byte型をstring型に変換し、Ws用ルームのforwardチャネルに送信する
 		msgjson, err := json.Marshal(sendingChat)
 		if err != nil {
 			fmt.Println(err.Error())

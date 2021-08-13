@@ -11,7 +11,7 @@
   </div>
   
   <script>
-    //ルームが削除されこのページが表示されたら、1秒後に親であるmypageをリロード、ルームリンクを更新する
+    //このページは親ページであるマイページのiframe内に表示されるため、削除完了後は親ページを更新して画面をリセットする必要がある
     setTimeout (
       function () {
         parent.location.href = parent.location.href;

@@ -11,8 +11,8 @@ import (
 
 //ユーザー構造体
 type User struct {
-	UserId   string `db:"USER_ID"`  // ユーザーID
-	Password []byte `db:"PASSWORD"` // パスワード
+	UserId   string `db:"USER_ID"`
+	Password []byte `db:"PASSWORD"`
 }
 
 var ConStrUsr string
@@ -25,7 +25,6 @@ func init() {
 	ConStrUsr = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s", confDbUsr.User, confDbUsr.Pass, confDbUsr.Host, confDbUsr.Port, confDbUsr.DbName, confDbUsr.Charset)
 }
 
-// ユーザーをdbに登録する関数
 func InsertUser(userId string, password []byte, db *sql.DB) bool {
 
 	hashed_pass, err := bcrypt.GenerateFromPassword(password, 10)
@@ -47,7 +46,6 @@ func InsertUser(userId string, password []byte, db *sql.DB) bool {
 	}
 }
 
-//ユーザーIDと一致するユーザー情報をdbから取得する関数
 func SelectUserById(userId string, db *sql.DB) (user User) {
 
 	err := db.QueryRow("SELECT USER_ID,PASSWORD FROM USERS WHERE USER_ID = ?", userId).Scan(&user.UserId, &user.Password)
@@ -57,7 +55,6 @@ func SelectUserById(userId string, db *sql.DB) (user User) {
 	return
 }
 
-//ユーザーIDに一致するユーザーをdbから削除する関数。ハンドラでチェックはしてるが関数内でもパスも一致させたほうがいいかも
 func DeleteUserById(userId string, db *sql.DB) bool {
 
 	stmt, err := db.Prepare("DELETE FROM USERS WHERE USER_ID = ?")
@@ -74,7 +71,6 @@ func DeleteUserById(userId string, db *sql.DB) bool {
 	}
 }
 
-//全ユーザー情報をスライスとしてdbから取得する関数
 func SelectAllUser(db *sql.DB) (users []User) {
 
 	rows, err := db.Query("SELECT * FROM USERS")
@@ -93,7 +89,6 @@ func SelectAllUser(db *sql.DB) (users []User) {
 	return
 }
 
-//ユーザー名が重複していないか確認する関数
 func ContainsUserName(s []User, e string) bool {
 	for _, v := range s {
 		if e == v.UserId {
@@ -103,7 +98,6 @@ func ContainsUserName(s []User, e string) bool {
 	return false
 }
 
-//ユーザーIDを変更する関数
 func ChangeUserId(newUserId string, currentUserId string, db *sql.DB) bool {
 
 	stmt, err := db.Prepare("UPDATE USERS SET USER_ID = ? WHERE USER_ID = ?")
@@ -120,7 +114,6 @@ func ChangeUserId(newUserId string, currentUserId string, db *sql.DB) bool {
 	}
 }
 
-//パスワードを変更する関数
 func ChangePassword(newPassword []byte, currentPassword []byte, db *sql.DB) bool {
 
 	hashed_pass, err := bcrypt.GenerateFromPassword(newPassword, 10)

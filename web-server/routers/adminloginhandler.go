@@ -17,34 +17,27 @@ func AdminLoginHandler(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		//ログインボタンが押され管理者ID・パスワードがPOSTされた時の処理
 
-		//管理者ID・パスワードは以下で固定する
+		//DBのボリュームに初期値として入れる方法は、ハッシュ化の関係で出来ないため、管理者ID・パスワードは以下で固定する。
 		adminUserId := "admin"
 		adminPassword := "pass"
 
-		//フォームに入力された値を取得する
 		userid := r.FormValue("userId")
 		password := r.FormValue("password")
 
-		//フォームに何も入力されていない時の処理(ブラウザ側でもチェック有り)
 		if userid == "" || password == "" {
 			fmt.Fprintf(w, "IDまたはパスワードが入力されていません")
 			return
 		}
 
-		//ユーザーIDが誤っている場合の処理
 		if userid != adminUserId {
 			fmt.Fprintf(w, "IDまたはパスワードが間違っています。")
 		}
 
-		//パスワードが誤っている場合の処理
 		if password != adminPassword {
 			fmt.Fprintf(w, "IDまたはパスワードが間違っています。")
 		}
 
-		//セッションを生成
 		session.Manager.SessionStart(w, r, userid)
-
-		//管理メインページにリダイレクト
 		http.Redirect(w, r, "/admin/main", 301)
 	}
 }

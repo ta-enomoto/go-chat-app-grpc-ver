@@ -28,13 +28,9 @@
     </form>
   </div>
   <script>
-    //ユーザーID変更ボタンがクリックされた時の処理
-    //変更実行前に、確認ウィンドウを表示する
     function changeUserIdFunc(){
-      //フォームの値を取得する
       let userId = document.getElementById("userId").value;
-      
-      //フォームが空欄の場合はsubmitせず、alertで通知
+
       if (userId == "") {
       window.alert("ユーザーIDが入力されていません");
       return false;
@@ -48,13 +44,9 @@
       };
     };
 
-    //パスワード変更ボタンがクリックされた時の処理
-    //変更実行前に、確認ウィンドウを表示する
     function changePasswordFunc(){
-      //フォームの値を取得する
       let password = document.getElementById("password").value;
       
-      //フォームが空欄の場合はsubmitせず、alertで通知
       if (password == "") {
         window.alert("パスワードが入力されていません");
         return false;
@@ -68,9 +60,6 @@
       };
     };
 
-
-    //ユーザー削除ボタンがクリックされた時の処理
-    //削除実行前に、確認ウィンドウを表示する
     function deleteUserFunc(){
 	    if(window.confirm("本当にこのユーザーを削除しますか？")){
         this.form.submit();

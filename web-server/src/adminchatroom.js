@@ -4,18 +4,15 @@ const { ChatapiClient } = require('./modules/chatapi_grpc_web_pb');
 //ウィンドウ表示時に、APIからのチャットの取得する
 window.onload = function () {
 
-  // //APIで使用するURLからのルームID取得処理
+  //APIで使用するルームIDは、URLから取得
   let url = location.href;
   let roomid = url.replace("http://172.26.0.2/admin/chatrooms/chatroom","");
 
-  //RPCのためクライアントオブジェクト・リクエストオブジェクトを初期化
   const client = new ChatapiClient('http://172.26.0.6:9000', null, null);
   const request = new GetchatRequest();
 
-  //リクエストにルームIDをセット
   request.setId(roomid);
 
-  //リクエストを送信
   client.getchat(request, {"Authorization": "apikey"}, (err, response) => {
     if (err) {
       console.log(`Unexpected error for getChat: code = ${err.code}` + `, message = "${err.message}"`);
@@ -24,7 +21,6 @@ window.onload = function () {
       let allchats = res['fieldList']
 
       for (const chat of allchats) {
-        //各チャット毎にHTML要素を生成・順に追加していく
         let textUserNode = document.createTextNode(chat['userId']);
         let textPostDtNode = document.createTextNode(chat['postDt']);
         let textChatUnescaped = unescape(chat['chat']).replace(/\\/g, "");
@@ -52,7 +48,6 @@ window.onload = function () {
         chatList.appendChild(newLi);
       };
 
-      //ルーム名を一番目のルーム作成時投稿チャットから取得しHTML要素を生成・追加する
       let roomNameUnescaped = allchats[0]['roomName'].replace(/\\/g, "");
       let roomnameText = document.createTextNode(roomNameUnescaped);
       let newH2 = document.createElement("h2");
@@ -62,22 +57,19 @@ window.onload = function () {
     };
   });
 
-  //async awaitが使えないためsetTimeを使用
+  //gRPC-WebのPOST処理はasync awaitが機能しなかったためsetTimeを使用(要改良)
   setTimeout(
     function () {
-      //全チャット表示後、ページ最下部にスクロールする
       let element = document.documentElement;
       let bottom = element.scrollHeight - element.clientHeight;
       window.scroll(0, bottom);
     },
-    "500"
+    "1000"
   );
 
 
 };
 
-//チャットルーム削除ボタンがクリックされた時の処理
-//削除実行前に、確認ウィンドウを表示する
 window.deleteChtrmFunc = function deleteChtrmFunc() {
 
   if (window.confirm("本当にこのルームを削除しますか？")) {

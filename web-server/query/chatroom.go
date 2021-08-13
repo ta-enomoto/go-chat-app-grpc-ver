@@ -45,7 +45,6 @@ func init() {
 	ConStrChtrm = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=true&charset=%s", confDbChtrm.User, confDbChtrm.Pass, confDbChtrm.Host, confDbChtrm.Port, confDbChtrm.DbName, confDbChtrm.Charset)
 }
 
-// 新しくチャットルームを登録する関数
 func InsertChatroom(userSessionVal string, roomName string, memberName string, db *sql.DB) bool {
 
 	stmt, err := db.Prepare("INSERT INTO ROOM_STRUCTS_OF_CHAT(USER_ID, ROOM_NAME, MEMBER) VALUES(?,?,?)")
@@ -62,7 +61,6 @@ func InsertChatroom(userSessionVal string, roomName string, memberName string, d
 	}
 }
 
-//全てのチャットルームを取得する関数
 func SelectAllChatrooms(db *sql.DB) (chatrooms []Chatroom) {
 
 	rows, err := db.Query("SELECT * FROM ROOM_STRUCTS_OF_CHAT")
@@ -81,7 +79,6 @@ func SelectAllChatrooms(db *sql.DB) (chatrooms []Chatroom) {
 	return
 }
 
-//特定のユーザーが作成したチャットルームをすべて取得する関数
 func SelectAllChatroomsByUserId(userSessionVal string, db *sql.DB) (chatrooms []Chatroom) {
 
 	rows, err := db.Query("SELECT * FROM ROOM_STRUCTS_OF_CHAT WHERE USER_ID = ?", userSessionVal)
@@ -100,7 +97,6 @@ func SelectAllChatroomsByUserId(userSessionVal string, db *sql.DB) (chatrooms []
 	return
 }
 
-//特定のユーザーがメンバーとして参加しているチャットルームをすべて取得する関数
 func SelectAllChatroomsByMember(userSessionVal string, db *sql.DB) (chatrooms []Chatroom) {
 
 	rows, err := db.Query("SELECT * FROM ROOM_STRUCTS_OF_CHAT WHERE Member = ?", userSessionVal)
@@ -119,7 +115,6 @@ func SelectAllChatroomsByMember(userSessionVal string, db *sql.DB) (chatrooms []
 	return
 }
 
-//ルームIDでチャットルームを選択する関数
 func SelectChatroomById(id int, db *sql.DB) (chatroom Chatroom) {
 
 	err := db.QueryRow("SELECT * FROM ROOM_STRUCTS_OF_CHAT WHERE ID = ?", id).Scan(&chatroom.Id, &chatroom.UserId, &chatroom.RoomName, &chatroom.Member)
@@ -129,7 +124,6 @@ func SelectChatroomById(id int, db *sql.DB) (chatroom Chatroom) {
 	return
 }
 
-//ユーザーIDからチャットルームを選択する関数
 func SelectChatroomByUser(userId string, db *sql.DB) (chatroom Chatroom) {
 
 	err := db.QueryRow("SELECT ID, USER_ID, ROOM_NAME, MEMBER FROM ROOM_STRUCTS_OF_CHAT WHERE USER_ID = ?").Scan(&chatroom.Id, &chatroom.UserId, &chatroom.RoomName, &chatroom.Member)
@@ -139,7 +133,6 @@ func SelectChatroomByUser(userId string, db *sql.DB) (chatroom Chatroom) {
 	return
 }
 
-//ユーザーIDを、チャットルーム名、メンバー全てが一致するチャットルームを選択する関数
 func SelectChatroomByUserAndRoomNameAndMember(userId string, roomName string, member string, db *sql.DB) (chatroom Chatroom) {
 
 	err := db.QueryRow("SELECT * FROM ROOM_STRUCTS_OF_CHAT WHERE USER_ID = ? AND ROOM_NAME = ? AND MEMBER = ?", userId, roomName, member).Scan(&chatroom.Id, &chatroom.UserId, &chatroom.RoomName, &chatroom.Member)
@@ -149,7 +142,6 @@ func SelectChatroomByUserAndRoomNameAndMember(userId string, roomName string, me
 	return
 }
 
-//特定のチャットルームのチャットをすべて取得する関数
 func SelectAllChatsById(id int, db *sql.DB) (chats []Chat) {
 
 	rows, err := db.Query("SELECT * FROM ALL_STRUCTS_OF_CHAT WHERE ID = ?", id)
@@ -168,7 +160,6 @@ func SelectAllChatsById(id int, db *sql.DB) (chats []Chat) {
 	return
 }
 
-// 投稿されたチャットを登録する関数
 func InsertChat(id int, userId string, roomName string, member string, chat string, postDt time.Time, db *sql.DB) bool {
 
 	stmt, err := db.Prepare("INSERT INTO ALL_STRUCTS_OF_CHAT(ID, USER_ID, ROOM_NAME, MEMBER, Chat, POST_DT) VALUES(?,?,?,?,?,?)")
@@ -185,7 +176,6 @@ func InsertChat(id int, userId string, roomName string, member string, chat stri
 	}
 }
 
-//ルームIDが一致するチャットルームとそのルームのチャットを削除する関数
 func DeleteChatroomById(id int, db *sql.DB) bool {
 
 	stmtDeleteChatroom, err := db.Prepare("DELETE FROM ROOM_STRUCTS_OF_CHAT WHERE ID = ?")

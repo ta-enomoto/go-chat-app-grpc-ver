@@ -69,7 +69,7 @@ window.onload = function () {
     };
   });
 
-  //gRPC-WebのPOST処理はasync awaitが使えないためsetTimeを使用(要改良)
+  //gRPC-WebのPOST処理はasync awaitが機能しなかったためsetTimeを使用(要改良)
   setTimeout(
     function () {
       let wsuri = "ws://172.26.0.2/wsserver";

@@ -1,0 +1,12 @@
+name: docker test
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker-compose up test
+      run: |
+          docker-compose up -d
